@@ -10,13 +10,21 @@ namespace GoFish
             GoFish app = new GoFish(ctx);
 
             Console.WriteLine("Go Fish!");
+            Console.WriteLine("".PadLeft(60, '='));
+
+            AddCatchTypes(app);
 
             AdvertiseCatch(app);
         }
 
+        private static void AddCatchTypes(GoFish app)
+        {
+            app.AddCatchTypes();
+        }
+
         private static void AdvertiseCatch(GoFish app)
         {
-            Console.WriteLine("Advertise Catch");
+            Console.WriteLine("I'm Gonna Advertise my Catch!");
 
             var myCatch = new Catch
             (
@@ -25,7 +33,7 @@ namespace GoFish
 
             app.Advertise(myCatch);
 
-            Console.WriteLine("Catch Advertised");
+            Console.WriteLine("Catch Advertised, I 'ope sum one gonna buy it!");
         }
     }
 }

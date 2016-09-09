@@ -2,6 +2,7 @@ namespace GoFish
 {
     public class CatchType
     {
+        private CatchType() {}
         public CatchType(int id, string name)
         {
             Id = id;
