@@ -3,14 +3,14 @@ namespace GoFish
     public class StockItem
     {
         private StockItem () { }
-        public StockItem (string name, int quantity)
+        public StockItem (ProductType type, int quantity)
         {
-            Name = name;
+            Type = type;
             Quantity = quantity;
         }
 
         public int Id { get; private set; }
-        public string Name { get; private set; }
+        public ProductType Type { get; private set; }
         public int Quantity { get; private set; }
 
         internal void Decrease()

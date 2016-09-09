@@ -9,7 +9,7 @@ namespace gofish.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CatchTypes",
+                name: "ProductTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -18,21 +18,7 @@ namespace gofish.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CatchTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StockItems",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    Quantity = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StockItems", x => x.Id);
+                    table.PrimaryKey("PK_ProductTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,9 +34,29 @@ namespace gofish.Migrations
                 {
                     table.PrimaryKey("PK_Catches", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Catches_CatchTypes_TypeId",
+                        name: "FK_Catches_ProductTypes_TypeId",
                         column: x => x.TypeId,
-                        principalTable: "CatchTypes",
+                        principalTable: "ProductTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StockItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true),
+                    Quantity = table.Column<int>(nullable: false),
+                    TypeId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_StockItems_ProductTypes_TypeId",
+                        column: x => x.TypeId,
+                        principalTable: "ProductTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -58,6 +64,11 @@ namespace gofish.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Catches_TypeId",
                 table: "Catches",
+                column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_StockItems_TypeId",
+                table: "StockItems",
                 column: "TypeId");
         }
 
@@ -70,7 +81,7 @@ namespace gofish.Migrations
                 name: "StockItems");
 
             migrationBuilder.DropTable(
-                name: "CatchTypes");
+                name: "ProductTypes");
         }
     }
 }

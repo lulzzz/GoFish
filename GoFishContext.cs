@@ -4,7 +4,7 @@ namespace GoFish
 {
     public class GoFishContext : DbContext
     {
-        public DbSet<CatchType> CatchTypes { get; set; }
+        public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<Catch> Catches { get; set; }
         public DbSet<StockItem> StockItems { get; set; }
 

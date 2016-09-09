@@ -9,10 +9,6 @@ namespace GoFish
             GoFishContext ctx = new GoFishContext();
             GoFish app = new GoFish(ctx);
 
-            Console.WriteLine("".PadLeft(60, '='));
-            Console.WriteLine("Go Fish!   Version: 0.0.1");
-            Console.WriteLine("".PadLeft(60, '='));
-
             AdvertiseCatch(app);
 
             SeeAvailableStock(app);
@@ -29,7 +25,7 @@ namespace GoFish
             System.Console.WriteLine("\nFishfan Fiona\t: I wanna buy summink!");
             System.Console.WriteLine("Fishfan Fiona\t: Ooh, you have a lobster!");
 
-            app.Buy(new CatchType(1, "Lobster"));
+            app.Buy(new ProductType(1, "Lobster"));
 
             System.Console.WriteLine("Fishfan Fiona\t: Yeehaw!  Off to the nom-pot you go little fella!");
             Console.WriteLine("".PadLeft(60, '='));
@@ -60,7 +56,7 @@ namespace GoFish
 
         private static string Pluralize(StockItem stockItem)
         {
-            return stockItem.Quantity > 1 ? stockItem.Name + "s": stockItem.Name;
+            return stockItem.Quantity > 1 ? stockItem.Type.Name + "s": stockItem.Type.Name;
         }
 
         private static void AdvertiseCatch(GoFish app)
@@ -69,7 +65,7 @@ namespace GoFish
 
             var myCatch = new Catch
             (
-                type: new CatchType(1, "Lobster"),
+                type: new ProductType(1, "Lobster"),
                 quantity: 1
             );
 
@@ -85,7 +81,7 @@ namespace GoFish
 
             var myCatch = new Catch
             (
-                type: new CatchType(3, "Halibut"),
+                type: new ProductType(3, "Halibut"),
                 quantity: 1
             );
 

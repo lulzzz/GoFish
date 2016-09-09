@@ -1,9 +1,9 @@
 namespace GoFish
 {
-    public class CatchType
+    public class ProductType
     {
-        private CatchType() {}
-        public CatchType(int id, string name)
+        private ProductType() {}
+        public ProductType(int id, string name)
         {
             Id = id;
             Name = name;

@@ -31,7 +31,7 @@ namespace gofish.Migrations
                     b.ToTable("Catches");
                 });
 
-            modelBuilder.Entity("GoFish.CatchType", b =>
+            modelBuilder.Entity("GoFish.ProductType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -40,7 +40,7 @@ namespace gofish.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CatchTypes");
+                    b.ToTable("ProductTypes");
                 });
 
             modelBuilder.Entity("GoFish.StockItem", b =>
@@ -48,18 +48,27 @@ namespace gofish.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
-
                     b.Property<int>("Quantity");
 
+                    b.Property<int?>("TypeId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TypeId");
 
                     b.ToTable("StockItems");
                 });
 
             modelBuilder.Entity("GoFish.Catch", b =>
                 {
-                    b.HasOne("GoFish.CatchType", "Type")
+                    b.HasOne("GoFish.ProductType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId");
+                });
+
+            modelBuilder.Entity("GoFish.StockItem", b =>
+                {
+                    b.HasOne("GoFish.ProductType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId");
                 });
