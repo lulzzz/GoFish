@@ -12,19 +12,30 @@ namespace GoFish
             Console.WriteLine("Go Fish!");
             Console.WriteLine("".PadLeft(60, '='));
 
-            AddCatchTypes(app);
-
             AdvertiseCatch(app);
+
+            SeeAvailableCatches(app);
         }
 
-        private static void AddCatchTypes(GoFish app)
+        private static void SeeAvailableCatches(GoFish app)
         {
-            app.AddCatchTypes();
+            System.Console.WriteLine("Fishfan Fiona\t: I wanna see the available seafood!\n");
+
+            System.Console.WriteLine("Merchant Marvin\t: We have:\n");
+            var stock = app.GetStock();
+            foreach (var stockItem in stock)
+            {
+                System.Console.WriteLine("\t{0}", stockItem.Name);
+            }
+
+            System.Console.WriteLine("\nFishfan Fiona\t: Wohoo! I loves me some fish!");
+
+            Console.WriteLine("".PadLeft(60, '='));
         }
 
         private static void AdvertiseCatch(GoFish app)
         {
-            Console.WriteLine("I'm Gonna Advertise my Catch!");
+            Console.WriteLine("Fisherman Henry : I'm gonna advertise my big ole lobster catch!");
 
             var myCatch = new Catch
             (
@@ -33,7 +44,8 @@ namespace GoFish
 
             app.Advertise(myCatch);
 
-            Console.WriteLine("Catch Advertised, I 'ope sum one gonna buy it!");
+            Console.WriteLine("Fisherman Henry : Catch advertised, I 'ope sum one gonna buy it!");
+            Console.WriteLine("".PadLeft(60, '='));
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GoFish
@@ -9,9 +10,10 @@ namespace GoFish
         public GoFish (GoFishContext context)
         {
             _context = context;
+            AddCatchTypes();
         }
 
-        public void AddCatchTypes()
+        private void AddCatchTypes()
         {
             if(_context.CatchTypes.Count() == 0)
             {
@@ -27,6 +29,15 @@ namespace GoFish
             _context.Catches.Add(advert);
             _context.CatchTypes.Attach(advert.Type);
             _context.SaveChanges();
+        }
+
+        public IEnumerable<StockItem> GetStock()
+        {
+            // Separate this into catches and stock?  CQRS:  Command = Catch, Query = Stock
+            var s = _context.Catches.GroupBy(n => n.Type.Name).Select(t => t.Key);
+
+            return from stock in s
+                select new StockItem(stock);
         }
     }
 }
