@@ -1,0 +1,15 @@
+// Workspace settings
+{
+    // Hide the following when working in vscode
+    "files.exclude": {
+        "bin/": true,
+        "obj/": true,
+
+        "Properties" : true,
+
+        "*.user": true, // VS user settings files
+        "*.xproj": true, // VS Project Files
+
+        "project.lock.json": true, // Never manually-edited lock file
+    }
+}

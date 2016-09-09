@@ -1,0 +1,15 @@
+# Visual Studio output locations
+obj/
+bin/
+
+# VS Code Configuration
+.vs/
+**/.vscode/*
+!settings.json
+
+# user files
+*.user
+
+# generated files
+launchSettings.json
+project.lock.json
