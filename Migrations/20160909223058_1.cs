@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace gofish.Migrations
 {
@@ -20,11 +22,26 @@ namespace gofish.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StockItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true),
+                    Name = table.Column<string>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StockItems", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Catches",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
+                    Quantity = table.Column<int>(nullable: false),
                     TypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -48,6 +65,9 @@ namespace gofish.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Catches");
+
+            migrationBuilder.DropTable(
+                name: "StockItems");
 
             migrationBuilder.DropTable(
                 name: "CatchTypes");

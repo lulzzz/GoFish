@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,20 +25,27 @@ namespace GoFish
             }
         }
 
+        internal void Buy(CatchType catchType)
+        {
+            var stock = _context.StockItems.Where(ct => ct.Name == catchType.Name && ct.Quantity > 0).FirstOrDefault();
+            stock.Decrease();
+            _context.Update(stock);
+            _context.SaveChanges();
+        }
+
         public void Advertise(Catch advert)
         {
             _context.Catches.Add(advert);
             _context.CatchTypes.Attach(advert.Type);
+
+            _context.StockItems.Add(new StockItem(advert.Type.Name, advert.Quantity));
+
             _context.SaveChanges();
         }
 
         public IEnumerable<StockItem> GetStock()
         {
-            // Separate this into catches and stock?  CQRS:  Command = Catch, Query = Stock
-            var s = _context.Catches.GroupBy(n => n.Type.Name).Select(t => t.Key);
-
-            return from stock in s
-                select new StockItem(stock);
+            return _context.StockItems.Where(q => q.Quantity > 0);
         }
     }
 }

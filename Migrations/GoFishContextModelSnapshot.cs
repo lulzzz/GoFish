@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using GoFish;
 
 namespace gofish.Migrations
@@ -16,6 +19,8 @@ namespace gofish.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Quantity");
 
                     b.Property<int?>("TypeId");
 
@@ -36,6 +41,20 @@ namespace gofish.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("CatchTypes");
+                });
+
+            modelBuilder.Entity("GoFish.StockItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StockItems");
                 });
 
             modelBuilder.Entity("GoFish.Catch", b =>
