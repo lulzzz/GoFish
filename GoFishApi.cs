@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,11 @@ namespace GoFish
             }
         }
 
+        public IEnumerable<Shipment> GetShipments()
+        {
+            return _context.Shipments.Include(oi => oi.PurchaseOrderItems);
+        }
+
         private void AddDudes()
         {
             if(_context.Dudes.Count() == 0)
@@ -34,8 +40,15 @@ namespace GoFish
                 _context.Dudes.Add(new Dude(2, "Fiona"));
                 _context.Dudes.Add(new Dude(3, "Marvin"));
                 _context.Dudes.Add(new Dude(4, "Pat"));
+                _context.Dudes.Add(new Dude(5, "Shep"));
                 _context.SaveChanges();
             }
+        }
+
+        internal void CreateShipment(Shipment shipment)
+        {
+            _context.Shipments.Add(shipment);
+            _context.SaveChanges();
         }
 
         public IEnumerable<PurchaseOrder> GetPurchaseOrders()

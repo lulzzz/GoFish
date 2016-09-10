@@ -8,9 +8,10 @@ using GoFish;
 namespace gofish.Migrations
 {
     [DbContext(typeof(GoFishContext))]
-    partial class GoFishContextModelSnapshot : ModelSnapshot
+    [Migration("20160910024838_3")]
+    partial class _3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
@@ -109,8 +110,6 @@ namespace gofish.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("Date");
 
                     b.Property<string>("From");
 

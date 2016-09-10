@@ -9,6 +9,7 @@ namespace GoFish
         public DbSet<StockItem> StockItems { get; set; }
         public DbSet<Dude> Dudes { get; set; }
         public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
+        public DbSet<Shipment> Shipments { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
