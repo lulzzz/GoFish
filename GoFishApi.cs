@@ -12,6 +12,7 @@ namespace GoFish
         {
             _context = context;
             AddCatchTypes();
+            AddDudes();
         }
 
         private void AddCatchTypes()
@@ -25,6 +26,17 @@ namespace GoFish
             }
         }
 
+        private void AddDudes()
+        {
+            if(_context.Dudes.Count() == 0)
+            {
+                _context.Dudes.Add(new Dude(1, "Henry"));
+                _context.Dudes.Add(new Dude(2, "Fiona"));
+                _context.Dudes.Add(new Dude(3, "Marvin"));
+                _context.SaveChanges();
+            }
+        }
+
         internal void Buy(ProductType catchType)
         {
             var stock = _context.StockItems.Where(ct => ct.Type == catchType && ct.Quantity > 0).FirstOrDefault();
@@ -33,12 +45,21 @@ namespace GoFish
             _context.SaveChanges();
         }
 
-        public void Advertise(Catch advert)
+        public void Advertise(Catch catchToAdvertize)
         {
-            _context.Catches.Add(advert);
-            _context.ProductTypes.Attach(advert.Type);
+            _context.Catches.Add(catchToAdvertize);
 
-            _context.StockItems.Add(new StockItem(advert.Type, advert.Quantity));
+            _context.Dudes.Attach(catchToAdvertize.CaughtBy);
+            _context.ProductTypes.Attach(catchToAdvertize.Type);
+
+            _context.StockItems.Add(
+                new StockItem(
+                    catchToAdvertize.Type,
+                    catchToAdvertize.Quantity,
+                    catchToAdvertize.Price,
+                    catchToAdvertize.CaughtBy
+                )
+            );
 
             _context.SaveChanges();
         }
@@ -48,7 +69,8 @@ namespace GoFish
             return _context
                 .StockItems
                 .Where(q => q.Quantity > 0)
-                .Include(t => t.Type);
+                .Include(t => t.Type)
+                .Include(d => d.Seller);
         }
     }
 }

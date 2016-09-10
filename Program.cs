@@ -10,48 +10,52 @@ namespace GoFish
             GoFish app = new GoFish(ctx);
 
             AdvertiseCatch(app);
-
-            SeeAvailableStock(app);
-
             AdvertiseCatch2(app);
 
-            SeeAvailableStock(app);
-
+            DemandAvailableStock(app);
             BuyFish(app);
         }
 
         private static void BuyFish(GoFish app)
         {
-            System.Console.WriteLine("\nFishfan Fiona\t: I wanna buy summink!");
-            System.Console.WriteLine("Fishfan Fiona\t: Ooh, you have a lobster!");
+            Console.WriteLine("".PadLeft(60, '='));
+
+            System.Console.WriteLine("Fish fan Fiona\t: I wanna buy summink!");
+            System.Console.WriteLine("Fish fan Fiona\t: Ooh, you have a lobster!");
 
             app.Buy(new ProductType(1, "Lobster"));
 
-            System.Console.WriteLine("Fishfan Fiona\t: Yeehaw!  Off to the nom-pot you go little fella!");
-            Console.WriteLine("".PadLeft(60, '='));
+            System.Console.WriteLine("Fish fan Fiona\t: Yeehaw!  Off to the nom-pot you go little fella!");
 
             StockList(app);
         }
 
-        private static void SeeAvailableStock(GoFish app)
+        private static void DemandAvailableStock(GoFish app)
         {
-            System.Console.WriteLine("\nFishfan Fiona\t: I wanna see the available seafood!\n");
+            Console.WriteLine("".PadLeft(60, '='));
+
+            System.Console.WriteLine("Fish fan Fiona\t: I wanna see the available seafood!");
 
             StockList(app);
 
-            System.Console.WriteLine("\nFishfan Fiona\t: Wohoo! I loves me some fish!");
-
-            Console.WriteLine("".PadLeft(60, '='));
+            System.Console.WriteLine("Fish fan Fiona\t: Wohoo! I loves me some fish!");
         }
 
         private static void StockList(GoFish app)
         {
-            System.Console.WriteLine("Merchant Marvin\t: We have:\n");
+            System.Console.WriteLine("\nMerchant Marvin\t: We now have:\n");
+
             var stock = app.GetStock();
             foreach (var stockItem in stock)
             {
-                System.Console.WriteLine("\t{0} {1}", stockItem.Quantity, Pluralize(stockItem));
+                System.Console.WriteLine("\t{0} {1} supplied by {2} at C${3}.00",
+                    stockItem.Quantity,
+                    Pluralize(stockItem),
+                    stockItem.Seller.Name,
+                    stockItem.Price.ToString().PadLeft(3, ' ')
+                );
             }
+            System.Console.WriteLine("\n");
         }
 
         private static string Pluralize(StockItem stockItem)
@@ -59,36 +63,53 @@ namespace GoFish
             return stockItem.Quantity > 1 ? stockItem.Type.Name + "s": stockItem.Type.Name;
         }
 
-        private static void AdvertiseCatch(GoFish app)
-        {
-            Console.WriteLine("\nFisherman Henry : I'm gonna advertise my big ole lobster catch!");
-
-            var myCatch = new Catch
-            (
-                type: new ProductType(1, "Lobster"),
-                quantity: 1
-            );
-
-            app.Advertise(myCatch);
-
-            Console.WriteLine("Fisherman Henry : Catch advertised, I 'ope sum one gonna buy it!");
-            Console.WriteLine("".PadLeft(60, '='));
-        }
-
         private static void AdvertiseCatch2(GoFish app)
         {
-            Console.WriteLine("\nFisherman Henry : I'm gonna advertise my big ole Halibut haul!");
+            Console.WriteLine("".PadLeft(60, '='));
+
+            Console.WriteLine("Fisherman Henry : I'm gonna advertise my big ole Halibut haul!");
 
             var myCatch = new Catch
             (
                 type: new ProductType(3, "Halibut"),
-                quantity: 1
+                quantity: 1,
+                price: GeneratePrice(),
+                caughtBy: new Dude(1, "Henry")
             );
 
             app.Advertise(myCatch);
 
             Console.WriteLine("Fisherman Henry : Heluva Halibut haul advertised, I 'ope sum one gonna lap it up!");
+
+            StockList(app);
+        }
+
+        private static double GeneratePrice()
+        {
+            Random rnd = new Random();
+            var randomPrice = rnd.Next().ToString().Substring(1,3);
+            return double.Parse(randomPrice);
+        }
+
+        private static void AdvertiseCatch(GoFish app)
+        {
             Console.WriteLine("".PadLeft(60, '='));
+
+            Console.WriteLine("Fisherman Henry : I'm gonna advertise my big ole lobster catch!");
+
+            var myCatch = new Catch
+            (
+                type: new ProductType(1, "Lobster"),
+                quantity: 1,
+                price: GeneratePrice(),
+                caughtBy: new Dude(1, "Henry")
+            );
+
+            app.Advertise(myCatch);
+
+            Console.WriteLine("Fisherman Henry : Catch advertised, I 'ope sum one gonna buy it!");
+
+            StockList(app);
         }
     }
 }
