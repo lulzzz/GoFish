@@ -33,12 +33,22 @@ namespace GoFish
                 _context.Dudes.Add(new Dude(1, "Henry"));
                 _context.Dudes.Add(new Dude(2, "Fiona"));
                 _context.Dudes.Add(new Dude(3, "Marvin"));
+                _context.Dudes.Add(new Dude(4, "Pat"));
                 _context.SaveChanges();
             }
         }
 
-        internal void Buy(ProductType catchType)
+        public IEnumerable<PurchaseOrder> GetPurchaseOrders()
         {
+            return _context.PurchaseOrders.Include(poi => poi.OrderItems);
+        }
+
+        public void Buy(ProductType catchType)
+        {
+            var po = new PurchaseOrder();
+            po.AddOrderItem(new PurchaseOrderItem(sku: 1));
+            _context.PurchaseOrders.Add(po);
+
             var stock = _context.StockItems.Where(ct => ct.Type == catchType && ct.Quantity > 0).FirstOrDefault();
             stock.Decrease();
             _context.Update(stock);

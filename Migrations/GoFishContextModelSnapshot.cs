@@ -61,6 +61,32 @@ namespace gofish.Migrations
                     b.ToTable("ProductTypes");
                 });
 
+            modelBuilder.Entity("GoFish.PurchaseOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PurchaseOrders");
+                });
+
+            modelBuilder.Entity("GoFish.PurchaseOrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("PurchaseOrderId");
+
+                    b.Property<int>("StockItem");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PurchaseOrderId");
+
+                    b.ToTable("PurchaseOrderItem");
+                });
+
             modelBuilder.Entity("GoFish.StockItem", b =>
                 {
                     b.Property<int>("Id")
@@ -92,6 +118,13 @@ namespace gofish.Migrations
                     b.HasOne("GoFish.ProductType", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId");
+                });
+
+            modelBuilder.Entity("GoFish.PurchaseOrderItem", b =>
+                {
+                    b.HasOne("GoFish.PurchaseOrder")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("PurchaseOrderId");
                 });
 
             modelBuilder.Entity("GoFish.StockItem", b =>

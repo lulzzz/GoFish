@@ -35,6 +35,18 @@ namespace gofish.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PurchaseOrders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseOrders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Catches",
                 columns: table => new
                 {
@@ -90,6 +102,26 @@ namespace gofish.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PurchaseOrderItem",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Autoincrement", true),
+                    PurchaseOrderId = table.Column<int>(nullable: true),
+                    StockItem = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseOrderItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseOrderItem_PurchaseOrders_PurchaseOrderId",
+                        column: x => x.PurchaseOrderId,
+                        principalTable: "PurchaseOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Catches_CaughtById",
                 table: "Catches",
@@ -99,6 +131,11 @@ namespace gofish.Migrations
                 name: "IX_Catches_TypeId",
                 table: "Catches",
                 column: "TypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseOrderItem_PurchaseOrderId",
+                table: "PurchaseOrderItem",
+                column: "PurchaseOrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StockItems_SellerId",
@@ -117,7 +154,13 @@ namespace gofish.Migrations
                 name: "Catches");
 
             migrationBuilder.DropTable(
+                name: "PurchaseOrderItem");
+
+            migrationBuilder.DropTable(
                 name: "StockItems");
+
+            migrationBuilder.DropTable(
+                name: "PurchaseOrders");
 
             migrationBuilder.DropTable(
                 name: "Dudes");

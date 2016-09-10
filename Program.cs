@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace GoFish
 {
@@ -14,6 +15,25 @@ namespace GoFish
 
             DemandAvailableStock(app);
             BuyFish(app);
+            ShowPurchaseOrders(app);
+        }
+
+        private static void ShowPurchaseOrders(GoFish app)
+        {
+            Console.WriteLine("".PadLeft(60, '='));
+
+            System.Console.WriteLine("Purchasing Pat\t: We now have the following purchase orders:\n");
+
+            var orders = app.GetPurchaseOrders();
+            foreach (var item in orders)
+            {
+                System.Console.WriteLine("\tPurchase Order {0} with {1} items",
+                    item.Id,
+                    item.OrderItems.ToList().Count()
+                );
+            }
+
+            System.Console.WriteLine("\nPurchasing Pat\t: That's a good list of orders!");
         }
 
         private static void BuyFish(GoFish app)

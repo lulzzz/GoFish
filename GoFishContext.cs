@@ -8,6 +8,7 @@ namespace GoFish
         public DbSet<Catch> Catches { get; set; }
         public DbSet<StockItem> StockItems { get; set; }
         public DbSet<Dude> Dudes { get; set; }
+        public DbSet<PurchaseOrder> PurchaseOrders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
