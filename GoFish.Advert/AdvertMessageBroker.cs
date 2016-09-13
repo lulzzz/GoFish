@@ -13,6 +13,8 @@ namespace GoFish.Advert
 
     public class AdvertMessageBroker : IMessageBroker<Advert>
     {
+        // put these in appsettings.json file
+        const string HOST_NAME = "192.168.50.5";
         const string QUEUE_NAME = "advert_to_inventory";
 
         private readonly IMapper _mapper;
@@ -33,7 +35,14 @@ namespace GoFish.Advert
         {
             try
             {
-                var factory = new ConnectionFactory { HostName = "localhost" };
+                // login details need securing
+                var factory = new ConnectionFactory();
+
+                factory.HostName = HOST_NAME;
+                factory.Port = 5672;
+                factory.UserName = "gofish";
+                factory.Password = "gofish";
+                factory.VirtualHost = "/";
 
                 using (var connection = factory.CreateConnection())
                 {
