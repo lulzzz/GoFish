@@ -10,9 +10,6 @@ namespace GoFish
             GoFishContext ctx = new GoFishContext();
             GoFish app = new GoFish(ctx);
 
-            AdvertiseCatch(app);
-            AdvertiseCatch2(app);
-
             DemandAvailableStock(app);
             BuyFish(app);
             ShowPurchaseOrders(app);
@@ -125,55 +122,6 @@ namespace GoFish
         private static string Pluralize(StockItem stockItem)
         {
             return stockItem.Quantity > 1 ? stockItem.Type.Name + "s": stockItem.Type.Name;
-        }
-
-        private static void AdvertiseCatch2(GoFish app)
-        {
-            Console.WriteLine("".PadLeft(120, '='));
-
-            Console.WriteLine("Fisherman Henry : I'm gonna advertise my big ole Halibut haul!");
-
-            var myCatch = new Catch
-            (
-                type: new ProductType(3, "Halibut"),
-                quantity: 1,
-                price: GeneratePrice(),
-                caughtBy: new Dude(1, "Henry")
-            );
-
-            app.Advertise(myCatch);
-
-            Console.WriteLine("Fisherman Henry : Heluva Halibut haul advertised, I 'ope sum one gonna lap it up!");
-
-            StockList(app);
-        }
-
-        private static double GeneratePrice()
-        {
-            Random rnd = new Random();
-            var randomPrice = rnd.Next().ToString().Substring(1,3);
-            return double.Parse(randomPrice);
-        }
-
-        private static void AdvertiseCatch(GoFish app)
-        {
-            Console.WriteLine("".PadLeft(120, '='));
-
-            Console.WriteLine("Fisherman Henry : I'm gonna advertise my big ole lobster catch!");
-
-            var myCatch = new Catch
-            (
-                type: new ProductType(1, "Lobster"),
-                quantity: 1,
-                price: GeneratePrice(),
-                caughtBy: new Dude(1, "Henry")
-            );
-
-            app.Advertise(myCatch);
-
-            Console.WriteLine("Fisherman Henry : Catch advertised, I 'ope sum one gonna buy it!");
-
-            StockList(app);
         }
     }
 }
