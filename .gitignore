@@ -1,6 +1,7 @@
 # Visual Studio output locations
 obj/
 bin/
+.vagrant/
 
 # VS Code Configuration
 .vs/
