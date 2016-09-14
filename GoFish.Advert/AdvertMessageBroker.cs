@@ -14,7 +14,7 @@ namespace GoFish.Advert
     public class AdvertMessageBroker : IMessageBroker<Advert>
     {
         // put these in appsettings.json file
-        const string HOST_NAME = "192.168.50.5";
+        const string HOST_NAME = "localhost";
         const string QUEUE_NAME = "advert_to_inventory";
 
         private readonly IMapper _mapper;

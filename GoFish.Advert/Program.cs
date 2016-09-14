@@ -26,6 +26,7 @@ namespace GoFish.Advert
             services.AddDbContext<AdvertisingContext>();
             services.AddTransient<IMessageBroker<Advert>, AdvertMessageBroker>();
 
+            // AutoMapper
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Advert, AdvertDto>();
