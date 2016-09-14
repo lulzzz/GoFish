@@ -1,9 +1,9 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
+    "outputName": "GoFish.Advert",
     "debugType": "portable",
-    "emitEntryPoint": true,
-    "outputName": "GoFish.Advert"
+    "emitEntryPoint": true
   },
   "dependencies": {},
   "frameworks": {
@@ -11,16 +11,16 @@
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.0"
+          "version": "1.0.1"
         },
-        "Microsoft.EntityFrameworkCore": "1.0.0",
+        "Microsoft.EntityFrameworkCore": "1.0.1",
         "Microsoft.EntityFrameworkCore.SQLite": "1.0.0",
         "Microsoft.EntityFrameworkCore.Tools": {
           "version": "1.0.0-preview2-final",
           "type": "build"
         },
-        "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
-        "Microsoft.AspNetCore.Mvc": "1.0.0",
+        "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
+        "Microsoft.AspNetCore.Mvc": "1.0.1",
         "RabbitMQ.Client": "4.0.2",
         "AutoMapper": "5.1.1",
         "GoFish.Shared.Dto": "1.0.0-*"
