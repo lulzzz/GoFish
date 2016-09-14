@@ -1,4 +1,4 @@
-namespace GoFish
+namespace GoFish.Inventory
 {
     public class StockItem
     {
