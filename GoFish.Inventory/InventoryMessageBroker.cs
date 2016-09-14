@@ -1,28 +1,27 @@
 using AutoMapper;
 using GoFish.Shared.Interface;
 using GoFish.Shared.Dto;
+using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using System.Text;
 
-namespace GoFish.Advert
+namespace GoFish.Inventory
 {
-    public class AdvertMessageBroker : IMessageBroker<Advert>
+    public class InventoryMessageBroker : IMessageBroker<StockItem>
     {
-        // put these in appsettings.json file
         const string HOST_NAME = "localhost";
-        const string QUEUE_NAME = "AdvertAdded";
+        const string QUEUE_NAME = "InventoryAdded";
 
         private readonly IMapper _mapper;
 
-        public AdvertMessageBroker(IMapper mapper)
+        public InventoryMessageBroker(IMapper mapper)
         {
             _mapper = mapper;
         }
 
-        public void Send(Advert objectToSend)
+        public void Send(StockItem objectToSend)
         {
-            var dto = _mapper.Map<Advert, AdvertDto>(objectToSend);
+            var dto = _mapper.Map<StockItem, StockItemDto>(objectToSend);
             var payload = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto));
             SendMessage(payload);
         }
@@ -49,7 +48,6 @@ namespace GoFish.Advert
                                              exclusive: false,
                                              autoDelete: false,
                                              arguments: null);
-
 
                         var properties = channel.CreateBasicProperties();
                         properties.Persistent = true;

@@ -5,15 +5,21 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using GoFish.Shared.Dto;
 
-namespace gofish.inventory.receiver
+namespace GoFish.Inventory.Receiver
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            const string QUEUE_NAME = "advert_to_inventory";
+            const string QUEUE_NAME = "AdvertAdded";
 
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory();
+
+            factory.HostName = "localhost";
+            factory.Port = 5672;
+            factory.UserName = "gofish";
+            factory.Password = "gofish";
+            factory.VirtualHost = "/";
 
             using (var connection = factory.CreateConnection())
             {
@@ -31,17 +37,21 @@ namespace gofish.inventory.receiver
                         var payload = Encoding.UTF8.GetString(ea.Body);
                         var advert = JsonConvert.DeserializeObject<AdvertDto>(payload);
 
-                        Console.WriteLine(" [x] Received Qty: {0}, Price: {1}, AdvertiserId: {2}",
+                        Console.WriteLine("Received Qty: {0}, Price: {1}, AdvertiserId: {2}",
                             advert.Quantity,
                             advert.Price,
                             advert.AdvertiserId
                         );
+
+                        Console.WriteLine("Sending to InventoryApi");
+                        // TODO: Call Inventory Api here
                     };
 
                     channel.BasicConsume(queue: QUEUE_NAME,
                                          noAck: true,
                                          consumer: consumer);
 
+                    Console.WriteLine(" Press [enter] to exit.");
                     Console.ReadLine();
                 }
             }

@@ -1,17 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using GoFish.Advert;
 
 namespace GoFish.Advert.Migrations
 {
-    [DbContext(typeof(AdvertisingContext))]
-    [Migration("20160913024643_1")]
-    partial class _1
+    [DbContext(typeof(AdvertisingDbContext))]
+    partial class AdvertisingDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
+                .HasAnnotation("ProductVersion", "1.0.1");
 
             modelBuilder.Entity("GoFish.Advert.Advert", b =>
                 {

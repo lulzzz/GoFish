@@ -1,17 +1,26 @@
-﻿using AutoMapper;
+﻿using System.IO;
+using AutoMapper;
 using GoFish.Shared.Dto;
+using GoFish.Shared.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GoFish.Advert
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("hosting.json", optional: true)
+                .Build();
+
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseConfiguration(config)
                 .UseStartup<Startup>()
                 .Build();
 
@@ -23,7 +32,7 @@ namespace GoFish.Advert
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddDbContext<AdvertisingContext>();
+            services.AddDbContext<AdvertisingDbContext>();
             services.AddTransient<IMessageBroker<Advert>, AdvertMessageBroker>();
 
             // AutoMapper
@@ -40,7 +49,7 @@ namespace GoFish.Advert
             app.UseMvc();
 
             app.ApplicationServices
-                .GetService<AdvertisingContext>()
+                .GetService<AdvertisingDbContext>()
                 .SeedData();
         }
     }

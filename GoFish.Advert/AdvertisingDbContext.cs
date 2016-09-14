@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GoFish.Advert
 {
-    public class AdvertisingContext : DbContext
+    public class AdvertisingDbContext : DbContext
     {
         public DbSet<Advert> Adverts { get; set; }
         public DbSet<Advertiser> Advertisers { get; set; }
@@ -15,25 +15,25 @@ namespace GoFish.Advert
         }
     }
 
-    public static class AdvertisingContextExtensions
+    public static class AdvertisingDbContextExtensions
     {
-        public static void SeedData(this AdvertisingContext context)
+        public static void SeedData(this AdvertisingDbContext context)
         {
             AddCatchTypes(context);
             AddAdvertisers(context);
         }
 
-        private static void AddAdvertisers(AdvertisingContext context)
+        private static void AddAdvertisers(AdvertisingDbContext context)
         {
             if (context.Advertisers.Count() == 0)
             {
-                context.Advertisers.Add(new Advertiser(1, "Henry"));
+                context.Advertisers.Add(new Advertiser(1, "Fred"));
                 context.Advertisers.Add(new Advertiser(2, "Marvin"));
                 context.SaveChanges();
             }
         }
 
-        private static void AddCatchTypes(AdvertisingContext context)
+        private static void AddCatchTypes(AdvertisingDbContext context)
         {
             if (context.CatchTypes.Count() == 0)
             {

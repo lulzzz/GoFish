@@ -1,9 +1,8 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "outputName": "GoFish.Inventory.Receiver",
-    "debugType": "portable",
-    "emitEntryPoint": true
+    "outputName": "GoFish.Shared.Interface",
+    "debugType": "portable"
   },
   "dependencies": {},
   "frameworks": {
@@ -12,10 +11,7 @@
         "Microsoft.NETCore.App": {
           "type": "platform",
           "version": "1.0.1"
-        },
-        "RabbitMQ.Client": "4.1.0",
-        "Newtonsoft.Json": "9.0.1",
-        "GoFish.Shared.Dto": "1.0.0-*"
+        }
       }
     }
   }

@@ -1,16 +1,17 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
 {
     [Route("api/[controller]")]
     public class AdvertController : Controller
     {
-        private readonly AdvertisingContext _dbContext;
+        private readonly AdvertisingDbContext _dbContext;
         private readonly IMessageBroker<Advert> _messageBroker;
 
-        public AdvertController(AdvertisingContext dbContext, IMessageBroker<Advert> messageBroker)
+        public AdvertController(AdvertisingDbContext dbContext, IMessageBroker<Advert> messageBroker)
         {
             _dbContext = dbContext;
             _messageBroker = messageBroker;
@@ -28,14 +29,14 @@ namespace GoFish.Advert
         }
 
         [HttpPost]
-        public void Post([FromBody]Advert advert)
+        public void Post([FromBody]Advert item)
         {
-            _dbContext.Adverts.Add(advert);
-            _dbContext.CatchTypes.Attach(advert.CatchType);
-            _dbContext.Advertisers.Attach(advert.Advertiser);
+            _dbContext.Adverts.Add(item);
+            _dbContext.CatchTypes.Attach(item.CatchType);
+            _dbContext.Advertisers.Attach(item.Advertiser);
             _dbContext.SaveChanges();
 
-            _messageBroker.Send(advert);
+            _messageBroker.Send(item);
         }
     }
 }

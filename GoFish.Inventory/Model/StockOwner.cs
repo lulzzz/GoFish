@@ -1,14 +1,14 @@
 namespace GoFish.Inventory
 {
-    public class ProductType
+    public class StockOwner
     {
-        private ProductType() {}
-        internal ProductType(int id)
-        {
+        private StockOwner () {}
+
+        internal StockOwner (int id) {
             Id = id;
         }
 
-        public ProductType(int id, string name)
+        public StockOwner (int id, string name)
         {
             Id = id;
             Name = name;

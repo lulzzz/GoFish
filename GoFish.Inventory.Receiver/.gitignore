@@ -1,6 +1,0 @@
-# Visual Studio output locations
-obj/
-bin/
-
-# generated files
-project.lock.json
