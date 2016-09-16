@@ -13,47 +13,54 @@ namespace GoFish.Inventory.Receiver
         {
             const string QUEUE_NAME = "AdvertAdded";
 
-            var factory = new ConnectionFactory();
-
-            factory.HostName = "localhost";
-            factory.Port = 5672;
-            factory.UserName = "gofish";
-            factory.Password = "gofish";
-            factory.VirtualHost = "/";
-
-            using (var connection = factory.CreateConnection())
+            try
             {
-                using (var channel = connection.CreateModel())
+                // login details need securing
+                var factory = new ConnectionFactory();
+                factory.HostName = "localhost";
+                factory.Port = 5672;
+                factory.UserName = "gofish";
+                factory.Password = "gofish";
+                factory.VirtualHost = "/";
+
+                using (var connection = factory.CreateConnection())
                 {
-                    channel.QueueDeclare(queue: QUEUE_NAME,
-                                         durable: true,
-                                         exclusive: false,
-                                         autoDelete: false,
-                                         arguments: null);
-
-                    var consumer = new EventingBasicConsumer(channel);
-                    consumer.Received += (model, ea) =>
+                    using (var channel = connection.CreateModel())
                     {
-                        var payload = Encoding.UTF8.GetString(ea.Body);
-                        var advert = JsonConvert.DeserializeObject<AdvertDto>(payload);
+                        channel.QueueDeclare(queue: QUEUE_NAME,
+                                             durable: true,
+                                             exclusive: false,
+                                             autoDelete: false,
+                                             arguments: null);
 
-                        Console.WriteLine("Received Qty: {0}, Price: {1}, AdvertiserId: {2}",
-                            advert.Quantity,
-                            advert.Price,
-                            advert.AdvertiserId
-                        );
+                        var consumer = new EventingBasicConsumer(channel);
+                        consumer.Received += (model, ea) =>
+                        {
+                            var payload = Encoding.UTF8.GetString(ea.Body);
+                            var advert = JsonConvert.DeserializeObject<AdvertDto>(payload);
 
-                        Console.WriteLine("Sending to InventoryApi");
-                        // TODO: Call Inventory Api here
-                    };
+                            Console.WriteLine("Received Qty: {0}, Price: {1}, AdvertiserId: {2}",
+                                advert.Quantity,
+                                advert.Price,
+                                advert.AdvertiserId
+                            );
 
-                    channel.BasicConsume(queue: QUEUE_NAME,
-                                         noAck: true,
-                                         consumer: consumer);
+                            Console.WriteLine("Sending to InventoryApi");
+                            // TODO: Call Inventory Api here. Api will publish the response as a new message.
+                        };
 
-                    Console.WriteLine(" Press [enter] to exit.");
-                    Console.ReadLine();
+                        channel.BasicConsume(queue: QUEUE_NAME,
+                                             noAck: true,
+                                             consumer: consumer);
+
+                        Console.WriteLine("Inventory Receiver listening.  Press [enter] to exit.");
+                        Console.ReadLine();
+                    }
                 }
+            }
+            catch
+            {
+                Console.WriteLine("Error running the Inventory Receiver message queue");
             }
         }
     }

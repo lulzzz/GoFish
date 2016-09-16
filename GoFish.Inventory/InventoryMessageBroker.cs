@@ -4,6 +4,7 @@ using GoFish.Shared.Dto;
 using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
+using Microsoft.Extensions.Logging;
 
 namespace GoFish.Inventory
 {
@@ -12,10 +13,12 @@ namespace GoFish.Inventory
         const string HOST_NAME = "localhost";
         const string QUEUE_NAME = "InventoryAdded";
 
+        private ILogger<InventoryMessageBroker> _logger;
         private readonly IMapper _mapper;
 
-        public InventoryMessageBroker(IMapper mapper)
+        public InventoryMessageBroker(ILogger<InventoryMessageBroker> logger, IMapper mapper)
         {
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -61,7 +64,7 @@ namespace GoFish.Inventory
             }
             catch (System.Exception)
             {
-                // To Log
+                _logger.LogError("Error utilising the {0} message queue", QUEUE_NAME);
             }
         }
     }

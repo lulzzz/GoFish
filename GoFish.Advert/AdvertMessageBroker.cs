@@ -4,6 +4,7 @@ using GoFish.Shared.Dto;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace GoFish.Advert
 {
@@ -13,10 +14,12 @@ namespace GoFish.Advert
         const string HOST_NAME = "localhost";
         const string QUEUE_NAME = "AdvertAdded";
 
+        private ILogger<AdvertMessageBroker> _logger;
         private readonly IMapper _mapper;
 
-        public AdvertMessageBroker(IMapper mapper)
+        public AdvertMessageBroker(ILogger<AdvertMessageBroker> logger, IMapper mapper)
         {
+            _logger = logger;
             _mapper = mapper;
         }
 
@@ -63,7 +66,7 @@ namespace GoFish.Advert
             }
             catch (System.Exception)
             {
-                // To Log
+                _logger.LogError("Error utilising the {0} queue in GoFish.Advert", QUEUE_NAME);
             }
         }
     }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace GoFish.Inventory
 {
@@ -45,8 +46,10 @@ namespace GoFish.Inventory
             services.AddSingleton<IMapper>(sp => config.CreateMapper());
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddConsole();
+
             app.UseMvc();
 
             app.ApplicationServices
