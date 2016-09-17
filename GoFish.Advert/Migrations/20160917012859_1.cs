@@ -42,9 +42,9 @@ namespace GoFish.Advert.Migrations
                         .Annotation("Autoincrement", true),
                     AdvertiserId = table.Column<int>(nullable: true),
                     CatchTypeId = table.Column<int>(nullable: true),
-                    InInventory = table.Column<bool>(nullable: false),
                     Price = table.Column<double>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false)
+                    Quantity = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

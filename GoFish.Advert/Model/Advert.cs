@@ -9,6 +9,7 @@ namespace GoFish.Advert
             Quantity = quantity;
             Price = price;
             Advertiser = advertiser;
+            Status = AdvertStatus.Created;
         }
 
         public int Id { get; private set; }
@@ -16,6 +17,14 @@ namespace GoFish.Advert
         public int Quantity { get; private set; }
         public double Price { get; private set; }
         public Advertiser Advertiser { get; private set; }
-        public bool InInventory { get; private set; }
+        public AdvertStatus Status { get; private set; }
+        public Advert PostAdvert()
+        {
+            return new Advert(CatchType, Quantity, Price, Advertiser) { Status = AdvertStatus.Posted };
+        }
+        public Advert PublishAdvert()
+        {
+            return new Advert(CatchType, Quantity, Price, Advertiser) { Status = AdvertStatus.Published };
+        }
     }
 }

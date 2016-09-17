@@ -1,10 +1,10 @@
+using System.Text;
 using AutoMapper;
 using GoFish.Shared.Interface;
 using GoFish.Shared.Dto;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
-using System.Text;
-using Microsoft.Extensions.Logging;
 
 namespace GoFish.Advert
 {

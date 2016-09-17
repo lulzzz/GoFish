@@ -24,11 +24,11 @@ namespace GoFish.Advert.Migrations
 
                     b.Property<int?>("CatchTypeId");
 
-                    b.Property<bool>("InInventory");
-
                     b.Property<double>("Price");
 
                     b.Property<int>("Quantity");
+
+                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 

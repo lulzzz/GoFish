@@ -15,7 +15,7 @@ namespace GoFish.Advert
         }
     }
 
-    public static class AdvertisingDbContextExtensions
+    internal static class AdvertisingDbContextExtensions
     {
         public static void SeedData(this AdvertisingDbContext context)
         {
