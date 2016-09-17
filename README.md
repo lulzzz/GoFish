@@ -78,3 +78,4 @@ Notes:
 - Shipping & Logistics
 - Merchants - Fishermen sell to merchants who then communicate with punters on their behalf
 - iOs / Android app consuming the same services
+
