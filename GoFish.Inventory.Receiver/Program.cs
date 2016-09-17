@@ -59,9 +59,10 @@ namespace GoFish.Inventory.Receiver
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 Console.WriteLine("Error running the Inventory Receiver message queue");
+                System.Console.WriteLine(ex.Message);
             }
         }
     }
