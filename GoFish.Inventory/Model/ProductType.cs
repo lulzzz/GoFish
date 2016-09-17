@@ -3,6 +3,7 @@ namespace GoFish.Inventory
     public class ProductType
     {
         private ProductType() {}
+
         internal ProductType(int id)
         {
             Id = id;

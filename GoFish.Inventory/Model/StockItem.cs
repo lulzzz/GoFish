@@ -3,6 +3,7 @@ namespace GoFish.Inventory
     public class StockItem
     {
         private StockItem () { }
+
         public StockItem (ProductType type, int quantity, double price, StockOwner owner)
         {
             Type = type;

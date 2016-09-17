@@ -17,6 +17,7 @@ namespace GoFish.Inventory.Receiver
             {
                 // login details need securing
                 var factory = new ConnectionFactory();
+
                 factory.HostName = "localhost";
                 factory.Port = 5672;
                 factory.UserName = "gofish";
@@ -39,14 +40,13 @@ namespace GoFish.Inventory.Receiver
                             var payload = Encoding.UTF8.GetString(ea.Body);
                             var advert = JsonConvert.DeserializeObject<AdvertDto>(payload);
 
-                            Console.WriteLine("Message received: Inventory added");
-                            Console.WriteLine("Sending to Advert API");
+                            Console.WriteLine("Message received: Advert publicized, Inventory added");
+                            Console.WriteLine("Sending update to Advert API");
                             // TODO: Call Advert Api here to set advert status to "Public".
+                            // If Api not available, don't remove message from MQ (or requeue?)
                         };
 
-                        channel.BasicConsume(queue: QUEUE_NAME,
-                                             noAck: true,
-                                             consumer: consumer);
+                        channel.BasicConsume(queue: QUEUE_NAME, noAck: true, consumer: consumer);
 
                         Console.WriteLine("Advert Receiver listening.  Press [enter] to exit.");
                         Console.ReadLine();

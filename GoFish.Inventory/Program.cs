@@ -37,7 +37,6 @@ namespace GoFish.Inventory
             services.AddDbContext<InventoryDbContext>();
             services.AddTransient<IMessageBroker<StockItem>, InventoryMessageBroker>();
 
-            // AutoMapper
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<StockItem, StockItemDto>();

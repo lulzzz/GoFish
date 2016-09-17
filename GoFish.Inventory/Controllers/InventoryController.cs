@@ -26,7 +26,6 @@ namespace GoFish.Inventory
         [HttpPost]
         public void Post([FromBody]StockItemDto item)
         {
-            // construct a stockitem
             var stock = new StockItem(
                 new ProductType(item.TypeId),
                 item.Quantity,

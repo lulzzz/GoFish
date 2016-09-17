@@ -17,6 +17,7 @@ namespace GoFish.Inventory.Receiver
             {
                 // login details need securing
                 var factory = new ConnectionFactory();
+
                 factory.HostName = "localhost";
                 factory.Port = 5672;
                 factory.UserName = "gofish";
@@ -39,19 +40,19 @@ namespace GoFish.Inventory.Receiver
                             var payload = Encoding.UTF8.GetString(ea.Body);
                             var advert = JsonConvert.DeserializeObject<AdvertDto>(payload);
 
-                            Console.WriteLine("Received Qty: {0}, Price: {1}, AdvertiserId: {2}",
+                            Console.WriteLine("Received Qty: {0}, Price: {1}, AdvertiserId: {2}, AdvertId {3}",
                                 advert.Quantity,
                                 advert.Price,
-                                advert.AdvertiserId
+                                advert.AdvertiserId,
+                                advert.AdvertId
                             );
 
                             Console.WriteLine("Sending to InventoryApi");
                             // TODO: Call Inventory Api here. Api will publish the response as a new message.
+                            // If Api not available, don't remove message from MQ (or requeue?)
                         };
 
-                        channel.BasicConsume(queue: QUEUE_NAME,
-                                             noAck: true,
-                                             consumer: consumer);
+                        channel.BasicConsume(queue: QUEUE_NAME, noAck: true, consumer: consumer);
 
                         Console.WriteLine("Inventory Receiver listening.  Press [enter] to exit.");
                         Console.ReadLine();
