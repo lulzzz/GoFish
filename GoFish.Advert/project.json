@@ -23,6 +23,7 @@
         "Microsoft.Extensions.Logging": "1.0.0",
         "GoFish.Shared.Interface": "1.0.0-*",
         "GoFish.Shared.Dto": "1.0.0-*",
+        "GoFish.Shared.Messaging": "1.0.0-*",
         "RabbitMQ.Client": "4.1.0",
         "AutoMapper": "5.1.1"
       }

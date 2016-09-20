@@ -20,7 +20,8 @@ namespace GoFish.Advert
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var theCatch = _dbContext.Adverts.Where(c => c.Id == id)
+            var theCatch = _dbContext.Adverts
+                .Where(c => c.Id == id)
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
                 .SingleOrDefault();
@@ -31,10 +32,13 @@ namespace GoFish.Advert
         [HttpPost]
         public void Post([FromBody]Advert item)
         {
-            _dbContext.Adverts.Add(item);
-            _dbContext.CatchTypes.Attach(item.CatchType);
-            _dbContext.Advertisers.Attach(item.Advertiser);
-            _dbContext.SaveChanges();
+            using (var db = _dbContext)
+            {
+                db.Adverts.Add(item);
+                db.CatchTypes.Attach(item.CatchType);
+                db.Advertisers.Attach(item.Advertiser);
+                db.SaveChanges();
+            }
         }
 
         [HttpPut("{id}/post")]

@@ -19,6 +19,7 @@ namespace GoFish.Advert
         public double Price { get; private set; }
         public Advertiser Advertiser { get; private set; }
         public AdvertStatus Status { get; private set; }
+
         public void Post()
         {
             Status = AdvertStatus.Posted;

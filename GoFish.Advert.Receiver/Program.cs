@@ -40,15 +40,15 @@ namespace GoFish.Advert.Receiver
                         consumer.Received += (model, ea) =>
                         {
                             var payload = Encoding.UTF8.GetString(ea.Body);
-                            var advert = JsonConvert.DeserializeObject<AdvertDto>(payload);
+                            var stockItem = JsonConvert.DeserializeObject<StockItemDto>(payload);
 
                             Console.WriteLine("Message received: Inventory added");
                             Console.WriteLine("Sending update to Advert API");
 
                             var api = new ApiProxy();
-                            api.UpdateAdvert(advert.AdvertId);
+                            api.UpdateAdvert(stockItem.AdvertId);
 
-                            Console.WriteLine("Advert {0} Updated", advert.AdvertId);
+                            Console.WriteLine("Advert {0} Updated", stockItem.AdvertId);
                         };
 
                         channel.BasicConsume(queue: QUEUE_NAME, noAck: true, consumer: consumer);

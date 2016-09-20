@@ -47,7 +47,7 @@ namespace GoFish.Inventory.Receiver
                                 advert.Quantity,
                                 advert.Price,
                                 advert.AdvertiserId,
-                                advert.AdvertId
+                                advert.Id
                             );
 
                             Console.WriteLine("Sending to InventoryApi");
@@ -59,7 +59,7 @@ namespace GoFish.Inventory.Receiver
                                 Quantity = advert.Quantity,
                                 Price = advert.Price,
                                 OwnerId = advert.AdvertiserId,
-                                AdvertId = advert.AdvertId
+                                AdvertId = advert.Id
                             });
 
                             Console.WriteLine("Sent to InventoryApi");
