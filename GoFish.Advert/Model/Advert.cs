@@ -3,6 +3,7 @@ namespace GoFish.Advert
     public class Advert
     {
         private Advert() { }
+
         public Advert(CatchType catchType, int quantity, double price, Advertiser advertiser)
         {
             CatchType = catchType;
@@ -18,13 +19,13 @@ namespace GoFish.Advert
         public double Price { get; private set; }
         public Advertiser Advertiser { get; private set; }
         public AdvertStatus Status { get; private set; }
-        public Advert PostAdvert()
+        public void Post()
         {
-            return new Advert(CatchType, Quantity, Price, Advertiser) { Status = AdvertStatus.Posted };
+            Status = AdvertStatus.Posted;
         }
-        public Advert PublishAdvert()
+        public void Publish()
         {
-            return new Advert(CatchType, Quantity, Price, Advertiser) { Status = AdvertStatus.Published };
+             Status = AdvertStatus.Published;
         }
     }
 }

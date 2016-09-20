@@ -35,15 +35,35 @@ namespace GoFish.Advert
             _dbContext.CatchTypes.Attach(item.CatchType);
             _dbContext.Advertisers.Attach(item.Advertiser);
             _dbContext.SaveChanges();
+        }
+
+        [HttpPut("{id}/post")]
+        public void AdvertPosted(int id)
+        {
+            Advert item;
+            using (var db = _dbContext)
+            {
+                item = db.Adverts
+                    .Include(a => a.Advertiser)
+                    .Include(ct => ct.CatchType)
+                    .Single(a => a.Id == id);
+
+                item.Post();
+                db.SaveChanges();
+            }
 
             _messageBroker.Send(item);
         }
 
+
         [HttpPut("{id}/publish")]
-        public void StockAdded(int id)
+        public void AdvertPublished(int id)
         {
-            _dbContext.Adverts.Single(a => a.Id == id).PublishAdvert();
-            _dbContext.SaveChanges();
+            using (var db = _dbContext)
+            {
+                db.Adverts.Single(a => a.Id == id).Publish();
+                db.SaveChanges();
+            }
         }
     }
 }
