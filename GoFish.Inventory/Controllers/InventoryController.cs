@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using GoFish.Shared.Interface;
 using GoFish.Shared.Dto;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoFish.Inventory
 {
@@ -20,26 +21,29 @@ namespace GoFish.Inventory
         [HttpGet]
         public IEnumerable<StockItem> Get()
         {
-            return _context.StockItems;
+            return _context.StockItems
+                .Include(pt => pt.ProductType)
+                .Include(so => so.Owner);
         }
 
         [HttpPost]
         public void Post([FromBody]StockItemDto item)
         {
-            var stock = new StockItem(
-                new ProductType(item.TypeId),
+            var stockItem = new StockItem(
+                new ProductType(item.ProductTypeId),
                 item.Quantity,
                 item.Price,
-                new StockOwner(item.OwnerId)
+                new StockOwner(item.OwnerId),
+                item.AdvertId
             );
 
-            _context.StockItems.Add(stock);
-            _context.ProductTypes.Attach(stock.Type);
-            _context.StockOwners.Attach(stock.Owner);
+            _context.StockItems.Add(stockItem);
+            _context.ProductTypes.Attach(stockItem.ProductType);
+            _context.StockOwners.Attach(stockItem.Owner);
             _context.SaveChanges();
 
             // Announce that inventory has been added
-            _messageBroker.Send(stock);
+            _messageBroker.Send(stockItem);
         }
     }
 }

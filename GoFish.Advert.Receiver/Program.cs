@@ -5,7 +5,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using GoFish.Shared.Dto;
 
-namespace GoFish.Inventory.Receiver
+namespace GoFish.Advert.Receiver
 {
     public class Program
     {
@@ -13,12 +13,14 @@ namespace GoFish.Inventory.Receiver
         {
             const string QUEUE_NAME = "InventoryAdded";
 
+            const string HOST_NAME = "172.17.0.1";
+
             try
             {
                 // login details need securing
                 var factory = new ConnectionFactory();
 
-                factory.HostName = "localhost";
+                factory.HostName = HOST_NAME;
                 factory.Port = 5672;
                 factory.UserName = "gofish";
                 factory.Password = "gofish";
@@ -40,10 +42,13 @@ namespace GoFish.Inventory.Receiver
                             var payload = Encoding.UTF8.GetString(ea.Body);
                             var advert = JsonConvert.DeserializeObject<AdvertDto>(payload);
 
-                            Console.WriteLine("Message received: Advert publicized, Inventory added");
+                            Console.WriteLine("Message received: Inventory added");
                             Console.WriteLine("Sending update to Advert API");
-                            // TODO: Call Advert Api here to set advert status to "Public".
-                            // If Api not available, don't remove message from MQ (or requeue?)
+
+                            var api = new ApiProxy();
+                            api.UpdateAdvert(advert.AdvertId);
+
+                            Console.WriteLine("Advert {0} Updated", advert.AdvertId);
                         };
 
                         channel.BasicConsume(queue: QUEUE_NAME, noAck: true, consumer: consumer);

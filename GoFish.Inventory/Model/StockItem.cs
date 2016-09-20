@@ -4,18 +4,20 @@ namespace GoFish.Inventory
     {
         private StockItem () { }
 
-        public StockItem (ProductType type, int quantity, double price, StockOwner owner)
+        public StockItem (ProductType productType, int quantity, double price, StockOwner owner, int advertId)
         {
-            Type = type;
+            ProductType = productType;
             Quantity = quantity;
             Price = price;
             Owner = owner;
+            AdvertId = advertId;
         }
 
         public int Id { get; private set; }
-        public ProductType Type { get; private set; }
+        public ProductType ProductType { get; private set; }
         public int Quantity { get; private set; }
         public double Price { get; private set; }
         public StockOwner Owner { get; private set; }
+        public int AdvertId { get; private set; }
     }
 }

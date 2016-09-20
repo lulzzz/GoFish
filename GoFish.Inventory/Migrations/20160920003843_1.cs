@@ -40,10 +40,11 @@ namespace GoFish.Inventory.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
+                    AdvertId = table.Column<int>(nullable: false),
                     OwnerId = table.Column<int>(nullable: true),
                     Price = table.Column<double>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    TypeId = table.Column<int>(nullable: true)
+                    ProductTypeId = table.Column<int>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -55,8 +56,8 @@ namespace GoFish.Inventory.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_StockItems_ProductTypes_TypeId",
-                        column: x => x.TypeId,
+                        name: "FK_StockItems_ProductTypes_ProductTypeId",
+                        column: x => x.ProductTypeId,
                         principalTable: "ProductTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -68,9 +69,9 @@ namespace GoFish.Inventory.Migrations
                 column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_StockItems_TypeId",
+                name: "IX_StockItems_ProductTypeId",
                 table: "StockItems",
-                column: "TypeId");
+                column: "ProductTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

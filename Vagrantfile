@@ -3,9 +3,10 @@ Vagrant.configure("2") do |config|
     oneServerSetup.vm.box = "ubuntu/trusty64"
     oneServerSetup.vm.hostname = "GoFish"
 
-    oneServerSetup.vm.network :forwarded_port, guest: 15672, host: 15672, auto_correct: true
-    oneServerSetup.vm.network :forwarded_port, guest: 5672, host: 5672,  auto_correct: true
-    oneServerSetup.vm.network :forwarded_port, guest: 5000, host: 8081,  auto_correct: true
+    oneServerSetup.vm.network :forwarded_port, guest: 15672, host: 15672
+    oneServerSetup.vm.network :forwarded_port, guest: 5672, host: 5672
+    oneServerSetup.vm.network :forwarded_port, guest: 5000, host: 8081
+    oneServerSetup.vm.network :forwarded_port, guest: 5001, host: 8082
 
     oneServerSetup.vm.synced_folder ".", "/vagrant"
 

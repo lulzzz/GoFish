@@ -10,7 +10,7 @@ namespace GoFish.Inventory
 {
     public class InventoryMessageBroker : IMessageBroker<StockItem>
     {
-        const string HOST_NAME = "localhost";
+        const string HOST_NAME = "172.17.0.1";
         const string QUEUE_NAME = "InventoryAdded";
 
         private ILogger<InventoryMessageBroker> _logger;
@@ -31,6 +31,8 @@ namespace GoFish.Inventory
 
         private void SendMessage(byte[] payload)
         {
+            _logger.LogInformation("Sending Inventory Added Confirmation Message");
+
             try
             {
                 // login details need securing
@@ -64,7 +66,7 @@ namespace GoFish.Inventory
             }
             catch (System.Exception)
             {
-                _logger.LogError("Error utilising the {0} message queue", QUEUE_NAME);
+                _logger.LogError("Error sending the Inventory Added Confirmation message utilising the {0} message queue", QUEUE_NAME);
             }
         }
     }

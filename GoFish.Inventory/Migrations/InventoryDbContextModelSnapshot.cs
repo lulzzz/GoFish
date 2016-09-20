@@ -32,19 +32,21 @@ namespace GoFish.Inventory.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("AdvertId");
+
                     b.Property<int?>("OwnerId");
 
                     b.Property<double>("Price");
 
-                    b.Property<int>("Quantity");
+                    b.Property<int?>("ProductTypeId");
 
-                    b.Property<int?>("TypeId");
+                    b.Property<int>("Quantity");
 
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("StockItems");
                 });
@@ -67,9 +69,9 @@ namespace GoFish.Inventory.Migrations
                         .WithMany()
                         .HasForeignKey("OwnerId");
 
-                    b.HasOne("GoFish.Inventory.ProductType", "Type")
+                    b.HasOne("GoFish.Inventory.ProductType", "ProductType")
                         .WithMany()
-                        .HasForeignKey("TypeId");
+                        .HasForeignKey("ProductTypeId");
                 });
         }
     }

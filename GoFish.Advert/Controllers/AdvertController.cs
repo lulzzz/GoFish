@@ -38,5 +38,12 @@ namespace GoFish.Advert
 
             _messageBroker.Send(item);
         }
+
+        [HttpPut("{id}/publish")]
+        public void StockAdded(int id)
+        {
+            _dbContext.Adverts.Single(a => a.Id == id).PublishAdvert();
+            _dbContext.SaveChanges();
+        }
     }
 }

@@ -26,12 +26,17 @@ namespace GoFish.Advert
         public void Send(Advert objectToSend)
         {
             var dto = _mapper.Map<Advert, AdvertDto>(objectToSend);
+            dto.AdvertId = objectToSend.Id; // TODO: configure automapper for this
+            _logger.LogInformation("Advert {0} about to send.", objectToSend.Id);
+            _logger.LogInformation("AdvertDto {0} about to send.", dto.AdvertId);
             var payload = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto));
             SendMessage(payload);
         }
 
         private void SendMessage(byte[] payload)
         {
+            _logger.LogInformation("Sending Advert message to Inventory");
+
             try
             {
                 // login details need securing
@@ -61,12 +66,14 @@ namespace GoFish.Advert
                                              routingKey: QUEUE_NAME,
                                              basicProperties: properties,
                                              body: payload);
+
+                        _logger.LogInformation("Advert message sent to Inventory");
                     }
                 }
             }
             catch (System.Exception)
             {
-                _logger.LogError("Error utilising the {0} queue in GoFish.Advert", QUEUE_NAME);
+                _logger.LogError("Error sending the Advert message to Inventroy via the {0} queue", QUEUE_NAME);
             }
         }
     }

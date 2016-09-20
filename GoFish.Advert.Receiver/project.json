@@ -1,7 +1,7 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "outputName": "GoFish.Inventory.Receiver",
+    "outputName": "GoFish.Advert.Receiver",
     "debugType": "portable",
     "emitEntryPoint": true
   },
