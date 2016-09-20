@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,8 +20,14 @@ namespace GoFish.Inventory
     {
         public static void SeedData(this InventoryDbContext context)
         {
+            EnsureDbIsCreated(context);
             AddStockOwners(context);
             AddProductTypes(context);
+        }
+
+        private static void EnsureDbIsCreated(InventoryDbContext context)
+        {
+            context.Database.Migrate();
         }
 
         private static void AddProductTypes(InventoryDbContext context)

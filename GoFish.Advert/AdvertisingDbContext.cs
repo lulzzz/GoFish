@@ -19,8 +19,14 @@ namespace GoFish.Advert
     {
         public static void SeedData(this AdvertisingDbContext context)
         {
+            EnsureDBIsCreated(context);
             AddCatchTypes(context);
             AddAdvertisers(context);
+        }
+
+        private static void EnsureDBIsCreated(AdvertisingDbContext context)
+        {
+            context.Database.Migrate();
         }
 
         private static void AddAdvertisers(AdvertisingDbContext context)
