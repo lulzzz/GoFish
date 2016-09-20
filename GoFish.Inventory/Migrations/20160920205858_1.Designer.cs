@@ -1,11 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using GoFish.Inventory;
 
 namespace GoFish.Inventory.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    [Migration("20160920003843_1")]
+    [Migration("20160920205858_1")]
     partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

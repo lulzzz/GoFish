@@ -21,7 +21,7 @@ namespace GoFish.Inventory
 
         public void Send(StockItem objectToSend)
         {
-            var client = new MessagingClient(_logger, "127.17.0.1");
+            var client = new MessagingClient(_logger, "172.17.0.1");
             var dto = _mapper.Map<StockItem, StockItemDto>(objectToSend);
 
             client.SendMessage("InventoryAdded", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));

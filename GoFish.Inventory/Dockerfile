@@ -1,5 +1,5 @@
 FROM microsoft/dotnet:latest
-COPY ./bin/Debug/netcoreapp1.0/publish/ /app
+COPY ./bin/release/netcoreapp1.0/publish/ /app
 WORKDIR /app
 
 EXPOSE 5001/tcp

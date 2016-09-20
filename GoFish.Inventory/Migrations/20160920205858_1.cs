@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace GoFish.Advert.Migrations
+namespace GoFish.Inventory.Migrations
 {
     public partial class _1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Advertisers",
+                name: "ProductTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -16,11 +18,11 @@ namespace GoFish.Advert.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Advertisers", x => x.Id);
+                    table.PrimaryKey("PK_ProductTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CatchTypes",
+                name: "StockOwners",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -29,59 +31,59 @@ namespace GoFish.Advert.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CatchTypes", x => x.Id);
+                    table.PrimaryKey("PK_StockOwners", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Adverts",
+                name: "StockItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
-                    AdvertiserId = table.Column<int>(nullable: true),
-                    CatchTypeId = table.Column<int>(nullable: true),
+                    AdvertId = table.Column<int>(nullable: false),
+                    OwnerId = table.Column<int>(nullable: true),
                     Price = table.Column<double>(nullable: false),
-                    Quantity = table.Column<int>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    ProductTypeId = table.Column<int>(nullable: true),
+                    Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Adverts", x => x.Id);
+                    table.PrimaryKey("PK_StockItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Adverts_Advertisers_AdvertiserId",
-                        column: x => x.AdvertiserId,
-                        principalTable: "Advertisers",
+                        name: "FK_StockItems_StockOwners_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "StockOwners",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Adverts_CatchTypes_CatchTypeId",
-                        column: x => x.CatchTypeId,
-                        principalTable: "CatchTypes",
+                        name: "FK_StockItems_ProductTypes_ProductTypeId",
+                        column: x => x.ProductTypeId,
+                        principalTable: "ProductTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Adverts_AdvertiserId",
-                table: "Adverts",
-                column: "AdvertiserId");
+                name: "IX_StockItems_OwnerId",
+                table: "StockItems",
+                column: "OwnerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Adverts_CatchTypeId",
-                table: "Adverts",
-                column: "CatchTypeId");
+                name: "IX_StockItems_ProductTypeId",
+                table: "StockItems",
+                column: "ProductTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Adverts");
+                name: "StockItems");
 
             migrationBuilder.DropTable(
-                name: "Advertisers");
+                name: "StockOwners");
 
             migrationBuilder.DropTable(
-                name: "CatchTypes");
+                name: "ProductTypes");
         }
     }
 }
