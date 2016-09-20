@@ -11,20 +11,19 @@ namespace GoFish.Advert.Receiver
     {
         public static void Main(string[] args)
         {
-            const string QUEUE_NAME = "InventoryAdded";
-
             const string HOST_NAME = "172.17.0.1";
+            const string QUEUE_NAME = "InventoryAdded";
 
             try
             {
-                // login details need securing
-                var factory = new ConnectionFactory();
-
-                factory.HostName = HOST_NAME;
-                factory.Port = 5672;
-                factory.UserName = "gofish";
-                factory.Password = "gofish";
-                factory.VirtualHost = "/";
+                var factory = new ConnectionFactory()
+                {
+                    HostName = HOST_NAME,
+                    Port = 5672,
+                    UserName = "gofish",
+                    Password = "gofish",
+                    VirtualHost = "/"
+                };
 
                 using (var connection = factory.CreateConnection())
                 {
@@ -42,25 +41,19 @@ namespace GoFish.Advert.Receiver
                             var payload = Encoding.UTF8.GetString(ea.Body);
                             var stockItem = JsonConvert.DeserializeObject<StockItemDto>(payload);
 
-                            Console.WriteLine("Message received: Inventory added");
-                            Console.WriteLine("Sending update to Advert API");
-
                             var api = new ApiProxy();
                             api.UpdateAdvert(stockItem.AdvertId);
-
-                            Console.WriteLine("Advert {0} Updated", stockItem.AdvertId);
                         };
 
                         channel.BasicConsume(queue: QUEUE_NAME, noAck: true, consumer: consumer);
-
-                        Console.WriteLine("Advert Receiver listening.  Press [enter] to exit.");
                         Console.ReadLine();
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 Console.WriteLine("Error running the Inventory Receiver message queue");
+                Console.WriteLine(ex.Message);
             }
         }
     }

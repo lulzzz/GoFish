@@ -11,20 +11,19 @@ namespace GoFish.Inventory.Receiver
     {
         public static void Main(string[] args)
         {
-            const string QUEUE_NAME = "AdvertAdded";
-
             const string HOST_NAME = "172.17.0.1";
+            const string QUEUE_NAME = "AdvertAdded";
 
             try
             {
-                // login details need securing
-                var factory = new ConnectionFactory();
-
-                factory.HostName = HOST_NAME;
-                factory.Port = 5672;
-                factory.UserName = "gofish";
-                factory.Password = "gofish";
-                factory.VirtualHost = "/";
+                var factory = new ConnectionFactory()
+                {
+                    HostName = HOST_NAME,
+                    Port = 5672,
+                    UserName = "gofish",
+                    Password = "gofish",
+                    VirtualHost = "/"
+                };
 
                 using (var connection = factory.CreateConnection())
                 {
@@ -42,16 +41,6 @@ namespace GoFish.Inventory.Receiver
                             var payload = Encoding.UTF8.GetString(ea.Body);
                             var advert = JsonConvert.DeserializeObject<AdvertDto>(payload);
 
-                            Console.WriteLine("Received CatchTypeId {0}, Qty: {1}, Price: {2}, AdvertiserId: {3}, AdvertId {4}",
-                                advert.CatchTypeId,
-                                advert.Quantity,
-                                advert.Price,
-                                advert.AdvertiserId,
-                                advert.Id
-                            );
-
-                            Console.WriteLine("Sending to InventoryApi");
-
                             var api = new ApiProxy();
                             api.UpdateInventory(new StockItemDto()
                             {
@@ -61,13 +50,9 @@ namespace GoFish.Inventory.Receiver
                                 OwnerId = advert.AdvertiserId,
                                 AdvertId = advert.Id
                             });
-
-                            Console.WriteLine("Sent to InventoryApi");
                         };
 
                         channel.BasicConsume(queue: QUEUE_NAME, noAck: true, consumer: consumer);
-
-                        Console.WriteLine("Inventory Receiver listening.  Press [enter] to exit.");
                         Console.ReadLine();
                     }
                 }
@@ -75,7 +60,7 @@ namespace GoFish.Inventory.Receiver
             catch (Exception ex)
             {
                 Console.WriteLine("Error running the Inventory Receiver message queue");
-                System.Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message);
             }
         }
     }
