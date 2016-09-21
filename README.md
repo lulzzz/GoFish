@@ -65,6 +65,10 @@ To get up and running, ideally you will need:
 
     It also runs the Docker Compose file for the application and gets the application running.
 
+1. You will need to configure a new user in the RabbitMQ interface to match that in the code that uses it.  It is currently:
+
+    `Username: gofish, Password: gofish`
+
 1. You should now be able to use your browser / postman / fiddler / etc to acces the webApi via:
 
     `http://localhost:8081/api/advert` and `http://localhost:8082/api/inventory`

@@ -7,23 +7,23 @@ services:
     build: ./GoFish.Advert
     ports:
      - "5000:5000"
+    depends_on:
+      - advert.receiver
 
   inventory:
     image: gofish.inventory
     build: ./GoFish.Inventory
     ports:
      - "5001:5001"
+    depends_on:
+      - inventory.receiver
 
   advert.receiver:
     image: gofish.advert.receiver
     build: ./GoFish.Advert.Receiver
     tty: true
-    depends_on:
-      - advert
 
   inventory.receiver:
     image: gofish.inventory.receiver
     build: ./GoFish.Inventory.Receiver
     tty: true
-    depends_on:
-      - inventory
