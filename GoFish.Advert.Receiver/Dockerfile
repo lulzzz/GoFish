@@ -1,5 +1,5 @@
 FROM microsoft/dotnet:latest
-COPY ./bin/Release/netcoreapp1.0/publish/ /app
+COPY ./bin/release/netcoreapp1.0/publish/ /app
 WORKDIR /app
 
 ENTRYPOINT dotnet /app/GoFish.Advert.Receiver.dll
