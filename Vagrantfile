@@ -13,5 +13,6 @@ Vagrant.configure("2") do |config|
     oneServerSetup.vm.provision "shell", path: "RabbitMQ.sh"
 
     oneServerSetup.vm.provision "docker"
+    oneServerSetup.vm.provision :docker_compose, rebuild: true, run: "always", yml: "/vagrant/docker-compose.yml"
   end
 end

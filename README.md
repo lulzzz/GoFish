@@ -13,8 +13,8 @@ access to a market of buyers including:
 
 ## Technology stack
 
-- MS .NET Core (C#) Web Api
-- EF Core Migrations
+- MS .NET Core 1.0.1 + WebApi (C#)
+- EF Core 1.0.1 + Migrations
 - Sqlite DB
 - RabbitMQ
 - Docker
@@ -23,14 +23,51 @@ access to a market of buyers including:
 
 ## Deployment options
 
-1. There is a Vagrantfile in the root that will spin up a VM with the prerequisites.
+### Prerequisites
+
+To get up and running, ideally you will need:
+
+- VirtualBox
+- Vagrant
+
+### Process
+
+1. Clone the repo
+
+    `git clone https://github.com/jakimber/GoFish`
+
+1. Publish the application:
+
+    ```c#
+    cd ./GoFish
+    dotnet restore
+    dotnet build ./**/project.json
+    dotnet publish -c release ./GoFish.Advert
+    dotnet publish -c release ./GoFish.Inventory
+    dotnet publish -c release ./GoFish.Advert.Receiver
+    dotnet publish -c release ./GoFish.Inventory.Receiver
+    ```
+
+1. create the server (with docker-compose enabled):
+
+    `vagrant plugin install vagrant-docker-compose`
+
+    and then:
+
+    `vagrant up`
+
+    This configures a virtual machine with:
+
     - Ubuntu OS
     - RabbitMQ instance
     - Docker
+    - Docker Compose
 
-    Once you have Vagant (and virtulbox) installed,  run `vagrant up` from the root of the project
+    It also runs the Docker Compose file for the application and gets the application running.
 
-1. You can install RabbitMQ on your development box, and run the code from VS if you want, but the above is advised.
+1. You should now be able to use your browser / postman / fiddler / etc to acces the webApi via:
+
+    `http://localhost:8081/api/advert` and `http://localhost:8082/api/inventory`
 
 ---
 
@@ -64,10 +101,10 @@ Notes:
 
 ## Phase 1 roadmap
 
-1. Deploy services into our Docker environment
-1. Create suite of tests for the services
-1. Use EventStore for stock processing
+1. Ensure WebApi conforms to RMM level 4 to enable easy hypermedia navigation
 1. Create web-based UI (ReactJs or Angular2)
+1. Use EventStore for stock processing
+1. Create suite of tests for the services
 
 ## Phase 2 feature list
 
@@ -78,4 +115,3 @@ Notes:
 - Shipping & Logistics
 - Merchants - Fishermen sell to merchants who then communicate with punters on their behalf
 - iOs / Android app consuming the same services
-
