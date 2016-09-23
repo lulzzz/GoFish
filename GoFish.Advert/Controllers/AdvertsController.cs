@@ -1,3 +1,4 @@
+using GoFish.Shared.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
@@ -19,10 +20,56 @@ namespace GoFish.Advert
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Advert item)
+        public IActionResult Post([FromBody]AdvertDto item)
         {
-            item = _repository.Save(item);
-            return Created($"/api/adverts/{item.Id}", item);
+            if (item.Id != 0)
+                return BadRequest("Incorrect use of POST to update an Item.  PUT to the resource instead.");
+
+            Advert advert;
+            try
+            {
+                advert = SaveAdvert(new CreateAdvertBuilder(item));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return CreatedResult(advert);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody]AdvertDto item)
+        {
+            if (item.Id == 0)
+                return BadRequest("Incorrect use of PUT to add a new Item.  POST to the collection instead.");
+
+            Advert advert;
+            try
+            {
+                advert = SaveAdvert(new UpdateAdvertBuilder(item));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return CreatedResult(advert);
+        }
+
+        private IActionResult CreatedResult(Advert advert)
+        {
+            return Created($"/api/{GetControllerName()}/{advert.Id}", advert);
+        }
+
+        private Advert SaveAdvert(AdvertBuilder command)
+        {
+            return _repository.Save(command.Build());
+
+        }
+        private string GetControllerName()
+        {
+            return this.ControllerContext.RouteData.Values["controller"].ToString().ToLower();
         }
     }
 }

@@ -11,5 +11,10 @@ namespace GoFish.Advert
 
         public int Id { get; private set; }
         public string Name { get; private set; }
+
+        internal static Advertiser FromId(int advertiserId)
+        {
+            return new Advertiser() { Id = advertiserId};
+        }
     }
 }

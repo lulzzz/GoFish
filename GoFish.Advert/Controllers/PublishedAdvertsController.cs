@@ -23,10 +23,10 @@ namespace GoFish.Advert
         {
             var item = _repository.Get(id);
 
-            if (item.Status != AdvertStatus.Published)
+            if (item == null || item.Status != AdvertStatus.Published)
                 return new NotFoundResult();
 
-            return Ok();
+            return Ok(item);
         }
 
         [HttpPut("{id}")]
@@ -34,10 +34,7 @@ namespace GoFish.Advert
         {
             var advert = _repository.Get(id);
 
-            if (advert == null)
-                return new NotFoundResult();
-
-            if (advert.Status != AdvertStatus.Posted)
+            if (advert == null || advert.Status != AdvertStatus.Posted)
                 return new NotFoundResult();
 
             advert.Publish();

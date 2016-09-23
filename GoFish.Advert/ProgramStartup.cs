@@ -15,6 +15,9 @@ namespace GoFish.Advert
             services.AddDbContext<AdvertisingDbContext>();
             services.AddTransient<IMessageBroker<Advert>, AdvertMessageBroker>();
             services.AddTransient<AdvertRepository, AdvertRepository>();
+            services.AddTransient<ICommandMediator, CommandMediator>();
+
+            services.AddTransient<ICommandHandler<PostAdvertCommand, Advert>, PostAdvertCommandHandler>();
 
             var config = new MapperConfiguration(cfg =>
             {

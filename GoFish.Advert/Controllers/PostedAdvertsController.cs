@@ -1,18 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
-using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
 {
     [Route("api/[controller]")]
     public class PostedAdvertsController : Controller
     {
-        private readonly AdvertRepository _repository;
-        private readonly IMessageBroker<Advert> _messageBroker;
+        private readonly ICommandMediator _commandMediator;
+        private readonly AdvertRepository _repository; // TODO: Can remove this with a QueryMediator
 
-        public PostedAdvertsController(AdvertRepository repository, IMessageBroker<Advert> messageBroker)
+        public PostedAdvertsController(ICommandMediator commandMediator, AdvertRepository repository)
         {
+            _commandMediator = commandMediator;
             _repository = repository;
-            _messageBroker = messageBroker;
         }
 
         [HttpGet]
@@ -26,7 +25,7 @@ namespace GoFish.Advert
         {
             var advert = _repository.Get(id);
 
-            if (advert.Status != AdvertStatus.Posted)
+            if (advert == null || advert.Status != AdvertStatus.Posted)
                 return new NotFoundResult();
 
             return Ok(advert);
@@ -35,21 +34,15 @@ namespace GoFish.Advert
         [HttpPut("{id}")]
         public IActionResult PostAdvert(int id)
         {
-            var advert = _repository.Get(id);
-
-            if (advert == null)
-                return new NotFoundResult();
-
-            if (advert.Status != AdvertStatus.Created)
-                return new NotFoundResult();
-
-            advert.Post();
-
-            _repository.Save(advert);
-
-            _messageBroker.Send(advert);
-
-            return Created($"/api/postedadverts/{advert.Id}", advert);
+            try
+            {
+                var advert = _commandMediator.Send(new PostAdvertCommand(id));
+                return Created($"/api/postedadverts/{advert.Id}", advert);
+            }
+            catch (System.InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

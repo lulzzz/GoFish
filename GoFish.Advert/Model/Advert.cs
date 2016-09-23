@@ -4,7 +4,13 @@ namespace GoFish.Advert
     {
         private Advert() { }
 
-        public Advert(CatchType catchType, int quantity, double price, Advertiser advertiser)
+        private Advert(int id, CatchType catchType, int quantity, double price, Advertiser advertiser)
+            : this(catchType, quantity, price, advertiser)
+        {
+            Id = id;
+        }
+
+        private Advert(CatchType catchType, int quantity, double price, Advertiser advertiser)
         {
             CatchType = catchType;
             Quantity = quantity;
@@ -27,6 +33,16 @@ namespace GoFish.Advert
         public void Publish()
         {
             Status = AdvertStatus.Published;
+        }
+
+        internal static Advert Add(CatchType catchType, int quantity, double price, Advertiser advertiser)
+        {
+            return new Advert(catchType, quantity, price, advertiser);
+        }
+
+        internal static Advert Attach(int id, CatchType catchType, int quantity, double price, Advertiser advertiser)
+        {
+            return new Advert(id, catchType, quantity, price, advertiser);
         }
     }
 }

@@ -7,5 +7,6 @@
         public double Price { get; set; }
         public int AdvertiserId { get; set; }
         public int CatchTypeId { get; set; }
+        public int Status { get; set; }
     }
 }

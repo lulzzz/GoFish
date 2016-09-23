@@ -11,5 +11,10 @@ namespace GoFish.Advert
 
         public int Id { get; private set; }
         public string Name { get; private set; }
+
+        internal static CatchType FromId(int catchTypeId)
+        {
+            return new CatchType() { Id = catchTypeId };
+        }
     }
 }
