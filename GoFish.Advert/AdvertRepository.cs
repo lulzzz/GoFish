@@ -23,12 +23,18 @@ namespace GoFish.Advert
 
         internal IEnumerable<Advert> GetPublished()
         {
-            return _dbContext.Adverts.Where(s => s.Status == AdvertStatus.Published);
+            return _dbContext.Adverts
+                .Include(a => a.Advertiser)
+                .Include(ct => ct.CatchType)
+                .Where(s => s.Status == AdvertStatus.Published);
         }
 
         internal object GetPosted()
         {
-            return _dbContext.Adverts.Where(s => s.Status == AdvertStatus.Posted);
+            return _dbContext.Adverts
+                .Include(a => a.Advertiser)
+                .Include(ct => ct.CatchType)
+                .Where(s => s.Status == AdvertStatus.Posted);
         }
 
         internal Advert Save(Advert item)

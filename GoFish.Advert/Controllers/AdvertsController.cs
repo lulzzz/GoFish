@@ -22,6 +22,8 @@ namespace GoFish.Advert
         [HttpPost]
         public IActionResult Post([FromBody]AdvertDto item)
         {
+            if (!ModelState.IsValid) return BadRequest();
+
             if (item.Id != 0)
                 return BadRequest("Incorrect use of POST to update an Item.  PUT to the resource instead.");
 
@@ -41,6 +43,8 @@ namespace GoFish.Advert
         [HttpPut]
         public IActionResult Put([FromBody]AdvertDto item)
         {
+            if (!ModelState.IsValid) return BadRequest();
+
             if (item.Id == 0)
                 return BadRequest("Incorrect use of PUT to add a new Item.  POST to the collection instead.");
 
