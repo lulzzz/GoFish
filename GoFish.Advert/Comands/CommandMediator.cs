@@ -31,7 +31,16 @@ namespace GoFish.Advert
             }
             catch (TargetInvocationException ex)
             {
+                if (ex.InnerException is AdvertNotFoundException)
+                {
+                    throw ex.InnerException;
+                }
+
                 throw new InvalidOperationException(ex.InnerException.Message, ex);
+            }
+            catch
+            {
+                throw;
             }
 
             return result;

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
@@ -39,9 +40,17 @@ namespace GoFish.Advert
                 var advert = _commandMediator.Send(new PostAdvertCommand(id));
                 return Created($"/api/postedadverts/{advert.Id}", advert);
             }
-            catch (System.InvalidOperationException ex)
+            catch(AdvertNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (InvalidOperationException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return NotFound(); // Is this right?  Better a 404 than a potential hack target?
             }
         }
     }

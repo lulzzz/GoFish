@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
@@ -8,7 +9,7 @@ namespace GoFish.Advert
         private readonly AdvertRepository _repository;
         private readonly IMessageBroker<Advert> _messageBroker;
 
-        public PostAdvertCommandHandler (AdvertRepository repository, IMessageBroker<Advert> messageBroker)
+        public PostAdvertCommandHandler(AdvertRepository repository, IMessageBroker<Advert> messageBroker)
         {
             _repository = repository;
             _messageBroker = messageBroker;
@@ -17,6 +18,11 @@ namespace GoFish.Advert
         public Advert Handle(PostAdvertCommand command)
         {
             var advert = _repository.Get(command.Id);
+
+            if (advert == null)
+            {
+                throw new AdvertNotFoundException($"Advert {command.Id} not found.");
+            }
 
             if (advert.Status != AdvertStatus.Created)
             {
@@ -30,5 +36,10 @@ namespace GoFish.Advert
 
             return advert;
         }
+    }
+
+    public sealed class AdvertNotFoundException : Exception
+    {
+        public AdvertNotFoundException(string message) : base(message) { }
     }
 }

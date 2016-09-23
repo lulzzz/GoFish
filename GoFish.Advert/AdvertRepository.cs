@@ -33,6 +33,9 @@ namespace GoFish.Advert
 
         internal Advert Save(Advert item)
         {
+            // Check data - validation needs to go somewhere.
+            // could DDD the Advert so it's always valid, or
+            // put a load of checks here or a validator component
             if (item.Id == 0)
             {
                 _dbContext.Adverts.Add(item);
@@ -42,7 +45,7 @@ namespace GoFish.Advert
 
             _dbContext.SaveChanges();
 
-            return item;
+            return Get(item.Id);
         }
     }
 }
