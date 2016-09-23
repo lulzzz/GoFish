@@ -1,11 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using GoFish.Advert;
 
 namespace GoFish.Advert.Migrations
 {
     [DbContext(typeof(AdvertisingDbContext))]
-    [Migration("20160920210703_1")]
+    [Migration("20160923141605_1")]
     partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
