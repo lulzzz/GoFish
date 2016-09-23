@@ -18,7 +18,7 @@ namespace GoFish.Advert.Receiver
 
         public void UpdateAdvert(int advertId)
         {
-            var action = string.Format("advert/{0}/publish", advertId);
+            var action = string.Format("publishedadverts/{0}", advertId);
             var result = client.PutAsync(client.BaseAddress + action, new StringContent(string.Empty));
             Console.WriteLine("Message from {0}: {1}",client.BaseAddress + action, result.Result);
         }

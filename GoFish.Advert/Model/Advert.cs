@@ -26,7 +26,7 @@ namespace GoFish.Advert
         }
         public void Publish()
         {
-             Status = AdvertStatus.Published;
+            Status = AdvertStatus.Published;
         }
     }
 }

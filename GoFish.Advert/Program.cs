@@ -1,12 +1,7 @@
 ﻿using System.IO;
-using AutoMapper;
-using GoFish.Shared.Dto;
-using GoFish.Shared.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace GoFish.Advert
 {
@@ -22,37 +17,10 @@ namespace GoFish.Advert
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseConfiguration(config)
-                .UseStartup<Startup>()
+                .UseStartup<ProgramStartup>()
                 .Build();
 
             host.Run();
-        }
-    }
-    public class Startup
-    {
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddMvc();
-            services.AddDbContext<AdvertisingDbContext>();
-            services.AddTransient<IMessageBroker<Advert>, AdvertMessageBroker>();
-
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Advert, AdvertDto>();
-            });
-
-            services.AddSingleton<IMapper>(sp => config.CreateMapper());
-        }
-
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
-        {
-            loggerFactory.AddConsole();
-
-            app.UseMvc();
-
-            app.ApplicationServices
-                .GetService<AdvertisingDbContext>()
-                .SeedData();
         }
     }
 }

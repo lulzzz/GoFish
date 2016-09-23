@@ -1,7 +1,3 @@
 {
-    /*
-        Override the localhost default to enable for easier debugging
-        Note: Do not deploy this file to IIS.  IIS will take care of the url ports for you.
-    */
     "server.urls": "http://localhost:5000"
 }
