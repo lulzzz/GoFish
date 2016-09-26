@@ -1,4 +1,5 @@
 using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
@@ -15,6 +16,7 @@ namespace GoFish.Advert
             _repository = repository;
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Get()
         {

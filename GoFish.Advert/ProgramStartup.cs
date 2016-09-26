@@ -29,7 +29,15 @@ namespace GoFish.Advert
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole();
+            loggerFactory.AddConsole(LogLevel.Error);
+
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = "http://localhost:5005",
+                ScopeName = "api1",
+
+                RequireHttpsMetadata = false
+            });
 
             app.UseMvc();
 

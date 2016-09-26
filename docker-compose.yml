@@ -5,6 +5,8 @@ services:
   advert:
     image: gofish.advert
     build: ./GoFish.Advert
+    container_name: gofish_advert
+    dockerfile: ./GoFish.Advert/Dockerfile
     ports:
      - "5000:5000"
     depends_on:
@@ -13,6 +15,8 @@ services:
   inventory:
     image: gofish.inventory
     build: ./GoFish.Inventory
+    container_name: gofish_inventory
+    dockerfile: ./GoFish.Inventory/Dockerfile
     ports:
      - "5001:5001"
     depends_on:
@@ -21,9 +25,13 @@ services:
   advert.receiver:
     image: gofish.advert.receiver
     build: ./GoFish.Advert.Receiver
+    container_name: gofish_advert_receiver
+    dockerfile: ./GoFish.Advert.Receiver/Dockerfile
     tty: true
 
   inventory.receiver:
     image: gofish.inventory.receiver
     build: ./GoFish.Inventory.Receiver
+    container_name: gofish_inventory_receiver
+    dockerfile: ./GoFish.Inventory.Receiver/Dockerfile
     tty: true
