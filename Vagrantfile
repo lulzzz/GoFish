@@ -4,8 +4,10 @@ Vagrant.configure("2") do |config|
     oneServerSetup.vm.hostname = "GoFish"
 
     oneServerSetup.vm.network :forwarded_port, guest: 15672, host: 15672
-    oneServerSetup.vm.network :forwarded_port, guest: 5000, host: 8081
-    oneServerSetup.vm.network :forwarded_port, guest: 5001, host: 8082
+    oneServerSetup.vm.network :forwarded_port, guest: 5000, host: 8081 # Advert
+    oneServerSetup.vm.network :forwarded_port, guest: 5001, host: 8082 # Inventory
+    oneServerSetup.vm.network :forwarded_port, guest: 5002, host: 8083 # Identity
+    oneServerSetup.vm.network :forwarded_port, guest: 5003, host: 8084 # UI.MVC
 
     oneServerSetup.vm.synced_folder ".", "/vagrant"
 

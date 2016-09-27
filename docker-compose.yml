@@ -2,11 +2,22 @@ version: '2'
 
 services:
 
+  advert.receiver:
+    image: gofish.advert.receiver
+    build: ./GoFish.Advert.Receiver
+    container_name: gofish_advert_receiver
+    tty: true
+
+  inventory.receiver:
+    image: gofish.inventory.receiver
+    build: ./GoFish.Inventory.Receiver
+    container_name: gofish_inventory_receiver
+    tty: true
+
   advert:
     image: gofish.advert
     build: ./GoFish.Advert
     container_name: gofish_advert
-    dockerfile: ./GoFish.Advert/Dockerfile
     ports:
      - "5000:5000"
     depends_on:
@@ -16,22 +27,21 @@ services:
     image: gofish.inventory
     build: ./GoFish.Inventory
     container_name: gofish_inventory
-    dockerfile: ./GoFish.Inventory/Dockerfile
     ports:
      - "5001:5001"
     depends_on:
       - inventory.receiver
 
-  advert.receiver:
-    image: gofish.advert.receiver
-    build: ./GoFish.Advert.Receiver
-    container_name: gofish_advert_receiver
-    dockerfile: ./GoFish.Advert.Receiver/Dockerfile
-    tty: true
+  gofish.identity:
+    image: gofish.identity
+    build: ./GoFish.Identity
+    container_name: gofish_identity
+    ports:
+     - "5002:5002"
 
-  inventory.receiver:
-    image: gofish.inventory.receiver
-    build: ./GoFish.Inventory.Receiver
-    container_name: gofish_inventory_receiver
-    dockerfile: ./GoFish.Inventory.Receiver/Dockerfile
-    tty: true
+  gofish.ui.mvc:
+    image: gofish.ui.mvc
+    build: ./GoFish.UI.MVC
+    container_name: gofish_ui_mvc
+    ports:
+     - "5003:5003"

@@ -20,6 +20,7 @@ access to a market of buyers including:
 - Docker
 - Vagrant & VirtualBox
 - Ubuntu
+- IdentityServer4
 
 ## Deployment options
 
@@ -36,7 +37,7 @@ To get up and running, ideally you will need:
 
     `git clone https://github.com/jakimber/GoFish`
 
-1. Publish the application:
+1. Publish the application components:
 
     ```c#
     cd ./GoFish
@@ -46,15 +47,16 @@ To get up and running, ideally you will need:
     dotnet publish -c release ./GoFish.Inventory
     dotnet publish -c release ./GoFish.Advert.Receiver
     dotnet publish -c release ./GoFish.Inventory.Receiver
+    dotnet publish -c release ./GoFish.Identity
+    dotnet publish -c release ./GoFish.UI.MVC
     ```
 
 1. create the server (with docker-compose enabled):
 
-    `vagrant plugin install vagrant-docker-compose`
+    If required:
+        `vagrant plugin install vagrant-docker-compose`
 
-    and then:
-
-    `vagrant up`
+    and then: `vagrant up`
 
     This configures a virtual machine with:
 
@@ -69,9 +71,15 @@ To get up and running, ideally you will need:
 
     `Username: gofish, Password: gofish`
 
-1. You should now be able to use your browser / postman / fiddler / etc to acces the webApi via:
+1. You should now be able to use your browser to access the website at
 
-    `http://localhost:8081/api/advert` and `http://localhost:8082/api/inventory`
+    `http://localhost:8084`
+
+1. You can debug the Api with Postman using the following settings in the authentication helper:
+
+
+<img src="./Readme.Resources/postman-auth.png" alt="Drawing" style="width: 300px;margin-left:100px;"/>
+
 
 ---
 

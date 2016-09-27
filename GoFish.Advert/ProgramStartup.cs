@@ -33,7 +33,7 @@ namespace GoFish.Advert
 
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                Authority = "http://localhost:5005",
+                Authority = "http://172.17.0.1:5002",
                 ScopeName = "api1",
 
                 RequireHttpsMetadata = false
