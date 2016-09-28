@@ -6,5 +6,4 @@ namespace GoFish.Advert
     {
         TResult Handle(TCommand command);
     }
-
 }

@@ -2,6 +2,6 @@
 {
     public interface IMessageBroker<T>
     {
-        void Send(T objectToSend);
+        void Send(string message, T objectToSend);
     }
 }

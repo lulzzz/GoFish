@@ -4,25 +4,32 @@ using Microsoft.AspNetCore.Mvc;
 namespace GoFish.Advert
 {
     [Route("api/[controller]")]
-    public class AdvertsController : Controller
+    public class AdvertsController : ApiBaseController
     {
-        private readonly AdvertRepository _repository;
+        private readonly ICommandMediator _command;
+        private readonly AdvertRepository _query;
 
-        public AdvertsController(AdvertRepository repository)
+        public AdvertsController(ICommandMediator commandMediator, AdvertRepository repository)
         {
-            _repository = repository;
+            _command = commandMediator;
+            _query = repository;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_repository.GetDraftAdverts());
+            var adverts = _query.GetDraftAdverts();
+
+            if (adverts == null)
+                return NotFound();
+
+            return Ok();
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var advert = _repository.Get(id);
+            var advert = _query.Get(id);
 
             if (advert == null)
                 return NotFound();
@@ -38,17 +45,7 @@ namespace GoFish.Advert
             if (item.Id != 0)
                 return BadRequest("Incorrect use of POST to update an Item.  PUT to the resource instead.");
 
-            Advert advert;
-            try
-            {
-                advert = SaveAdvert(new CreateAdvertFactory(item));
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-            return CreatedResult(advert);
+            return SaveAdvert(new CreateAdvertFactory(item));
         }
 
         [HttpPut("{id}")]
@@ -59,36 +56,26 @@ namespace GoFish.Advert
             if (id == 0)
                 return BadRequest("Incorrect use of PUT to add a new Item.  POST to the collection instead.");
 
-            var advert = _repository.Get(id);
+            var advert = _query.Get(id);
 
             if (advert == null)
                 return NotFound();
 
+            return SaveAdvert(new UpdateAdvertFactory(advert, newState));
+        }
+
+        private IActionResult SaveAdvert(AdvertFactory advertFactory)
+        {
+            Advert advert;
             try
             {
-                advert = SaveAdvert(new UpdateAdvertFactory(advert, newState));
+                advert = _command.Send(new SaveAdvertCommand(advertFactory.Build()));
+                return Created($"/api/{GetControllerName()}/{advert.Id}", advert);
             }
             catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
-            return CreatedResult(advert);
-        }
-
-        private IActionResult CreatedResult(Advert advert)
-        {
-            return Created($"/api/{GetControllerName()}/{advert.Id}", advert);
-        }
-
-        private Advert SaveAdvert(AdvertFactory command)
-        {
-            return _repository.Save(command.Build());
-
-        }
-        private string GetControllerName()
-        {
-            return this.ControllerContext.RouteData.Values["controller"].ToString().ToLower();
         }
     }
 }

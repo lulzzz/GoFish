@@ -17,7 +17,9 @@ namespace GoFish.Advert
             services.AddTransient<AdvertRepository, AdvertRepository>();
             services.AddTransient<ICommandMediator, CommandMediator>();
 
+            services.AddTransient<ICommandHandler<SaveAdvertCommand, Advert>, SaveAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<PostAdvertCommand, Advert>, PostAdvertCommandHandler>();
+            services.AddTransient<ICommandHandler<PublishAdvertCommand, Advert>, PublishAdvertCommandHandler>();
 
             var config = new MapperConfiguration(cfg =>
             {

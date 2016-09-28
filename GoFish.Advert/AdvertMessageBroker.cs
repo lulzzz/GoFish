@@ -19,12 +19,12 @@ namespace GoFish.Advert
             _mapper = mapper;
         }
 
-        public void Send(Advert objectToSend)
+        public void Send(string message, Advert objectToSend)
         {
             var client = new MessagingClient(_logger, "172.17.0.1");
             var dto = _mapper.Map<Advert, AdvertDto>(objectToSend);
 
-            client.SendMessage("AdvertAdded", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
+            client.SendMessage(message, Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
         }
     }
 }

@@ -1,35 +1,38 @@
 using System;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
 {
     [Route("api/[controller]")]
-    public class PostedAdvertsController : Controller
+    public class PostedAdvertsController : ApiBaseController
     {
-        private readonly ICommandMediator _commandMediator;
-        private readonly AdvertRepository _repository; // TODO: Can remove this with a QueryMediator
+        private readonly ICommandMediator _command;
+        private readonly AdvertRepository _query;
 
         public PostedAdvertsController(ICommandMediator commandMediator, AdvertRepository repository)
         {
-            _commandMediator = commandMediator;
-            _repository = repository;
+            _command = commandMediator;
+            _query = repository;
         }
 
-        [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_repository.GetPosted());
+            var adverts = _query.GetPosted();
+
+            if (adverts == null)
+                return NotFound();
+
+            return Ok(adverts);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var advert = _repository.Get(id);
+            var advert = _query.Get(id);
 
             if (advert == null || advert.Status != AdvertStatus.Posted)
-                return new NotFoundResult();
+                return NotFound();
 
             return Ok(advert);
         }
@@ -39,10 +42,10 @@ namespace GoFish.Advert
         {
             try
             {
-                var advert = _commandMediator.Send(new PostAdvertCommand(id));
-                return Created($"/api/postedadverts/{advert.Id}", advert);
+                var advert = _command.Send(new PostAdvertCommand(id));
+                return Created($"/api/{GetControllerName()}/{id}", advert);
             }
-            catch(AdvertNotFoundException)
+            catch (AdvertNotFoundException)
             {
                 return NotFound();
             }
@@ -52,7 +55,7 @@ namespace GoFish.Advert
             }
             catch
             {
-                return NotFound(); // Is this right?  Better a 404 than a potential hack target?
+                return NotFound(); // Better a 404 than a potential hack target.
             }
         }
     }

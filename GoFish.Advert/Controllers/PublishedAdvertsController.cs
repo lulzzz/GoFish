@@ -1,47 +1,62 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
 {
     [Route("api/[controller]")]
-    public class PublishedAdvertsController : Controller
+    public class PublishedAdvertsController : ApiBaseController
     {
-        private readonly AdvertRepository _repository;
+        private readonly ICommandMediator _command;
+        private readonly AdvertRepository _query;
 
-        public PublishedAdvertsController(AdvertRepository repository)
+        public PublishedAdvertsController(ICommandMediator commandMediator, AdvertRepository repository)
         {
-            _repository = repository;
+            _command = commandMediator;
+            _query = repository;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_repository.GetPublished());
+            var adverts = _query.GetPublished();
+
+            if (adverts == null)
+                return NotFound();
+
+            return Ok(adverts);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var item = _repository.Get(id);
+            var advert = _query.Get(id);
 
-            if (item == null || item.Status != AdvertStatus.Published)
-                return new NotFoundResult();
+            if (advert == null || advert.Status != AdvertStatus.Published)
+                return NotFound();
 
-            return Ok(item);
+            return Ok(advert);
         }
 
         [HttpPut("{id}")]
         public IActionResult PublishAdvert(int id)
         {
-            var advert = _repository.Get(id);
-
-            if (advert == null || advert.Status != AdvertStatus.Posted)
-                return new NotFoundResult();
-
-            advert.Publish();
-
-            _repository.Save(advert);
-
-            return Created($"/api/publishedadverts/{id}", advert);
+            try
+            {
+                var advert = _command.Send(new PublishAdvertCommand(id));
+                return Created($"/api/{GetControllerName()}/{id}", advert);
+            }
+            catch (AdvertNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return NotFound(); // Better a 404 than a potential hack target.
+            }
         }
     }
 }
