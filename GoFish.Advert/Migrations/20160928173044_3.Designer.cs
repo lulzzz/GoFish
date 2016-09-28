@@ -8,9 +8,10 @@ using GoFish.Advert;
 namespace GoFish.Advert.Migrations
 {
     [DbContext(typeof(AdvertisingDbContext))]
-    partial class AdvertisingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160928173044_3")]
+    partial class _3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1");

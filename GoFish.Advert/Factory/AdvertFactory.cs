@@ -17,6 +17,7 @@ namespace GoFish.Advert
         public void TransferCommonProperties()
         {
             CreatedAdvert.Pitch = Data.Pitch;
+            CreatedAdvert.FishingMethod = (FishingMethod)Data.FishingMethodId;
         }
     }
 }

@@ -25,6 +25,7 @@ namespace GoFish.Advert
         public double Price { get; private set; }
         public Advertiser Advertiser { get; private set; }
         public string Pitch { get; internal set; }
+        public FishingMethod FishingMethod { get; internal set; }
         public AdvertStatus Status { get; private set; }
 
         public void Post()
