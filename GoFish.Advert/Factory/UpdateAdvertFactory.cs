@@ -3,9 +3,9 @@ using GoFish.Shared.Dto;
 
 namespace GoFish.Advert
 {
-    public class UpdateAdvertBuilder : AdvertBuilder
+    public class UpdateAdvertFactory : AdvertFactory
     {
-        public UpdateAdvertBuilder(AdvertDto data) : base(data) { }
+        public UpdateAdvertFactory(AdvertDto data) : base(data) { }
 
         public override Advert Build()
         {
@@ -14,12 +14,16 @@ namespace GoFish.Advert
                 throw new InvalidOperationException("Can only update Adverts in the 'Created' Status");
             }
 
-            return Advert.Attach(
+            CreatedAdvert = Advert.Attach(
                 Data.Id,
                 CatchType.FromId(Data.CatchTypeId),
                 Data.Quantity,
                 Data.Price,
                 Advertiser.FromId(Data.AdvertiserId));
+
+            TransferCommonProperties();
+
+            return CreatedAdvert;
         }
     }
 }

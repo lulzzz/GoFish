@@ -30,7 +30,7 @@ namespace GoFish.Advert
             Advert advert;
             try
             {
-                advert = SaveAdvert(new CreateAdvertBuilder(item));
+                advert = SaveAdvert(new CreateAdvertFactory(item));
             }
             catch (System.Exception ex)
             {
@@ -51,7 +51,7 @@ namespace GoFish.Advert
             Advert advert;
             try
             {
-                advert = SaveAdvert(new UpdateAdvertBuilder(item));
+                advert = SaveAdvert(new UpdateAdvertFactory(item));
             }
             catch (System.Exception ex)
             {
@@ -66,7 +66,7 @@ namespace GoFish.Advert
             return Created($"/api/{GetControllerName()}/{advert.Id}", advert);
         }
 
-        private Advert SaveAdvert(AdvertBuilder command)
+        private Advert SaveAdvert(AdvertFactory command)
         {
             return _repository.Save(command.Build());
 
