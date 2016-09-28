@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,13 @@ namespace GoFish.Advert
                 .Include(ct => ct.CatchType)
                 .Include(a => a.Advertiser)
                 .SingleOrDefault(a => a.Id == id);
+        }
+
+        internal object GetDraftAdverts()
+        {
+            return _dbContext.Adverts
+                .Include(ct => ct.CatchType)
+                .Where(s => s.Status == AdvertStatus.Created);
         }
 
         internal IEnumerable<Advert> GetPublished()

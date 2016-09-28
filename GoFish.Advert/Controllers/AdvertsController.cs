@@ -13,6 +13,12 @@ namespace GoFish.Advert
             _repository = repository;
         }
 
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok(_repository.GetDraftAdverts());
+        }
+
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
