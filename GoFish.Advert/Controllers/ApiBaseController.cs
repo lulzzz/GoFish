@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
 {
-    // [Authorize]
+    [Authorize]
     public class ApiBaseController : Controller
     {
         protected string GetControllerName()

@@ -23,7 +23,7 @@ namespace GoFish.Advert
             if (adverts == null)
                 return NotFound();
 
-            return Ok();
+            return Ok(adverts);
         }
 
         [HttpGet("{id}")]
