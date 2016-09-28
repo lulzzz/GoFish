@@ -8,7 +8,7 @@ namespace GoFish.Advert
 
         public override Advert Build()
         {
-            CreatedAdvert = Advert.Add(
+            ResultingAdvert = Advert.Add(
                 CatchType.FromId(Data.CatchTypeId),
                 Data.Quantity,
                 Data.Price,
@@ -16,7 +16,7 @@ namespace GoFish.Advert
 
             TransferCommonProperties();
 
-            return CreatedAdvert;
+            return ResultingAdvert;
         }
     }
 }

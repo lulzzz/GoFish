@@ -15,7 +15,7 @@ namespace GoFish.Advert
 
         internal Advert Get(int id)
         {
-            return _dbContext.Adverts
+            return _dbContext.Adverts.AsNoTracking()
                 .Include(ct => ct.CatchType)
                 .Include(a => a.Advertiser)
                 .SingleOrDefault(a => a.Id == id);
@@ -47,6 +47,11 @@ namespace GoFish.Advert
                 _dbContext.Adverts.Add(item);
                 _dbContext.CatchTypes.Attach(item.CatchType);
                 _dbContext.Advertisers.Attach(item.Advertiser);
+            }
+            else
+            {
+                _dbContext.Adverts.Attach(item);
+                _dbContext.Entry(item).State = EntityState.Modified;
             }
 
             _dbContext.SaveChanges();

@@ -5,7 +5,7 @@ namespace GoFish.Advert
     public abstract class AdvertFactory
     {
         protected readonly AdvertDto Data;
-        protected Advert CreatedAdvert;
+        protected Advert ResultingAdvert;
 
         public AdvertFactory (AdvertDto data)
         {
@@ -16,8 +16,8 @@ namespace GoFish.Advert
 
         public void TransferCommonProperties()
         {
-            CreatedAdvert.Pitch = Data.Pitch;
-            CreatedAdvert.FishingMethod = (FishingMethod)Data.FishingMethodId;
+            ResultingAdvert.Pitch = Data.Pitch;
+            ResultingAdvert.FishingMethod = (FishingMethod)Data.FishingMethodId;
         }
     }
 }

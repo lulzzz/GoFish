@@ -16,7 +16,12 @@ namespace GoFish.Advert
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok(_repository.Get(id));
+            var advert = _repository.Get(id);
+
+            if (advert == null)
+                return NotFound();
+
+            return Ok(advert);
         }
 
         [HttpPost]
@@ -40,18 +45,22 @@ namespace GoFish.Advert
             return CreatedResult(advert);
         }
 
-        [HttpPut]
-        public IActionResult Put([FromBody]AdvertDto item)
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody]AdvertDto newState)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            if (item.Id == 0)
+            if (id == 0)
                 return BadRequest("Incorrect use of PUT to add a new Item.  POST to the collection instead.");
 
-            Advert advert;
+            var advert = _repository.Get(id);
+
+            if (advert == null)
+                return NotFound();
+
             try
             {
-                advert = SaveAdvert(new UpdateAdvertFactory(item));
+                advert = SaveAdvert(new UpdateAdvertFactory(advert, newState));
             }
             catch (System.Exception ex)
             {
