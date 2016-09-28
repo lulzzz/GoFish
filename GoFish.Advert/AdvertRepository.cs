@@ -21,7 +21,7 @@ namespace GoFish.Advert
                 .SingleOrDefault(a => a.Id == id);
         }
 
-        internal object GetDraftAdverts()
+        internal IEnumerable<Advert> GetDraftAdverts()
         {
             return _dbContext.Adverts
                 .Include(ct => ct.CatchType)

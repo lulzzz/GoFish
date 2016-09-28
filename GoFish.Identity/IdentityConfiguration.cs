@@ -27,6 +27,13 @@ namespace GoFish.Identity
                     ClientSecrets = new List<Secret> { new Secret("secret".Sha256()) },
                     AllowedScopes = new List<string> { "api1" }
                 },
+                new Client // MessageQ Clients use client credentials method
+                {
+                    ClientId = "rabbitmq",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+                    ClientSecrets = new List<Secret> { new Secret("secret".Sha256()) },
+                    AllowedScopes = new List<string> { "api1" }
+                },
                 new Client // Basic resource based Username / Password pair
                 {
                     ClientId = "ro.client",
