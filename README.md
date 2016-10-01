@@ -16,6 +16,7 @@ access to a market of buyers including:
 - MS .NET Core 1.0.1 + WebApi (C#)
 - EF Core 1.0.1 + Migrations
 - Sqlite DB
+- REDIS
 - RabbitMQ
 - Docker
 - Vagrant & VirtualBox
@@ -65,7 +66,7 @@ To get up and running, ideally you will need:
     - Docker
     - Docker Compose
 
-    It also runs the Docker Compose file for the application and gets the application running.
+    It also runs the Docker Compose file for the application and gets the application components running.
 
 1. You will need to configure a new user in the RabbitMQ interface to match that in the code that uses it.  It is currently:
 
@@ -107,6 +108,7 @@ Notes:
 
 1. The virtualbox instance can be spun up using the Vagrantfile in the repo.
 1. Each service has it's own datastore (currently Sqlite in all of them)
+1. Events are published to REDIS to allow for event-sourcing
 1. The Shopfront service may need splitting into smaller services
 
 ---
@@ -115,7 +117,7 @@ Notes:
 
 1. Ensure WebApi conforms to RMM level 4 to enable easy hypermedia navigation
 1. Create web-based UI (ReactJs or Angular2)
-1. Use EventStore for stock processing
+1. Use EventStore for processing
 1. Create suite of tests for the services
 
 ## Phase 2 feature list
