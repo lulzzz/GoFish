@@ -1,4 +1,13 @@
-<H1>Go Fish!</H1>
-
-@ViewBag.AccessToken
-@ViewBag.Content
+<html>
+    <head></head>
+    <body>
+        <H1>Go Fish!</H1>
+        <h2>Identity Server Connection Test:</h2>
+        @ViewBag.AccessToken
+        <br />
+        @ViewBag.Content
+        <hr>
+        <h2>REDIS Test:</h2>
+        @ViewBag.RedisString
+    </body>
+</html>

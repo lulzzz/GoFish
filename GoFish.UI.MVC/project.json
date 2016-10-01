@@ -12,7 +12,8 @@
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "IdentityModel": "2.0.0-rc3"
+    "IdentityModel": "2.0.0-rc3",
+    "StackExchange.Redis": "1.1.605"
   },
   "publishOptions": {
     "include": [

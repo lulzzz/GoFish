@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Mvc;
 
+using StackExchange.Redis;
+
 namespace GoFish.UI.MVC
 {
     public class HomeController : Controller
@@ -21,8 +23,24 @@ namespace GoFish.UI.MVC
 
             ViewBag.AccessToken = tokenResponse.AccessToken;
             ViewBag.Content = content;
+            ViewBag.RedisString = REDIS_Test();
 
             return View();
+        }
+
+        public string REDIS_Test()
+        {
+            ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("172.17.0.1:6379");
+            // ConnectionMultiplexer redis = ConnectionMultiplexer.ConnectAsync("gofish.redis:6379").Result;
+
+            IDatabase db = redis.GetDatabase();
+
+            string value = "abcdefg";
+            db.StringSet("mykey", value);
+
+            string value2 = db.StringGet("mykey");
+
+            return value2;
         }
     }
 }
