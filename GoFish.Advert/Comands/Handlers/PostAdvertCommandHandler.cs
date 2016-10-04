@@ -3,24 +3,20 @@ using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
 {
-    public class PostAdvertCommandHandler : ICommandHandler<PostAdvertCommand, Advert>
+    public class PostAdvertCommandHandler : AdvertCommandHandler<PostAdvertCommand>
     {
-        private readonly AdvertRepository _repository;
-        private readonly IMessageBroker<Advert> _messageBroker;
-
         public PostAdvertCommandHandler(AdvertRepository repository, IMessageBroker<Advert> messageBroker)
-        {
-            _repository = repository;
-            _messageBroker = messageBroker;
-        }
+            : base(repository, messageBroker) { }
 
-        public Advert Handle(PostAdvertCommand command)
+        public override void Handle(PostAdvertCommand command)
         {
-            var advert = _repository.Get(command.Id);
+            // Get the advert
+            var advert = Repository.Get(command.Id);
 
+            // pre-Validate
             if (advert == null)
             {
-                throw new AdvertNotFoundException($"Advert {command.Id} not found.");
+                throw new AdvertNotFoundException($"Advert not found: {command.Id}");
             }
 
             if (advert.Status != AdvertStatus.Created)
@@ -28,12 +24,14 @@ namespace GoFish.Advert
                 throw new InvalidOperationException("Can only post non-posted & non-published adverts.");
             }
 
+            // Act
             advert.Post();
 
-            _repository.Save(advert);
-            _messageBroker.Send("AdvertAdded", advert);
+            // TODO: Post Validate?  or throw exceptions from .Post() ?
 
-            return advert;
+            // Persist Events and Send Messages
+            Save(advert);
+            SendEventNotifications(advert);
         }
     }
 }

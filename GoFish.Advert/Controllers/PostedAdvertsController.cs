@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
@@ -18,16 +20,11 @@ namespace GoFish.Advert
         [HttpGet]
         public IActionResult Get()
         {
-            var adverts = _query.GetPosted();
-
-            if (adverts == null)
-                return NotFound();
-
-            return Ok(adverts);
+            return Ok(_query.GetPosted());
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(Guid id)
         {
             var advert = _query.Get(id);
 
@@ -38,24 +35,31 @@ namespace GoFish.Advert
         }
 
         [HttpPut("{id}")]
-        public IActionResult PostAdvert(int id)
+        public HttpResponseMessage PostAdvert(Guid id)
         {
             try
             {
-                var advert = _command.Send(new PostAdvertCommand(id));
-                return Created($"/api/{GetControllerName()}/{id}", advert);
+                _command.Send(new PostAdvertCommand(id));
+                return new HttpResponseMessage(HttpStatusCode.Accepted)
+                {
+                    ReasonPhrase = "Advert Posted for Publishing",
+
+                };
             }
             catch (AdvertNotFoundException)
             {
-                return NotFound();
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    ReasonPhrase = ex.Message
+                };
             }
             catch
             {
-                return NotFound(); // Better a 404 than a potential hack target.
+                return new HttpResponseMessage(HttpStatusCode.NotFound); // Better a 404 than a potential hack vector.
             }
         }
     }

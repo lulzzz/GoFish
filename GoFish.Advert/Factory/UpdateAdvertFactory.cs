@@ -1,9 +1,8 @@
-using System;
 using GoFish.Shared.Dto;
 
 namespace GoFish.Advert
 {
-    public class UpdateAdvertFactory : AdvertFactory
+    public class UpdateAdvertFactory : AdvertFactory, IAdvertFactory
     {
         private readonly Advert _oldState;
 
@@ -14,12 +13,8 @@ namespace GoFish.Advert
 
         public override Advert Build()
         {
-            if (_oldState.Status != AdvertStatus.Created)
-            {
-                throw new InvalidOperationException("Can only update Adverts in the 'Created' Status");
-            }
-
-            ResultingAdvert = Advert.Attach(_oldState.Id,
+            ResultingAdvert = new Advert(
+                _oldState.Id,
                 CatchType.FromId(Data.CatchTypeId),
                 Data.Quantity,
                 Data.Price,

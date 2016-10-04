@@ -1,8 +1,8 @@
 namespace GoFish.Advert
 {
-    public class UpdateAdvertCommand : ICommand<Advert>
+    public class CreateAdvertCommand : ICommand<Advert>
     {
-        public UpdateAdvertCommand(Advert advert)
+        public CreateAdvertCommand(Advert advert)
         {
             Advert = advert;
         }

@@ -2,7 +2,12 @@ using GoFish.Shared.Dto;
 
 namespace GoFish.Advert
 {
-    public abstract class AdvertFactory
+    public interface IAdvertFactory
+    {
+        Advert Build();
+    }
+
+    public abstract class AdvertFactory : IAdvertFactory
     {
         protected readonly AdvertDto Data;
         protected Advert ResultingAdvert;
@@ -14,10 +19,11 @@ namespace GoFish.Advert
 
         public abstract Advert Build();
 
-        public void TransferCommonProperties()
+        protected void TransferCommonProperties()
         {
             ResultingAdvert.Pitch = Data.Pitch;
             ResultingAdvert.FishingMethod = (FishingMethod)Data.FishingMethodId;
+            ResultingAdvert.Status = (AdvertStatus)Data.Status;
         }
     }
 }

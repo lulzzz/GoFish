@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +14,7 @@ namespace GoFish.Advert
             _dbContext = dbContext;
         }
 
-        internal Advert Get(int id)
+        internal Advert Get(Guid id)
         {
             return _dbContext.Adverts.AsNoTracking()
                 .Include(ct => ct.CatchType)
@@ -49,7 +50,7 @@ namespace GoFish.Advert
             // Check data - validation needs to go somewhere.
             // could DDD the Advert so it's always valid, or
             // put a load of checks here or a validator component
-            if (item.Id == 0)
+            if (item.Status == AdvertStatus.Creating)
             {
                 _dbContext.Adverts.Add(item);
                 _dbContext.CatchTypes.Attach(item.CatchType);

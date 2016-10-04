@@ -1,12 +1,14 @@
+using System;
+
 namespace GoFish.Advert
 {
     public class PostAdvertCommand : ICommand<Advert>
     {
-        public PostAdvertCommand(int id)
+        public PostAdvertCommand(Guid id)
         {
             Id = id;
         }
 
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
     }
 }

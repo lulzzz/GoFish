@@ -1,50 +1,79 @@
+using System;
+using System.Collections.Generic;
+
 namespace GoFish.Advert
 {
     public class Advert
     {
         private Advert() { }
 
-        private Advert(int id, CatchType catchType, int quantity, double price, Advertiser advertiser)
-            : this(catchType, quantity, price, advertiser)
+        public Advert(Guid id, CatchType catchType, int quantity, double price, Advertiser advertiser)
         {
             Id = id;
-        }
-
-        private Advert(CatchType catchType, int quantity, double price, Advertiser advertiser)
-        {
             CatchType = catchType;
             Quantity = quantity;
             Price = price;
             Advertiser = advertiser;
-            Status = AdvertStatus.Created;
+            Status = AdvertStatus.Creating;
         }
 
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
         public CatchType CatchType { get; private set; }
         public int Quantity { get; private set; }
         public double Price { get; private set; }
         public Advertiser Advertiser { get; private set; }
         public string Pitch { get; internal set; }
         public FishingMethod FishingMethod { get; internal set; }
-        public AdvertStatus Status { get; private set; }
+        public AdvertStatus Status { get; internal set; }
+        public IList<AdvertEvent> NewEvents { get; private set; }
+
+        public void Create()
+        {
+            if (Status != AdvertStatus.Creating)
+            {
+                throw new InvalidOperationException($"Cannot set status to Created from {Status.ToString()}");
+            }
+            Status = AdvertStatus.Created;
+            NewEvents.Add(new AdvertEvent(AdvertEventType.AdvertCreated ,Id, SerializeThis()));
+        }
 
         public void Post()
         {
             Status = AdvertStatus.Posted;
+            NewEvents.Add(new AdvertEvent(AdvertEventType.AdvertPosted ,Id, SerializeThis()));
         }
+
         public void Publish()
         {
             Status = AdvertStatus.Published;
+            NewEvents.Add(new AdvertEvent(AdvertEventType.AdvertPublished ,Id, SerializeThis()));
         }
 
-        internal static Advert Add(CatchType catchType, int quantity, double price, Advertiser advertiser)
+        private string SerializeThis()
         {
-            return new Advert(catchType, quantity, price, advertiser);
+            // used to store the object as a json blob in a key-value style event store
+            throw new NotImplementedException();
         }
+    }
 
-        internal static Advert Attach(int id, CatchType catchType, int quantity, double price, Advertiser advertiser)
+    public class AdvertEvent
+    {
+        public readonly Guid Id;
+        public readonly string EventName;
+        public readonly string Payload;
+
+        public AdvertEvent(AdvertEventType eventName, Guid id, string payload)
         {
-            return new Advert(id, catchType, quantity, price, advertiser);
+            Id = id;
+            EventName = eventName.ToString();
+            Payload = payload;
         }
+    }
+
+    public enum AdvertEventType
+    {
+        AdvertCreated,
+        AdvertPosted,
+        AdvertPublished
     }
 }

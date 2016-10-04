@@ -38,10 +38,11 @@ namespace GoFish.Advert.Migrations
                 name: "Adverts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                    Id = table.Column<Guid>(nullable: false),
                     AdvertiserId = table.Column<int>(nullable: true),
                     CatchTypeId = table.Column<int>(nullable: true),
+                    FishingMethod = table.Column<int>(nullable: false),
+                    Pitch = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),
                     Quantity = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false)

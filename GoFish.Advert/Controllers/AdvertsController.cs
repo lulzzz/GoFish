@@ -1,3 +1,4 @@
+using System;
 using GoFish.Shared.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,30 +7,25 @@ namespace GoFish.Advert
     [Route("api/[controller]")]
     public class AdvertsController : ApiBaseController
     {
-        private readonly ICommandMediator _command;
-        private readonly AdvertRepository _query;
+        private readonly ICommandMediator _commandMediator;
+        private readonly AdvertRepository _queryMediator;
 
         public AdvertsController(ICommandMediator commandMediator, AdvertRepository repository)
         {
-            _command = commandMediator;
-            _query = repository;
+            _commandMediator = commandMediator;
+            _queryMediator = repository;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            var adverts = _query.GetDraftAdverts();
-
-            if (adverts == null)
-                return NotFound();
-
-            return Ok(adverts);
+            return Ok(_queryMediator.GetDraftAdverts());
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(Guid id)
         {
-            var advert = _query.Get(id);
+            var advert = _queryMediator.Get(id);
 
             if (advert == null)
                 return NotFound();
@@ -37,45 +33,41 @@ namespace GoFish.Advert
             return Ok(advert);
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody]AdvertDto item)
-        {
-            if (!ModelState.IsValid) return BadRequest();
-
-            if (item.Id != 0)
-                return BadRequest("Incorrect use of POST to update an Item.  PUT to the resource instead.");
-
-            return SaveAdvert(new CreateAdvertFactory(item));
-        }
-
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]AdvertDto newState)
+        public IActionResult Put(Guid id, [FromBody]AdvertDto newState)
         {
             if (!ModelState.IsValid) return BadRequest();
 
-            if (id == 0)
-                return BadRequest("Incorrect use of PUT to add a new Item.  POST to the collection instead.");
+            if (newState.Id == Guid.Empty) newState.Id = id;
 
-            var advert = _query.Get(id);
-
-            if (advert == null)
-                return NotFound();
-
-            return SaveAdvert(new UpdateAdvertFactory(advert, newState));
-        }
-
-        private IActionResult SaveAdvert(AdvertFactory advertFactory)
-        {
-            Advert advert;
             try
             {
-                advert = _command.Send(new SaveAdvertCommand(advertFactory.Build()));
-                return Created($"/api/{GetControllerName()}/{advert.Id}", advert);
+                _commandMediator.Send(CreateCommandForState(newState));
+                return Created($"/api/{GetControllerName()}/{id}", _queryMediator.Get(id));
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
-                return BadRequest(ex.Message);
+                return BadRequest();
             }
+        }
+
+        private ICommand<Advert> CreateCommandForState(AdvertDto newState)
+        {
+            var existing = _queryMediator.Get(newState.Id);
+            var factory = CreateFactory(existing, newState);
+
+            if (existing == null)
+                return new CreateAdvertCommand(factory.Build());
+
+            return new UpdateAdvertCommand(factory.Build());
+        }
+
+        private IAdvertFactory CreateFactory(Advert existing, AdvertDto newState)
+        {
+            if (existing == null)
+                return new CreateAdvertFactory(newState);
+
+            return new UpdateAdvertFactory(existing, newState);
         }
     }
 }

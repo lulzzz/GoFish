@@ -17,7 +17,8 @@ namespace GoFish.Advert
             services.AddTransient<AdvertRepository, AdvertRepository>();
             services.AddTransient<ICommandMediator, CommandMediator>();
 
-            services.AddTransient<ICommandHandler<SaveAdvertCommand, Advert>, SaveAdvertCommandHandler>();
+            services.AddTransient<ICommandHandler<CreateAdvertCommand, Advert>, CreateAdvertCommandHandler>();
+            services.AddTransient<ICommandHandler<UpdateAdvertCommand, Advert>, UpdateAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<PostAdvertCommand, Advert>, PostAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<PublishAdvertCommand, Advert>, PublishAdvertCommandHandler>();
 
@@ -35,7 +36,8 @@ namespace GoFish.Advert
 
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                Authority = "http://172.17.0.1:5002",
+                Authority = "http://localhost:8083",
+                // Authority = "http://172.17.0.1:5002",
                 ScopeName = "api1",
 
                 RequireHttpsMetadata = false

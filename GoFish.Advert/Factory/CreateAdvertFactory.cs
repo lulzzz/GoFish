@@ -2,13 +2,14 @@ using GoFish.Shared.Dto;
 
 namespace GoFish.Advert
 {
-    public class CreateAdvertFactory : AdvertFactory
+    public class CreateAdvertFactory : AdvertFactory, IAdvertFactory
     {
         public CreateAdvertFactory(AdvertDto data) : base(data) { }
 
         public override Advert Build()
         {
-            ResultingAdvert = Advert.Add(
+            ResultingAdvert = new Advert(
+                Data.Id,
                 CatchType.FromId(Data.CatchTypeId),
                 Data.Quantity,
                 Data.Price,
