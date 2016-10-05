@@ -22,6 +22,7 @@ access to a market of buyers including:
 - Vagrant & VirtualBox
 - Ubuntu
 - IdentityServer4
+- EventStore
 
 ## Deployment options
 
@@ -107,8 +108,8 @@ To get up and running, ideally you will need:
 Notes:
 
 1. The virtualbox instance can be spun up using the Vagrantfile in the repo.
-1. Each service has it's own datastore (currently Sqlite in all of them)
-1. Events are published to REDIS to allow for event-sourcing
+1. Each service has it's own read-model datastore (currently Sqlite in all of them)
+1. The Advert service's Events are published to EventStore to allow for event-sourcing
 1. The Shopfront service may need splitting into smaller services
 
 ---
@@ -117,7 +118,6 @@ Notes:
 
 1. Ensure WebApi conforms to RMM level 4 to enable easy hypermedia navigation
 1. Create web-based UI (ReactJs or Angular2)
-1. Use EventStore for processing
 1. Create suite of tests for the services
 
 ## Phase 2 feature list
@@ -128,4 +128,4 @@ Notes:
 - Payment Processing
 - Shipping & Logistics
 - Merchants - Fishermen sell to merchants who then communicate with punters on their behalf
-- iOs / Android app consuming the same services
+- iOs / Android app consuming the same services (Xamarin?)
