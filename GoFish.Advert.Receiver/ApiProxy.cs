@@ -17,7 +17,7 @@ namespace GoFish.Advert.Receiver
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public void UpdateAdvert(int advertId)
+        public void UpdateAdvert(Guid advertId)
         {
             SetBearerToken();
 

@@ -2,23 +2,32 @@ using System;
 
 namespace GoFish.Advert
 {
-    public class UpdateAdvertCommandHandler : ICommandHandler<UpdateAdvertCommand, Advert>
+    public class UpdateAdvertCommandHandler : AdvertCommandHandler<UpdateAdvertCommand>
     {
-        private readonly AdvertRepository _repository;
+        private readonly IAdvertFactory _factory;
 
-        public UpdateAdvertCommandHandler(AdvertRepository repository)
+        public UpdateAdvertCommandHandler(AdvertRepository repository, IAdvertFactory factory) : base(repository)
         {
-            _repository = repository;
+            _factory = factory;
         }
 
-        public void Handle(UpdateAdvertCommand command)
+        public override void Handle(UpdateAdvertCommand command)
         {
-            if (command.Advert.Status != AdvertStatus.Created)
+            var advert = Repository.Get(command.Advert.Id);
+
+            if (advert.Status != AdvertStatus.Created)
             {
                 throw new InvalidOperationException("Can only update adverts in the 'Created' Status");
             }
 
-            _repository.Save(command.Advert);
+            // Do it!
+            var changedAdvert = _factory.Update(advert, command.Advert);
+
+            Repository.Save(changedAdvert);
+
+            // TODO: This can be done out of process by responding to the events/messages
+            // For now, the simplest thing is to refresh here but this needs changing.
+            RefreshReadModel(changedAdvert);
         }
     }
 }

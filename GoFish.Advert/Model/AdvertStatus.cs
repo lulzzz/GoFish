@@ -2,7 +2,7 @@ namespace GoFish.Advert
 {
     public enum AdvertStatus
     {
-        Creating = 1,
+        Unknown,
         Created,
         Posted,
         Published

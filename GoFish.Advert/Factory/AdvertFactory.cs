@@ -2,28 +2,29 @@ using GoFish.Shared.Dto;
 
 namespace GoFish.Advert
 {
-    public interface IAdvertFactory
+    public class AdvertFactory : IAdvertFactory
     {
-        Advert Build();
-    }
-
-    public abstract class AdvertFactory : IAdvertFactory
-    {
-        protected readonly AdvertDto Data;
-        protected Advert ResultingAdvert;
-
-        public AdvertFactory (AdvertDto data)
+        public Advert BuildNew(AdvertDto fromDto)
         {
-            Data = data;
+            var resultingAdvert = new Advert(
+                fromDto.Id,
+                CatchType.FromId(fromDto.CatchTypeId),
+                fromDto.Quantity,
+                fromDto.Price,
+                Advertiser.FromId(fromDto.AdvertiserId));
+
+            resultingAdvert.Pitch = fromDto.Pitch;
+            resultingAdvert.FishingMethod = (FishingMethod)fromDto.FishingMethod;
+
+            return resultingAdvert;
         }
 
-        public abstract Advert Build();
-
-        protected void TransferCommonProperties()
+        public Advert Update(Advert advert, AdvertDto fromDto)
         {
-            ResultingAdvert.Pitch = Data.Pitch;
-            ResultingAdvert.FishingMethod = (FishingMethod)Data.FishingMethodId;
-            // ResultingAdvert.Status = (AdvertStatus)Data.Status;
+            var resultingAdvert = BuildNew(fromDto);
+            resultingAdvert.Status = advert.Status;
+            resultingAdvert.Update();
+            return resultingAdvert;
         }
     }
 }

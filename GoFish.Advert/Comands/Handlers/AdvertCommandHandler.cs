@@ -47,6 +47,10 @@ namespace GoFish.Advert
                 {
                     Repository.SaveCreatedAdvert(advert);
                 }
+                if (item.GetType().Name == "AdvertUpdatedEvent")
+                {
+                    Repository.UpdateAdvert(advert);
+                }
                 if (item.GetType().Name == "AdvertPostedEvent")
                 {
                     Repository.DeleteCreatedAdvert(advert);

@@ -17,7 +17,13 @@ namespace GoFish.Shared.Messaging
             HostName = hostName;
         }
 
+        public MessagingClient(ILogger logger, string hostName, int port) : this(logger, hostName)
+        {
+            Port = port;
+        }
+
         public string HostName { get; set; } = "localhost";
+        public int Port { get; set; } = 5672;
 
         public void SendMessage(string queueName, byte[] payload)
         {
@@ -26,7 +32,7 @@ namespace GoFish.Shared.Messaging
                 var factory = new ConnectionFactory()
                 {
                     HostName = HostName,
-                    Port = 5672,
+                    Port = Port,
                     UserName = "gofish",
                     Password = "gofish",
                     VirtualHost = "/"

@@ -10,10 +10,8 @@ namespace GoFish.Advert
 
         public override void Handle(PublishAdvertCommand command)
         {
-            // load it
             var advert = Repository.Get(command.Id);
 
-            // pre validation
             if (advert == null)
             {
                 throw new AdvertNotFoundException($"Advert not found: {command.Id}");
@@ -21,18 +19,19 @@ namespace GoFish.Advert
 
             if (advert.Status != AdvertStatus.Posted)
             {
-                throw new InvalidOperationException("Can only publish posted adverts.");
+                throw new InvalidOperationException("Can only publish adverts in the posted status.");
             }
 
             // Do it!
             advert.Publish();
 
             SaveEvents(advert);
-            SendEventNotifications(advert);
 
             // TODO: This can be done out of process by responding to the events/messages
             // For now, the simplest thing is to refresh all (this needs changing!)
             RefreshReadModel(advert);
+
+            SendEventNotifications(advert);
         }
     }
 }

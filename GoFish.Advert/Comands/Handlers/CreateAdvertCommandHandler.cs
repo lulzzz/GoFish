@@ -1,27 +1,28 @@
-using System;
-
 namespace GoFish.Advert
 {
     public class CreateAdvertCommandHandler : AdvertCommandHandler<CreateAdvertCommand>
     {
-        public CreateAdvertCommandHandler(AdvertRepository repository) : base(repository) { }
+        private readonly IAdvertFactory _factory;
+
+        public CreateAdvertCommandHandler(AdvertRepository repository, IAdvertFactory factory) : base(repository)
+        {
+            _factory = factory;
+        }
 
         public override void Handle(CreateAdvertCommand command)
         {
-            // business rules
-            if (command.Advert.Status != AdvertStatus.Creating)
-            {
-                throw new InvalidOperationException("Can only create adverts currently in the 'Creating' status");
-            }
+            // construct an advert
+            var advert = _factory.BuildNew(command.Advert);
 
-            // Call the create method which can validate the invariants & generate events.
-            command.Advert.Create();
+            // Act
+            advert.Create();
 
-            SaveEvents(command.Advert);
+            // Save resulting events
+            SaveEvents(advert);
 
             // TODO: This can be done out of process by responding to the events/messages
-            // For now, the simplest thing is to refresh all (this needs changing!)
-            RefreshReadModel(command.Advert);
+            // For now, the simplest thing is to refresh here but this needs changing.
+            RefreshReadModel(advert);
         }
     }
 }

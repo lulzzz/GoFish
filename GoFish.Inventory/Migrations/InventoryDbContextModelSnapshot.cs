@@ -32,7 +32,7 @@ namespace GoFish.Inventory.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("AdvertId");
+                    b.Property<Guid>("AdvertId");
 
                     b.Property<int?>("OwnerId");
 

@@ -1,12 +1,14 @@
+using GoFish.Shared.Dto;
+
 namespace GoFish.Advert
 {
     public class CreateAdvertCommand : ICommand<Advert>
     {
-        public CreateAdvertCommand(Advert advert)
+        public readonly AdvertDto Advert;
+
+        public CreateAdvertCommand(AdvertDto advert)
         {
             Advert = advert;
         }
-
-        public Advert Advert { get; private set; }
     }
 }

@@ -5,6 +5,8 @@ using GoFish.Shared.Interface;
 using GoFish.Shared.Dto;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace GoFish.Advert
 {
@@ -22,11 +24,21 @@ namespace GoFish.Advert
         public void SendMessagesFor(Advert objectWithEventsToBroadcast)
         {
             var client = new MessagingClient(_logger, "172.17.0.1");
+
             var dto = _mapper.Map<Advert, AdvertDto>(objectWithEventsToBroadcast);
 
-            foreach (var message in objectWithEventsToBroadcast.History)
+            // whitelist of events that have associated MQ messages sent
+            var whiteList = new List<string>() {
+                "AdvertPostedEvent",
+                "AdvertPublishedEvent"
+            };
+
+            var whiteListed = objectWithEventsToBroadcast.GetChanges()
+                .Where(m => whiteList.Contains(m.GetType().Name));
+
+            foreach (var message in whiteListed)
             {
-       //         client.SendMessage(message.GetType().ToString().Replace("Event", string.Empty), Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
+                client.SendMessage(message.GetType().ToString().Replace("Event", string.Empty), Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
             }
         }
     }

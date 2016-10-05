@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using System.Net.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
@@ -35,31 +34,24 @@ namespace GoFish.Advert
         }
 
         [HttpPut("{id}")]
-        public HttpResponseMessage PublishAdvert(Guid id)
+        public IActionResult PublishAdvert(Guid id)
         {
             try
             {
                 _command.Send(new PublishAdvertCommand(id));
-                return new HttpResponseMessage(HttpStatusCode.Accepted)
-                {
-                    ReasonPhrase = "Advert Posted for Publishing",
-
-                };
+                return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (AdvertNotFoundException)
             {
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
+                return NotFound();
             }
             catch (InvalidOperationException ex)
             {
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    ReasonPhrase = ex.Message
-                };
+                return BadRequest(ex.Message);
             }
             catch
             {
-                return new HttpResponseMessage(HttpStatusCode.NotFound); // Better a 404 than a potential hack vector.
+                return NotFound(); // Better a 404 than a potential hack vector.
             }
         }
     }

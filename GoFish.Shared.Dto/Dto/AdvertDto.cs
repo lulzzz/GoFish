@@ -10,7 +10,7 @@ namespace GoFish.Shared.Dto
         public int AdvertiserId { get; set; }
         public int CatchTypeId { get; set; }
         public string Pitch { get; set; }
-        public int FishingMethodId { get; set; }
+        public int FishingMethod { get; set; }
         public AdvertStatus Status { get; set; } = AdvertStatus.Creating;
     }
 

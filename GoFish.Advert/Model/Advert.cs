@@ -16,12 +16,13 @@ namespace GoFish.Advert
             Quantity = quantity;
             Price = price;
             Advertiser = advertiser;
-            Status = AdvertStatus.Creating;
+            Status = AdvertStatus.Unknown;
         }
 
-        internal Advert(IEnumerable<AdvertEvent> evenory)
+        internal Advert(Guid id, IEnumerable<AdvertEvent> history)
         {
-            foreach (var item in evenory)
+            Id = id;
+            foreach (var item in history)
             {
                 Apply(item, false);
             }
@@ -39,12 +40,37 @@ namespace GoFish.Advert
 
         public void Create()
         {
-            if (Status != AdvertStatus.Creating)
+            if (Status != AdvertStatus.Unknown)
             {
-                throw new InvalidOperationException($"Cannot set status to Created from {Status.ToString()}");
+                throw new InvalidOperationException($"Cannot set advert status to Created from {Status.ToString()}");
             }
 
-            Apply(new AdvertCreatedEvent(Id, Advertiser, CatchType, Pitch), true);
+            Apply(new AdvertCreatedEvent(
+                Id,
+                CatchType,
+                Quantity,
+                Price,
+                Advertiser,
+                Pitch,
+                FishingMethod), isNewEvent: true);
+        }
+
+        public void Update() // All in one for now (or there's gonna be a whole load of set() methods to create!)
+        {
+            if (Status != AdvertStatus.Created)
+            {
+                throw new InvalidOperationException($"Cannot update the details of an advert in {Status.ToString()} status");
+            }
+
+            Apply(new AdvertUpdatedEvent(
+                Id,
+                CatchType,
+                Quantity,
+                Price,
+                Advertiser,
+                Pitch,
+                FishingMethod,
+                Status), isNewEvent: true);
         }
 
         public void Post()
@@ -62,21 +88,40 @@ namespace GoFish.Advert
             Apply(new AdvertPublishedEvent(Id), true);
         }
 
-        private void Apply(AdvertEvent @event, bool isNew)
+        private void Apply(AdvertEvent @event, bool isNewEvent)
         {
             ((dynamic)this).When((dynamic)@event);
-            if (isNew) _changes.Add(@event);
+            if (isNewEvent) _changes.Add(@event);
             History.Add(@event);
         }
 
-        public IList<AdvertEvent> GetChanges() { return _changes;  }
+        public IList<AdvertEvent> GetChanges()
+        {
+            return _changes;
+        }
 
         private void When(AdvertCreatedEvent e)
         {
-            Advertiser = e.Advertiser;
+            Id = e.Id;
             CatchType = e.CatchType;
+            Quantity = e.Quantity;
+            Price = e.Price;
+            Advertiser = e.Advertiser;
             Pitch = e.Pitch;
+            FishingMethod = e.FishingMethod;
             Status = AdvertStatus.Created;
+        }
+
+        private void When(AdvertUpdatedEvent e)
+        {
+            Id = e.Id;
+            CatchType = e.CatchType;
+            Quantity = e.Quantity;
+            Price = e.Price;
+            Advertiser = e.Advertiser;
+            Pitch = e.Pitch;
+            FishingMethod = e.FishingMethod;
+            Status = e.Status;
         }
 
         private void When(AdvertPostedEvent e)

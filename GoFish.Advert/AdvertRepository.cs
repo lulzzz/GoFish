@@ -22,20 +22,31 @@ namespace GoFish.Advert
 
         internal Advert Get(Guid id)
         {
-            var advertStream = _writeModel.ReadStreamEventsForwardAsync(
+            var advertStream =
+                _writeModel.ReadStreamEventsForwardAsync(
                     $"Advert-{id}",
                     StreamPosition.Start,
-                    999, // TODO: Load batches or implement snapshots
+                    999, // TODO: Load batches or implement snapshots - this is fine for the prototype
                     false
                 ).Result;
 
+            if (advertStream.Status != SliceReadStatus.Success)
+                return null; // TODO: Consider NULL object pattern
+
             var eventList = new List<AdvertEvent>();
+
             foreach (var e in advertStream.Events)
             {
+                // TODO: reflect this little lot
                 var d = Encoding.UTF8.GetString(e.Event.Data);
                 if (e.Event.EventType == "AdvertCreatedEvent")
                 {
                     var d2 = JsonConvert.DeserializeObject<AdvertCreatedEvent>(d);
+                    eventList.Add(d2);
+                }
+                if (e.Event.EventType == "AdvertUpdatedEvent")
+                {
+                    var d2 = JsonConvert.DeserializeObject<AdvertUpdatedEvent>(d);
                     eventList.Add(d2);
                 }
                 if (e.Event.EventType == "AdvertPostedEvent")
@@ -50,7 +61,14 @@ namespace GoFish.Advert
                 }
             }
 
-            return eventList.Count == 0 ? null : new Advert(eventList); // TODO: Consider NULL Object Pattern
+            return new Advert(id, eventList);
+        }
+
+        internal void UpdateAdvert(Advert advert)
+        {
+            _readModel.Adverts.Attach(advert);
+            _readModel.Entry(advert).State = EntityState.Modified;
+            _readModel.SaveChanges();
         }
 
         internal void SaveCreatedAdvert(Advert advert)
@@ -65,6 +83,7 @@ namespace GoFish.Advert
         {
             return _readModel.Adverts
                 .Include(ct => ct.CatchType)
+                .Include(a => a.Advertiser)
                 .Where(s => s.Status == AdvertStatus.Created);
         }
 
@@ -99,7 +118,7 @@ namespace GoFish.Advert
             return _readModel.Adverts
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
-                .Where(s => s.Status == AdvertStatus.Created);
+                .Where(s => s.Status == AdvertStatus.Published);
         }
 
         internal object GetPosted()
@@ -107,7 +126,7 @@ namespace GoFish.Advert
             return _readModel.Adverts
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
-                .Where(s => s.Status == AdvertStatus.Created);
+                .Where(s => s.Status == AdvertStatus.Posted);
         }
 
         internal void Save(Advert item)

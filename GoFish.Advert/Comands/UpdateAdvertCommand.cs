@@ -1,12 +1,14 @@
+using GoFish.Shared.Dto;
+
 namespace GoFish.Advert
 {
     public class UpdateAdvertCommand : ICommand<Advert>
     {
-        public UpdateAdvertCommand(Advert advert)
+        public UpdateAdvertCommand(AdvertDto advert)
         {
             Advert = advert;
         }
 
-        public Advert Advert { get; private set; }
+        public AdvertDto Advert { get; private set; }
     }
 }

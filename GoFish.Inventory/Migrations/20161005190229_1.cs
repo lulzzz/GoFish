@@ -40,7 +40,7 @@ namespace GoFish.Inventory.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Autoincrement", true),
-                    AdvertId = table.Column<int>(nullable: false),
+                    AdvertId = table.Column<Guid>(nullable: false),
                     OwnerId = table.Column<int>(nullable: true),
                     Price = table.Column<double>(nullable: false),
                     ProductTypeId = table.Column<int>(nullable: true),

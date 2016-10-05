@@ -1,4 +1,3 @@
-using System;
 using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
@@ -10,25 +9,23 @@ namespace GoFish.Advert
 
         public override void Handle(PostAdvertCommand command)
         {
-            // Get the advert
             var advert = Repository.Get(command.Id);
 
-            // pre-Validate
             if (advert == null)
             {
                 throw new AdvertNotFoundException($"Advert not found: {command.Id}");
             }
 
-            // Act
+            // Do it!
             advert.Post();
 
-            // Persist Events and Send Messages
             SaveEvents(advert);
-            SendEventNotifications(advert);
 
             // TODO: This can be done out of process by responding to the events/messages
-            // For now, the simplest thing is to refresh all (this needs changing!)
+            // For now, the simplest thing is to refresh here but this needs changing
             RefreshReadModel(advert);
+
+            SendEventNotifications(advert);
         }
     }
 }

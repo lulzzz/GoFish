@@ -38,6 +38,7 @@ namespace GoFish.Advert
         {
             if (!ModelState.IsValid) return BadRequest();
 
+            // Set the Id from the URI to the DTO to send on
             if (newState.Id == Guid.Empty) newState.Id = id;
 
             try
@@ -45,29 +46,18 @@ namespace GoFish.Advert
                 _commandMediator.Send(CreateCommandForState(newState));
                 return Created($"/api/{GetControllerName()}/{id}", _queryMediator.Get(id));
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
         private ICommand<Advert> CreateCommandForState(AdvertDto newState)
         {
-            var existing = _queryMediator.Get(newState.Id);
-            var factory = CreateFactory(existing, newState);
+            if (_queryMediator.Get(newState.Id) == null)
+                return new CreateAdvertCommand(newState);
 
-            if (existing == null)
-                return new CreateAdvertCommand(factory.Build());
-
-            return new UpdateAdvertCommand(factory.Build());
-        }
-
-        private IAdvertFactory CreateFactory(Advert existing, AdvertDto newState)
-        {
-            if (existing == null)
-                return new CreateAdvertFactory(newState);
-
-            return new UpdateAdvertFactory(existing, newState);
+            return new UpdateAdvertCommand(newState);
         }
     }
 }
