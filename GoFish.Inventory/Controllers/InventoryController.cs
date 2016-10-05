@@ -43,7 +43,7 @@ namespace GoFish.Inventory
             _context.SaveChanges();
 
             // Announce that inventory has been added
-            _messageBroker.Send(stockItem);
+            _messageBroker.SendMessagesFor(stockItem);
         }
     }
 }

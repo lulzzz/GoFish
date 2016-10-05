@@ -1,12 +1,14 @@
+using System;
+
 namespace GoFish.Advert
 {
     public class PublishAdvertCommand : ICommand<Advert>
     {
-        public PublishAdvertCommand(int id)
+        public readonly Guid Id;
+
+        public PublishAdvertCommand(Guid id)
         {
             Id = id;
         }
-
-        public int Id { get; private set; }
     }
 }

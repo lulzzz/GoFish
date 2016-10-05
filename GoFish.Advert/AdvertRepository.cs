@@ -1,36 +1,121 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using EventStore.ClientAPI;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace GoFish.Advert
 {
     public class AdvertRepository
     {
-        private readonly AdvertisingDbContext _dbContext;
+        private readonly AdvertisingDbContext _readModel;
+        private readonly IEventStoreConnection _writeModel;
 
-        public AdvertRepository(AdvertisingDbContext dbContext)
+        public AdvertRepository(AdvertisingDbContext readModel, IEventStoreConnection writeModel)
         {
-            _dbContext = dbContext;
+            _readModel = readModel;
+            _writeModel = writeModel;
+            _writeModel.ConnectAsync();
         }
 
-        internal Advert Get(int id)
+        internal Advert Get(Guid id)
         {
-            return _dbContext.Adverts.AsNoTracking()
-                .Include(ct => ct.CatchType)
-                .Include(a => a.Advertiser)
-                .SingleOrDefault(a => a.Id == id);
+            var advertStream =
+                _writeModel.ReadStreamEventsForwardAsync(
+                    $"Advert-{id}",
+                    StreamPosition.Start,
+                    999, // TODO: Load batches or implement snapshots - this is fine for the prototype
+                    false
+                ).Result;
+
+            if (advertStream.Status != SliceReadStatus.Success)
+                return null; // TODO: Consider NULL object pattern
+
+            var eventList = new List<AdvertEvent>();
+
+            foreach (var e in advertStream.Events)
+            {
+                // TODO: reflect this little lot
+                var d = Encoding.UTF8.GetString(e.Event.Data);
+                if (e.Event.EventType == "AdvertCreatedEvent")
+                {
+                    var d2 = JsonConvert.DeserializeObject<AdvertCreatedEvent>(d);
+                    eventList.Add(d2);
+                }
+                if (e.Event.EventType == "AdvertUpdatedEvent")
+                {
+                    var d2 = JsonConvert.DeserializeObject<AdvertUpdatedEvent>(d);
+                    eventList.Add(d2);
+                }
+                if (e.Event.EventType == "AdvertPostedEvent")
+                {
+                    var d2 = JsonConvert.DeserializeObject<AdvertPostedEvent>(d);
+                    eventList.Add(d2);
+                }
+                if (e.Event.EventType == "AdvertPublishedEvent")
+                {
+                    var d2 = JsonConvert.DeserializeObject<AdvertPublishedEvent>(d);
+                    eventList.Add(d2);
+                }
+            }
+
+            return new Advert(id, eventList);
+        }
+
+        internal void UpdateAdvert(Advert advert)
+        {
+            _readModel.Adverts.Attach(advert);
+            _readModel.Entry(advert).State = EntityState.Modified;
+            _readModel.SaveChanges();
+        }
+
+        internal void SaveCreatedAdvert(Advert advert)
+        {
+            _readModel.Adverts.Add(advert);
+            _readModel.Advertisers.Attach(advert.Advertiser);
+            _readModel.CatchTypes.Attach(advert.CatchType);
+            _readModel.SaveChanges();
         }
 
         internal IEnumerable<Advert> GetDraftAdverts()
         {
-            return _dbContext.Adverts
+            return _readModel.Adverts
                 .Include(ct => ct.CatchType)
+                .Include(a => a.Advertiser)
                 .Where(s => s.Status == AdvertStatus.Created);
+        }
+
+        internal void SavePostedAdvert(Advert advert)
+        {
+            _readModel.Adverts.Add(advert);
+            _readModel.SaveChanges();
+        }
+
+        internal void DeletePostedAdvert(Advert advert)
+        {
+            _readModel.Adverts.Attach(advert);
+            _readModel.Entry(advert).State = EntityState.Deleted;
+            _readModel.SaveChanges();
+        }
+
+        internal void SavePublishedAdvert(Advert advert)
+        {
+            _readModel.Adverts.Add(advert);
+            _readModel.SaveChanges();
+        }
+
+        internal void DeleteCreatedAdvert(Advert advert)
+        {
+            _readModel.Adverts.Attach(advert);
+            _readModel.Entry(advert).State = EntityState.Deleted;
+            _readModel.SaveChanges();
         }
 
         internal IEnumerable<Advert> GetPublished()
         {
-            return _dbContext.Adverts
+            return _readModel.Adverts
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
                 .Where(s => s.Status == AdvertStatus.Published);
@@ -38,32 +123,20 @@ namespace GoFish.Advert
 
         internal object GetPosted()
         {
-            return _dbContext.Adverts
+            return _readModel.Adverts
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
                 .Where(s => s.Status == AdvertStatus.Posted);
         }
 
-        internal Advert Save(Advert item)
+        internal void Save(Advert item)
         {
-            // Check data - validation needs to go somewhere.
-            // could DDD the Advert so it's always valid, or
-            // put a load of checks here or a validator component
-            if (item.Id == 0)
+            foreach (var e in item.GetChanges())
             {
-                _dbContext.Adverts.Add(item);
-                _dbContext.CatchTypes.Attach(item.CatchType);
-                _dbContext.Advertisers.Attach(item.Advertiser);
+                var p = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(e));
+                var ev = new EventData(Guid.NewGuid(), e.GetType().Name, true, p, null);
+                _writeModel.AppendToStreamAsync($"Advert-{item.Id}", ExpectedVersion.Any, ev).Wait();
             }
-            else
-            {
-                _dbContext.Adverts.Attach(item);
-                _dbContext.Entry(item).State = EntityState.Modified;
-            }
-
-            _dbContext.SaveChanges();
-
-            return Get(item.Id);
         }
     }
 }

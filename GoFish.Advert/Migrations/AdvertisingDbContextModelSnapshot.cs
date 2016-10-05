@@ -17,7 +17,7 @@ namespace GoFish.Advert.Migrations
 
             modelBuilder.Entity("GoFish.Advert.Advert", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int?>("AdvertiserId");

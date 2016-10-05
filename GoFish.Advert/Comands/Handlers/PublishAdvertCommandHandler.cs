@@ -3,38 +3,35 @@ using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
 {
-    public class PublishAdvertCommandHandler : ICommandHandler<PublishAdvertCommand, Advert>
+    public class PublishAdvertCommandHandler : AdvertCommandHandler<PublishAdvertCommand>
     {
-        private readonly AdvertRepository _repository;
-        private readonly IMessageBroker<Advert> _messageBroker;
-
         public PublishAdvertCommandHandler(AdvertRepository repository, IMessageBroker<Advert> messageBroker)
-        {
-            _repository = repository;
-            _messageBroker = messageBroker;
-        }
+            : base(repository, messageBroker) { }
 
-        public Advert Handle(PublishAdvertCommand command)
+        public override void Handle(PublishAdvertCommand command)
         {
-            var advert = _repository.Get(command.Id);
+            var advert = Repository.Get(command.Id);
 
             if (advert == null)
             {
-                throw new AdvertNotFoundException($"Advert {command.Id} not found.");
+                throw new AdvertNotFoundException($"Advert not found: {command.Id}");
             }
 
             if (advert.Status != AdvertStatus.Posted)
             {
-                throw new InvalidOperationException("Can only publish posted adverts.");
+                throw new InvalidOperationException("Can only publish adverts in the posted status.");
             }
 
+            // Do it!
             advert.Publish();
 
-            _repository.Save(advert);
+            SaveEvents(advert);
 
-            _messageBroker.Send("AdvertPublished", advert);
+            // TODO: This can be done out of process by responding to the events/messages
+            // For now, the simplest thing is to refresh all (this needs changing!)
+            RefreshReadModel(advert);
 
-            return advert;
+            SendEventNotifications(advert);
         }
     }
 }

@@ -19,7 +19,9 @@
     "GoFish.Shared.Messaging": "1.0.0-*",
     "GoFish.Shared.Dto": "1.0.0-*",
     "RabbitMQ.Client": "4.1.0",
-    "AutoMapper": "5.1.1"
+    "AutoMapper": "5.1.1",
+    "StackExchange.Redis": "1.1.605",
+    "EventStore.ClientApi.NetCore": "0.0.1-alpha"
   },
   "frameworks": {
     "netcoreapp1.0": {

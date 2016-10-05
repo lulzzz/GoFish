@@ -2,11 +2,11 @@ using System;
 
 namespace GoFish.Advert
 {
-    public class PostAdvertCommand : ICommand<Advert>
+    public abstract class AdvertEvent
     {
         public readonly Guid Id;
 
-        public PostAdvertCommand(Guid id)
+        public AdvertEvent(Guid id)
         {
             Id = id;
         }

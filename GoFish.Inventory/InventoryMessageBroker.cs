@@ -19,12 +19,12 @@ namespace GoFish.Inventory
             _mapper = mapper;
         }
 
-        public void Send(StockItem objectToSend)
+        public void SendMessagesFor(StockItem objectToSend)
         {
             var client = new MessagingClient(_logger, "172.17.0.1");
             var dto = _mapper.Map<StockItem, StockItemDto>(objectToSend);
 
-            client.SendMessage("InventoryAdded", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
+            client.SendMessage("GoFish.Inventory.InventoryAdded", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
         }
     }
 }

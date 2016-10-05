@@ -1,4 +1,6 @@
+using System;
 using AutoMapper;
+using EventStore.ClientAPI;
 using GoFish.Shared.Dto;
 using GoFish.Shared.Interface;
 using Microsoft.AspNetCore.Builder;
@@ -16,8 +18,10 @@ namespace GoFish.Advert
             services.AddTransient<IMessageBroker<Advert>, AdvertMessageBroker>();
             services.AddTransient<AdvertRepository, AdvertRepository>();
             services.AddTransient<ICommandMediator, CommandMediator>();
+            services.AddTransient<IAdvertFactory, AdvertFactory>();
 
-            services.AddTransient<ICommandHandler<SaveAdvertCommand, Advert>, SaveAdvertCommandHandler>();
+            services.AddTransient<ICommandHandler<CreateAdvertCommand, Advert>, CreateAdvertCommandHandler>();
+            services.AddTransient<ICommandHandler<UpdateAdvertCommand, Advert>, UpdateAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<PostAdvertCommand, Advert>, PostAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<PublishAdvertCommand, Advert>, PublishAdvertCommandHandler>();
 
@@ -27,6 +31,7 @@ namespace GoFish.Advert
             });
 
             services.AddSingleton<IMapper>(sp => config.CreateMapper());
+            services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@172.17.0.1:1113")));
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)

@@ -1,3 +1,5 @@
+using System;
+
 namespace GoFish.Shared.Dto
 {
     public class StockItemDto
@@ -6,6 +8,6 @@ namespace GoFish.Shared.Dto
         public int Quantity { get; set; }
         public double Price { get; set; }
         public int OwnerId { get; set; }
-        public int AdvertId { get; set; }
+        public Guid AdvertId { get; set; }
     }
 }

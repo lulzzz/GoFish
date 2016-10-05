@@ -12,7 +12,7 @@ namespace GoFish.Advert.Receiver
         public static void Main(string[] args)
         {
             const string HOST_NAME = "172.17.0.1";
-            const string QUEUE_NAME = "InventoryAdded";
+            const string QUEUE_NAME = "GoFish.Inventory.InventoryAdded";
 
             try
             {

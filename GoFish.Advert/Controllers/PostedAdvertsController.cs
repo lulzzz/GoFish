@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
@@ -18,16 +19,11 @@ namespace GoFish.Advert
         [HttpGet]
         public IActionResult Get()
         {
-            var adverts = _query.GetPosted();
-
-            if (adverts == null)
-                return NotFound();
-
-            return Ok(adverts);
+            return Ok(_query.GetPosted());
         }
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(Guid id)
         {
             var advert = _query.Get(id);
 
@@ -38,12 +34,12 @@ namespace GoFish.Advert
         }
 
         [HttpPut("{id}")]
-        public IActionResult PostAdvert(int id)
+        public IActionResult PostAdvert(Guid id)
         {
             try
             {
-                var advert = _command.Send(new PostAdvertCommand(id));
-                return Created($"/api/{GetControllerName()}/{id}", advert);
+                _command.Send(new PostAdvertCommand(id));
+                return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (AdvertNotFoundException)
             {
@@ -55,7 +51,7 @@ namespace GoFish.Advert
             }
             catch
             {
-                return NotFound(); // Better a 404 than a potential hack target.
+                return NotFound(); // Better a 404 than a potential hack vector.
             }
         }
     }

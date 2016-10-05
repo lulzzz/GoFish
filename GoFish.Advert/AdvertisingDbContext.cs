@@ -13,6 +13,12 @@ namespace GoFish.Advert
         {
             options.UseSqlite("Filename=./Advert_Database.db");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Advert>()
+                .Ignore(b => b.History);
+        }
     }
 
     internal static class AdvertisingDbContextExtensions
