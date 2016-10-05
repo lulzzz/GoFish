@@ -17,7 +17,7 @@ namespace GoFish.Advert
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Advert>()
-                .Ignore(b => b.NewEvents);
+                .Ignore(b => b.History);
         }
     }
 

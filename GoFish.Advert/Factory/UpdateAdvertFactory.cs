@@ -20,6 +20,8 @@ namespace GoFish.Advert
                 Data.Price,
                 Advertiser.FromId(Data.AdvertiserId));
 
+            ResultingAdvert.Status = (AdvertStatus)Data.Status;
+
             TransferCommonProperties();
 
             return ResultingAdvert;

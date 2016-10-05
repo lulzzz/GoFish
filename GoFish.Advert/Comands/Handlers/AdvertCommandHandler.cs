@@ -22,9 +22,9 @@ namespace GoFish.Advert
 
         public abstract void Handle(T command);
 
-        protected void Save(Advert advert)
+        protected void SaveEvents(Advert advert)
         {
-            Repository.Save(advert); // will save events rather than state soon!
+            Repository.Save(advert);
         }
 
         protected void SendEventNotifications(Advert advert)
@@ -36,6 +36,27 @@ namespace GoFish.Advert
             else
             {
                 throw new InvalidOperationException("An Attempt was made to send messages with no instance of a Message Handler.");
+            }
+        }
+
+        protected void RefreshReadModel(Advert advert)
+        {
+            foreach (var item in advert.GetChanges())
+            {
+                if (item.GetType().Name == "AdvertCreatedEvent")
+                {
+                    Repository.SaveCreatedAdvert(advert);
+                }
+                if (item.GetType().Name == "AdvertPostedEvent")
+                {
+                    Repository.DeleteCreatedAdvert(advert);
+                    Repository.SavePostedAdvert(advert);
+                }
+                if (item.GetType().Name == "AdvertPublishedEvent")
+                {
+                    Repository.DeletePostedAdvert(advert);
+                    Repository.SavePublishedAdvert(advert);
+                }
             }
         }
     }

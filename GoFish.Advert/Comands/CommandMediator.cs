@@ -5,7 +5,7 @@ namespace GoFish.Advert
 {
     public interface ICommandMediator
     {
-        TResult Send<TResult>(ICommand<TResult> query);
+        void Send<TResult>(ICommand<TResult> query);
     }
 
     public class CommandMediator : ICommandMediator
@@ -17,14 +17,13 @@ namespace GoFish.Advert
             _serviceProvider = serviceProvider;
         }
 
-        public TResult Send<TResult>(ICommand<TResult> command)
+        public void Send<TResult>(ICommand<TResult> command)
         {
             var handler = GetHandler(command);
 
-            TResult result;
             try
             {
-                result = (TResult)handler
+                handler
                     .GetType()
                     .GetMethod("Handle")
                     .Invoke(handler, new object[] { command });
@@ -42,8 +41,6 @@ namespace GoFish.Advert
             {
                 throw;
             }
-
-            return result;
         }
 
         private object GetHandler<TResult>(ICommand<TResult> query)

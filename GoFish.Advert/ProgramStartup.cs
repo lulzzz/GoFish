@@ -1,4 +1,6 @@
+using System;
 using AutoMapper;
+using EventStore.ClientAPI;
 using GoFish.Shared.Dto;
 using GoFish.Shared.Interface;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +30,7 @@ namespace GoFish.Advert
             });
 
             services.AddSingleton<IMapper>(sp => config.CreateMapper());
+            services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113")));
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)

@@ -5,9 +5,11 @@ namespace GoFish.Advert
 {
     public class Advert
     {
+        private IList<AdvertEvent> _changes = new List<AdvertEvent>();
+
         private Advert() { }
 
-        public Advert(Guid id, CatchType catchType, int quantity, double price, Advertiser advertiser)
+        internal Advert(Guid id, CatchType catchType, int quantity, double price, Advertiser advertiser)
         {
             Id = id;
             CatchType = catchType;
@@ -17,15 +19,23 @@ namespace GoFish.Advert
             Status = AdvertStatus.Creating;
         }
 
+        internal Advert(IEnumerable<AdvertEvent> evenory)
+        {
+            foreach (var item in evenory)
+            {
+                Apply(item, false);
+            }
+        }
+
         public Guid Id { get; private set; }
         public CatchType CatchType { get; private set; }
         public int Quantity { get; private set; }
         public double Price { get; private set; }
         public Advertiser Advertiser { get; private set; }
+        public IList<AdvertEvent> History { get; } = new List<AdvertEvent>();
         public string Pitch { get; internal set; }
         public FishingMethod FishingMethod { get; internal set; }
         public AdvertStatus Status { get; internal set; }
-        public IList<AdvertEvent> NewEvents { get; private set; }
 
         public void Create()
         {
@@ -33,47 +43,50 @@ namespace GoFish.Advert
             {
                 throw new InvalidOperationException($"Cannot set status to Created from {Status.ToString()}");
             }
-            Status = AdvertStatus.Created;
-            NewEvents.Add(new AdvertEvent(AdvertEventType.AdvertCreated ,Id, SerializeThis()));
+
+            Apply(new AdvertCreatedEvent(Id, Advertiser, CatchType, Pitch), true);
         }
 
         public void Post()
         {
-            Status = AdvertStatus.Posted;
-            NewEvents.Add(new AdvertEvent(AdvertEventType.AdvertPosted ,Id, SerializeThis()));
+            if (Status != AdvertStatus.Created)
+            {
+                throw new InvalidOperationException("Can only post non-posted & non-published adverts.");
+            }
+
+            Apply(new AdvertPostedEvent(Id), true);
         }
 
         public void Publish()
         {
+            Apply(new AdvertPublishedEvent(Id), true);
+        }
+
+        private void Apply(AdvertEvent @event, bool isNew)
+        {
+            ((dynamic)this).When((dynamic)@event);
+            if (isNew) _changes.Add(@event);
+            History.Add(@event);
+        }
+
+        public IList<AdvertEvent> GetChanges() { return _changes;  }
+
+        private void When(AdvertCreatedEvent e)
+        {
+            Advertiser = e.Advertiser;
+            CatchType = e.CatchType;
+            Pitch = e.Pitch;
+            Status = AdvertStatus.Created;
+        }
+
+        private void When(AdvertPostedEvent e)
+        {
+            Status = AdvertStatus.Posted;
+        }
+
+        private void When(AdvertPublishedEvent e)
+        {
             Status = AdvertStatus.Published;
-            NewEvents.Add(new AdvertEvent(AdvertEventType.AdvertPublished ,Id, SerializeThis()));
         }
-
-        private string SerializeThis()
-        {
-            // used to store the object as a json blob in a key-value style event store
-            throw new NotImplementedException();
-        }
-    }
-
-    public class AdvertEvent
-    {
-        public readonly Guid Id;
-        public readonly string EventName;
-        public readonly string Payload;
-
-        public AdvertEvent(AdvertEventType eventName, Guid id, string payload)
-        {
-            Id = id;
-            EventName = eventName.ToString();
-            Payload = payload;
-        }
-    }
-
-    public enum AdvertEventType
-    {
-        AdvertCreated,
-        AdvertPosted,
-        AdvertPublished
     }
 }

@@ -23,7 +23,7 @@ namespace GoFish.Advert
         {
             ResultingAdvert.Pitch = Data.Pitch;
             ResultingAdvert.FishingMethod = (FishingMethod)Data.FishingMethodId;
-            ResultingAdvert.Status = (AdvertStatus)Data.Status;
+            // ResultingAdvert.Status = (AdvertStatus)Data.Status;
         }
     }
 }

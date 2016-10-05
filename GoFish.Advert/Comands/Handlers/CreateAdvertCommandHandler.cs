@@ -17,7 +17,11 @@ namespace GoFish.Advert
             // Call the create method which can validate the invariants & generate events.
             command.Advert.Create();
 
-            Save(command.Advert); // TODO: Save the "Created" event with the data payload
+            SaveEvents(command.Advert);
+
+            // TODO: This can be done out of process by responding to the events/messages
+            // For now, the simplest thing is to refresh all (this needs changing!)
+            RefreshReadModel(command.Advert);
         }
     }
 }

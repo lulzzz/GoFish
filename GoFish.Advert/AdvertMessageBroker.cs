@@ -24,9 +24,9 @@ namespace GoFish.Advert
             var client = new MessagingClient(_logger, "172.17.0.1");
             var dto = _mapper.Map<Advert, AdvertDto>(objectWithEventsToBroadcast);
 
-            foreach (var message in objectWithEventsToBroadcast.NewEvents)
+            foreach (var message in objectWithEventsToBroadcast.History)
             {
-                client.SendMessage(message.EventName.ToString(), Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
+       //         client.SendMessage(message.GetType().ToString().Replace("Event", string.Empty), Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
             }
         }
     }

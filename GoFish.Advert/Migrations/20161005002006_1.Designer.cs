@@ -8,7 +8,7 @@ using GoFish.Advert;
 namespace GoFish.Advert.Migrations
 {
     [DbContext(typeof(AdvertisingDbContext))]
-    [Migration("20161003233604_1")]
+    [Migration("20161005002006_1")]
     partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

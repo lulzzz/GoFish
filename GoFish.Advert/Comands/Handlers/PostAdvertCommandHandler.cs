@@ -19,19 +19,16 @@ namespace GoFish.Advert
                 throw new AdvertNotFoundException($"Advert not found: {command.Id}");
             }
 
-            if (advert.Status != AdvertStatus.Created)
-            {
-                throw new InvalidOperationException("Can only post non-posted & non-published adverts.");
-            }
-
             // Act
             advert.Post();
 
-            // TODO: Post Validate?  or throw exceptions from .Post() ?
-
             // Persist Events and Send Messages
-            Save(advert);
+            SaveEvents(advert);
             SendEventNotifications(advert);
+
+            // TODO: This can be done out of process by responding to the events/messages
+            // For now, the simplest thing is to refresh all (this needs changing!)
+            RefreshReadModel(advert);
         }
     }
 }
