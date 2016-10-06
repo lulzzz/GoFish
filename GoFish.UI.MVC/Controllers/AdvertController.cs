@@ -20,7 +20,7 @@ namespace GoFish.UI.MVC
             dto.Id = System.Guid.NewGuid();
             dto.AdvertiserId = 1;
             dto.CatchTypeId = 1;
-            dto.FishingMethodId = 1;
+            dto.FishingMethod = 1;
             dto.Pitch = "Lobster Beauties";
             dto.Price = 100.00;
             dto.Quantity = 5;
