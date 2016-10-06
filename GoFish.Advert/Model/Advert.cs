@@ -88,6 +88,11 @@ namespace GoFish.Advert
             Apply(new AdvertPublishedEvent(Id), true);
         }
 
+        public void Withdraw()
+        {
+            Apply(new AdvertWithdrawnEvent(Id), true);
+        }
+
         private void Apply(AdvertEvent @event, bool isNewEvent)
         {
             ((dynamic)this).When((dynamic)@event);
@@ -132,6 +137,11 @@ namespace GoFish.Advert
         private void When(AdvertPublishedEvent e)
         {
             Status = AdvertStatus.Published;
+        }
+
+        private void When(AdvertWithdrawnEvent e)
+        {
+            Status = AdvertStatus.Withdrawn;
         }
     }
 }

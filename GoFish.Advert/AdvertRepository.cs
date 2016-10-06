@@ -64,6 +64,14 @@ namespace GoFish.Advert
             return new Advert(id, eventList);
         }
 
+        internal void SaveCreatedAdvert(Advert advert)
+        {
+            _readModel.Adverts.Add(advert);
+            _readModel.Advertisers.Attach(advert.Advertiser);
+            _readModel.CatchTypes.Attach(advert.CatchType);
+            _readModel.SaveChanges();
+        }
+
         internal void UpdateAdvert(Advert advert)
         {
             _readModel.Adverts.Attach(advert);
@@ -71,11 +79,16 @@ namespace GoFish.Advert
             _readModel.SaveChanges();
         }
 
-        internal void SaveCreatedAdvert(Advert advert)
+        internal void SaveAdvert(Advert advert)
         {
             _readModel.Adverts.Add(advert);
-            _readModel.Advertisers.Attach(advert.Advertiser);
-            _readModel.CatchTypes.Attach(advert.CatchType);
+            _readModel.SaveChanges();
+        }
+
+        internal void DeleteAdvert(Advert advert)
+        {
+            _readModel.Adverts.Attach(advert);
+            _readModel.Entry(advert).State = EntityState.Deleted;
             _readModel.SaveChanges();
         }
 
@@ -85,32 +98,6 @@ namespace GoFish.Advert
                 .Include(ct => ct.CatchType)
                 .Include(a => a.Advertiser)
                 .Where(s => s.Status == AdvertStatus.Created);
-        }
-
-        internal void SavePostedAdvert(Advert advert)
-        {
-            _readModel.Adverts.Add(advert);
-            _readModel.SaveChanges();
-        }
-
-        internal void DeletePostedAdvert(Advert advert)
-        {
-            _readModel.Adverts.Attach(advert);
-            _readModel.Entry(advert).State = EntityState.Deleted;
-            _readModel.SaveChanges();
-        }
-
-        internal void SavePublishedAdvert(Advert advert)
-        {
-            _readModel.Adverts.Add(advert);
-            _readModel.SaveChanges();
-        }
-
-        internal void DeleteCreatedAdvert(Advert advert)
-        {
-            _readModel.Adverts.Attach(advert);
-            _readModel.Entry(advert).State = EntityState.Deleted;
-            _readModel.SaveChanges();
         }
 
         internal IEnumerable<Advert> GetPublished()
@@ -127,6 +114,14 @@ namespace GoFish.Advert
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
                 .Where(s => s.Status == AdvertStatus.Posted);
+        }
+
+        public object GetWithdrawn()
+        {
+            return _readModel.Adverts
+                .Include(a => a.Advertiser)
+                .Include(ct => ct.CatchType)
+                .Where(s => s.Status == AdvertStatus.Withdrawn);
         }
 
         internal void Save(Advert item)

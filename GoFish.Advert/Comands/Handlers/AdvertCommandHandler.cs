@@ -51,15 +51,12 @@ namespace GoFish.Advert
                 {
                     Repository.UpdateAdvert(advert);
                 }
-                if (item.GetType().Name == "AdvertPostedEvent")
+                if (item.GetType().Name == "AdvertPostedEvent"
+                || item.GetType().Name == "AdvertPublishedEvent"
+                || item.GetType().Name == "AdvertWithdrawnEvent")
                 {
-                    Repository.DeleteCreatedAdvert(advert);
-                    Repository.SavePostedAdvert(advert);
-                }
-                if (item.GetType().Name == "AdvertPublishedEvent")
-                {
-                    Repository.DeletePostedAdvert(advert);
-                    Repository.SavePublishedAdvert(advert);
+                    Repository.DeleteAdvert(advert);
+                    Repository.SaveAdvert(advert);
                 }
             }
         }

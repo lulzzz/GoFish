@@ -5,6 +5,7 @@ namespace GoFish.Advert
         Unknown,
         Created,
         Posted,
-        Published
+        Published,
+        Withdrawn
     }
 }

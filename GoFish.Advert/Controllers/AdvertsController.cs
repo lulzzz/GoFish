@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using GoFish.Shared.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -45,6 +46,21 @@ namespace GoFish.Advert
             {
                 _commandMediator.Send(CreateCommandForState(newState));
                 return Created($"/api/{GetControllerName()}/{id}", _queryMediator.Get(id));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Withdraw(Guid id)
+        {
+            if (!ModelState.IsValid) return BadRequest();
+            try
+            {
+                _commandMediator.Send(new WithdrawAdvertCommand(id));
+                return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (System.Exception ex)
             {
