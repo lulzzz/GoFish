@@ -24,6 +24,7 @@ namespace GoFish.Advert
             services.AddTransient<ICommandHandler<UpdateAdvertCommand, Advert>, UpdateAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<PostAdvertCommand, Advert>, PostAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<PublishAdvertCommand, Advert>, PublishAdvertCommandHandler>();
+            services.AddTransient<ICommandHandler<WithdrawAdvertCommand, Advert>, WithdrawAdvertCommandHandler>();
 
             var config = new MapperConfiguration(cfg =>
             {
@@ -31,7 +32,8 @@ namespace GoFish.Advert
             });
 
             services.AddSingleton<IMapper>(sp => config.CreateMapper());
-            services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@172.17.0.1:1113")));
+            // services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@172.17.0.1:1113")));
+            services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113")));
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -40,7 +42,8 @@ namespace GoFish.Advert
 
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                Authority = "http://172.17.0.1:5002",
+                Authority = "http://localhost:8083",
+                // Authority = "http://172.17.0.1:5002",
                 ScopeName = "api1",
 
                 RequireHttpsMetadata = false
