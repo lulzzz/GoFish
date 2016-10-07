@@ -44,10 +44,10 @@ namespace GoFish.Inventory.Receiver
                             var api = new ApiProxy();
                             api.UpdateInventory(new StockItemDto()
                             {
-                                ProductTypeId = advert.CatchTypeId,
-                                Quantity = advert.Quantity,
-                                Price = advert.Price,
-                                OwnerId = advert.AdvertiserId,
+                                ProductTypeId = (int)advert.CatchTypeId,
+                                Quantity = (int)advert.Quantity,
+                                Price = (double)advert.Price,
+                                OwnerId = (int)advert.AdvertiserId,
                                 AdvertId = advert.Id
                             });
                         };
