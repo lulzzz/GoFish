@@ -19,7 +19,7 @@ namespace GoFish.Advert
             return Ok(_query.GetWithdrawn());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:Guid}")]
         public IActionResult Get(Guid id)
         {
             var advert = _query.Get(id);

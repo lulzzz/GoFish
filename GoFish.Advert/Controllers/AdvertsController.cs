@@ -44,11 +44,9 @@ namespace GoFish.Advert
             return Ok(advert);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:Guid}")]
         public IActionResult Put(Guid id, [FromBody]AdvertDto newState)
         {
-            if (!ModelState.IsValid) return BadRequest();
-
             // Set the Id from the URI to the DTO to send on
             if (newState.Id == Guid.Empty) newState.Id = id;
 
@@ -63,10 +61,9 @@ namespace GoFish.Advert
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:Guid}")]
         public IActionResult Withdraw(Guid id)
         {
-            if (!ModelState.IsValid) return BadRequest();
             try
             {
                 _commandMediator.Send(new WithdrawAdvertCommand(id));

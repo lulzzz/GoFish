@@ -1,16 +1,36 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace GoFish.Shared.Dto
 {
     public class AdvertDto
     {
         public Guid Id { get; set; }
-        public int Quantity { get; set; }
-        public double Price { get; set; }
-        public int AdvertiserId { get; set; }
-        public int CatchTypeId { get; set; }
+
+        [Required]
+        [Range(1, Int32.MaxValue)]
+        public int? Quantity { get; set; }
+
+        [Required]
+        [Range(0, Double.MaxValue)]
+        public double? Price { get; set; }
+
+        [Required]
+        [Range(1, Int32.MaxValue)] // TODO: See GitHub Issue #4
+        public int? AdvertiserId { get; set; }
+
+        [Required]
+        [Range(1, Int32.MaxValue)] // TODO: This'll probably end up being something else, Guid? PK from DataSource?
+        public int? CatchTypeId { get; set; }
+
+        [Required(AllowEmptyStrings = false)]
+        [StringLengthAttribute(200, MinimumLength = 4)] // "fish".Length!
         public string Pitch { get; set; }
-        public int FishingMethod { get; set; }
+
+        [Required]
+        [Range(1, Int32.MaxValue)] // TODO: This'll probably end up being something else, Guid? Enum?
+        public int? FishingMethod { get; set; }
+
         public AdvertStatus Status { get; set; } = AdvertStatus.Creating;
     }
 

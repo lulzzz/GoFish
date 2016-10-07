@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using EventStore.ClientAPI;
@@ -127,7 +128,7 @@ namespace GoFish.Advert
         internal IEnumerable<Advert> Search(AdvertSearchOptions options)
         {
             if (options.Status?.ToLower() != "active" && options.Status?.ToLower() != "inactive")
-                throw new ArgumentOutOfRangeException("Please check your querystring for the 'Status' parameter.");
+                throw new ArgumentOutOfRangeException("Status");
 
             Func<Advert, bool> filter;
 
@@ -162,6 +163,7 @@ namespace GoFish.Advert
 
     public class AdvertSearchOptions
     {
+        [Required(AllowEmptyStrings = false)]
         public string Status { get; set; }
     }
 }

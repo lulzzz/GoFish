@@ -22,7 +22,7 @@ namespace GoFish.Advert
             return Ok(_query.GetPosted());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:Guid}")]
         public IActionResult Get(Guid id)
         {
             var advert = _query.Get(id);
@@ -33,7 +33,7 @@ namespace GoFish.Advert
             return Ok(advert);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id:Guid}")]
         public IActionResult PostAdvert(Guid id)
         {
             try

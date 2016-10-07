@@ -8,10 +8,10 @@ namespace GoFish.Advert
         {
             var resultingAdvert = new Advert(
                 fromDto.Id,
-                CatchType.FromId(fromDto.CatchTypeId),
-                fromDto.Quantity,
-                fromDto.Price,
-                Advertiser.FromId(fromDto.AdvertiserId));
+                CatchType.FromId((int)fromDto.CatchTypeId),
+                (int)fromDto.Quantity,
+                (double)fromDto.Price,
+                Advertiser.FromId((int)fromDto.AdvertiserId));
 
             resultingAdvert.Pitch = fromDto.Pitch;
             resultingAdvert.FishingMethod = (FishingMethod)fromDto.FishingMethod;

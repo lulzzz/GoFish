@@ -33,6 +33,8 @@ namespace GoFish.Advert
 
             services.AddSingleton<IMapper>(sp => config.CreateMapper());
             services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@172.17.0.1:1113")));
+
+            services.AddScoped<ModelStateActionFilterAttribute>();
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)

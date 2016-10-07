@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GoFish.Advert
 {
     [Authorize]
+    [ServiceFilter(typeof(ModelStateActionFilterAttribute))]
     public class ApiBaseController : Controller
     {
         protected string GetControllerName()
