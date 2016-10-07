@@ -18,12 +18,22 @@ namespace GoFish.Advert
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery]AdvertSearchOptions options)
         {
-            return Ok(_queryMediator.GetDraftAdverts());
+            if (!Request.QueryString.HasValue)
+                return Ok(_queryMediator.GetDraftAdverts());
+
+            try
+            {
+                return Ok(_queryMediator.Search(options));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:Guid}")]
         public IActionResult Get(Guid id)
         {
             var advert = _queryMediator.Get(id);

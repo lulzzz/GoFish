@@ -124,6 +124,31 @@ namespace GoFish.Advert
                 .Where(s => s.Status == AdvertStatus.Withdrawn);
         }
 
+        internal IEnumerable<Advert> Search(AdvertSearchOptions options)
+        {
+            if (options.Status?.ToLower() != "active" && options.Status?.ToLower() != "inactive")
+                throw new ArgumentOutOfRangeException("Please check your querystring for the 'Status' parameter.");
+
+            Func<Advert, bool> filter;
+
+            if (options.Status == "Active")
+            {
+                filter = a => a.Status == AdvertStatus.Created
+                    || a.Status == AdvertStatus.Posted
+                    || a.Status == AdvertStatus.Published;
+            }
+            else
+            {
+                filter = a => a.Status == AdvertStatus.Withdrawn
+                    || a.Status == AdvertStatus.Unknown;
+            }
+
+            return _readModel.Adverts
+                .Include(a => a.Advertiser)
+                .Include(ct => ct.CatchType)
+                .Where(filter);
+        }
+
         internal void Save(Advert item)
         {
             foreach (var e in item.GetChanges())
@@ -133,5 +158,10 @@ namespace GoFish.Advert
                 _writeModel.AppendToStreamAsync($"Advert-{item.Id}", ExpectedVersion.Any, ev).Wait();
             }
         }
+    }
+
+    public class AdvertSearchOptions
+    {
+        public string Status { get; set; }
     }
 }
