@@ -15,11 +15,7 @@ namespace GoFish.UI.MVC
         {
             loggerFactory.AddConsole(LogLevel.Error);
 
-            app.UseMvc(routes =>
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}")
-            );
+            app.UseMvc();
         }
     }
 }

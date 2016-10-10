@@ -1,0 +1,35 @@
+@model GoFish.UI.MVC.AdvertViewModel
+
+<h2>Add an Advert</h2>
+
+<div>
+    <form asp-action="Add">
+        <div>
+            <label asp-for="AdvertData.Pitch"></label>
+            <textarea asp-for="AdvertData.Pitch"></textarea>
+        </div>
+        <div>
+            <label asp-for="AdvertData.FishingMethod"></label>
+            <select asp-for="AdvertData.FishingMethod" asp-items="@(new SelectList(Model.FishingMethods,"Key","Value"))"></select>
+        </div>
+        <div>
+            <label asp-for="AdvertData.CatchTypeId"></label>
+            <select asp-for="AdvertData.CatchTypeId" asp-items="@(new SelectList(Model.CatchTypes,"Key","Value"))"></select>
+        </div>
+        <div>
+            <label asp-for="AdvertData.Quantity"></label>
+            <input type="text" asp-for="AdvertData.Quantity" />
+        </div>
+        <div>
+            <label asp-for="AdvertData.Price"></label>
+            <input type="text" asp-for="AdvertData.Price" />
+        </div>
+        <div>
+            <label asp-for="AdvertData.AdvertiserId"></label>
+            <select asp-for="AdvertData.AdvertiserId" asp-items="@(new SelectList(Model.Advertisers,"Key","Value"))"></select>
+        </div>
+        <div>
+            <input type="submit" value="Save">
+        </div>
+    </form>
+</div>

@@ -1,16 +1,11 @@
-<html>
-    <head></head>
-    <body>
-        <H1>Go Fish!</H1>
-        <h2>Identity Server Connection Test:</h2>
-        @ViewBag.AccessToken
+<h2>Active Adverts</h2>
+<div>
+    @foreach(var advert in Model.ActiveAdverts)
+    {
+        @advert.Pitch
         <br />
-        @ViewBag.Content
-        <hr>
-        <h2>REDIS Test:</h2>
-        @ViewBag.RedisString
-        <hr>
-        <h2>Some Function Tests:</h2>
-        @Html.ActionLink("Add a new Advert", "AddNew", "Advert")
-    </body>
-</html>
+    }
+</div>
+<div>
+    @Html.ActionLink("Add Advert", "Add", "Advert")
+</div>

@@ -5,7 +5,22 @@ namespace GoFish.Shared.Dto
 {
     public class AdvertDto
     {
-        public Guid Id { get; set; }
+        private Guid _advertId;
+
+        public Guid Id
+        {
+            get
+            {
+                if (_advertId == Guid.Empty)
+                    return Guid.NewGuid();
+
+                return _advertId;
+            }
+            set
+            {
+                _advertId = value;
+            }
+        }
 
         [Required]
         [Range(1, Int32.MaxValue)]
