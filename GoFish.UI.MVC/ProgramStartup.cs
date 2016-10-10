@@ -14,7 +14,7 @@ namespace GoFish.UI.MVC
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(LogLevel.Error);
-
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

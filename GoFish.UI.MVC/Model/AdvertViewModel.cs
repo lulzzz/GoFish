@@ -42,5 +42,7 @@ namespace GoFish.UI.MVC
                 };
             }
         }
+
+        public string SubmitButton { get; set; }
     }
 }

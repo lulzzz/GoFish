@@ -1,11 +1,13 @@
-<h2>Active Adverts</h2>
-<div>
+<h2>Your active adverts:</h2>
+<div class="list-group">
     @foreach(var advert in Model.ActiveAdverts)
     {
-        @advert.Pitch
-        <br />
+        <a class="list-group-item"
+            asp-controller="Advert"
+            asp-action="PrePublish"
+            asp-route-advertId="@advert.Id">@advert.Pitch</a>
     }
 </div>
 <div>
-    @Html.ActionLink("Add Advert", "Add", "Advert")
+    @Html.ActionLink("Add Advert", "Edit", "Advert")
 </div>

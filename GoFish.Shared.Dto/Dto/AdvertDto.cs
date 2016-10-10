@@ -23,18 +23,21 @@ namespace GoFish.Shared.Dto
         }
 
         [Required]
-        [Range(1, Int32.MaxValue)]
+        [Range(1, 100000)]
         public int? Quantity { get; set; }
 
         [Required]
+        [DataType(DataType.Currency)]
         [Range(0, Double.MaxValue)]
         public double? Price { get; set; }
 
         [Required]
+        [Display(Name = "Advertiser")]
         [Range(1, Int32.MaxValue)] // TODO: See GitHub Issue #4
         public int? AdvertiserId { get; set; }
 
         [Required]
+        [Display(Name = "Catch Type")]
         [Range(1, Int32.MaxValue)] // TODO: This'll probably end up being something else, Guid? PK from DataSource?
         public int? CatchTypeId { get; set; }
 
@@ -43,6 +46,7 @@ namespace GoFish.Shared.Dto
         public string Pitch { get; set; }
 
         [Required]
+        [Display(Name = "Fishing Method")]
         [Range(1, Int32.MaxValue)] // TODO: This'll probably end up being something else, Guid? Enum?
         public int? FishingMethod { get; set; }
 

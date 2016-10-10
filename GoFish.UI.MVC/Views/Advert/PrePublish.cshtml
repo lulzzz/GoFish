@@ -1,0 +1,32 @@
+@model GoFish.UI.MVC.AdvertViewModel
+
+<h2>Your advert:</h2>
+
+<form class="form" asp-action="Publish">
+    <input type="hidden" asp-for="AdvertData.Id"></input>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" asp-for="AdvertData.Pitch"></label>
+        <div class="col-sm-10">
+            @Model.AdvertData.Pitch
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" asp-for="AdvertData.Quantity"></label>
+        <div class="col-sm-10">
+            @Model.AdvertData.Quantity
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label" asp-for="AdvertData.Price"></label>
+        <div class="col-sm-10">
+            @Model.AdvertData.Price
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="offset-sm-2 col-sm-10">
+            <button name="SubmitButton" type="submit" class="btn btn-default" value="Cancel">Return to advert list</button>
+            <button name="SubmitButton" type="submit" class="btn btn-default" value="Edit">Edit advert</button>
+            <button name="SubmitButton" type="submit" class="btn btn-primary" value="Publish">Publish advert</button>
+        </div>
+    </div>
+</form>
