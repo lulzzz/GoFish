@@ -37,6 +37,12 @@ namespace GoFish.UI.MVC
             return await _client.PutAsync($"{ApiBaseAddress}{uri}", new StringContent(string.Empty));
         }
 
+        protected async Task<HttpResponseMessage> Delete(string uri)
+        {
+            _client.SetBearerToken(await GetBearerToken());
+            return await _client.DeleteAsync($"{ApiBaseAddress}{uri}");
+        }
+
         protected async Task<HttpResponseMessage> PutData(string uri, StringContent content)
         {
             _client.SetBearerToken(await GetBearerToken());

@@ -1,13 +1,18 @@
-<h2>Your active adverts:</h2>
+<h2>Your adverts</h2>
 <div class="list-group">
     @foreach(var advert in Model.ActiveAdverts)
     {
-        <a class="list-group-item"
+        var statusClass = (int)advert.Status > 1 ? "info" : "success";
+
+        <a class="list-group-item list-group-item-@statusClass"
             asp-controller="Advert"
-            asp-action="PrePublish"
-            asp-route-advertId="@advert.Id">@advert.Pitch</a>
+            asp-action="Summary"
+            asp-route-advertId="@advert.Id">
+            <h3>@advert.Pitch</h3>
+            <p>Quantity: @advert.Quantity. Price: @advert.Price.ToString("C2")</p>
+        </a>
     }
 </div>
 <div>
-    @Html.ActionLink("Add Advert", "Edit", "Advert")
+    <a href="/Advert/Edit/" class="btn btn-primary">Create a new advert</a>
 </div>

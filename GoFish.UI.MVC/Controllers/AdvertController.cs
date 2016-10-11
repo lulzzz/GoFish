@@ -13,7 +13,7 @@ namespace GoFish.UI.MVC
     public class AdvertController : SecureController
     {
         [HttpGet]
-        [Route("[action]")]
+        [Route("[action]/{advertId:Guid?}")]
         public async Task<IActionResult> Edit(Guid? advertId)
         {
             var advert = new AdvertDto();
@@ -25,7 +25,36 @@ namespace GoFish.UI.MVC
 
         [HttpGet]
         [Route("[action]/{advertId:Guid}")]
+        public async Task<IActionResult> Summary(Guid advertId)
+        {
+            var jsonContent = await GetData($"adverts/{advertId}");
+
+            var vm = new AdvertViewModel()
+            {
+                AdvertData = ParseJsonToDto(jsonContent)
+            };
+
+            return View(vm);
+        }
+
+        [HttpGet]
+        [Route("[action]/{advertId:Guid}")]
         public async Task<IActionResult> PrePublish(Guid advertId)
+        {
+            var jsonContent = await GetData($"adverts/{advertId}");
+
+            var vm = new AdvertViewModel()
+            {
+                AdvertData = ParseJsonToDto(jsonContent)
+            };
+
+            return View(vm);
+        }
+
+
+        [HttpGet]
+        [Route("[action]/{advertId:Guid}")]
+        public async Task<IActionResult> PreDelete(Guid advertId)
         {
             var jsonContent = await GetData($"adverts/{advertId}");
 
@@ -45,24 +74,51 @@ namespace GoFish.UI.MVC
         }
 
         [HttpPost]
-        [Route("[action]")]
-        public async Task<IActionResult> Publish(AdvertViewModel vm)
+        [Route("[action]/{advertId:Guid}")]
+        public IActionResult Summary(Guid advertId, AdvertViewModel vm)
         {
             if (vm.SubmitButton == "Edit")
                 return RedirectToAction("Edit", "Advert", new { advertId = vm.AdvertData.Id });
 
+            if (vm.SubmitButton == "Delete")
+                return RedirectToAction("PreDelete", "Advert", new { advertId = vm.AdvertData.Id });
+
             if (vm.SubmitButton == "Publish")
-            {
-                var response = await PutData($"postedadverts/{vm.AdvertData.Id}");
-                return RedirectToAction("Published", "Advert");
-            }
+                return RedirectToAction("PrePublish", "Advert");
 
             return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> Edit(AdvertViewModel vm)
+        public async Task<IActionResult> Delete(AdvertViewModel vm)
+        {
+            if (vm.SubmitButton == "Delete")
+            {
+                var response = await Delete($"adverts/{vm.AdvertData.Id}");
+                // TODO: Act upon response code
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [Route("[action]/{advertId:Guid}")]
+        public async Task<IActionResult> Publish(Guid advertId, AdvertViewModel vm)
+        {
+            if (vm.SubmitButton == "Publish")
+            {
+                var response = await PutData($"postedadverts/{advertId}");
+                return RedirectToAction("Index", "Home");
+                // TODO: Act upon response code
+            }
+
+            return RedirectToAction("Summary", "Advert", new { advertId = advertId });
+        }
+
+        [HttpPost]
+        [Route("[action]/{advertId:Guid?}")]
+        public async Task<IActionResult> Edit(Guid advertId, AdvertViewModel vm)
         {
             if (vm.SubmitButton == "Save")
             {
@@ -70,9 +126,9 @@ namespace GoFish.UI.MVC
                     return View(vm);
 
                 var response = await PutData($"adverts/{vm.AdvertData.Id}", GetJsonContentFromModel(vm));
-                // TODO: Check retern codes etc. for error conditions.
+                // TODO: Check return codes etc. for error conditions.
 
-                return RedirectToAction("PrePublish", "Advert", new { advertId = vm.AdvertData.Id });
+                return RedirectToAction("Summary", "Advert", new { advertId = vm.AdvertData.Id });
             }
 
             return RedirectToAction("Index", "Home");
