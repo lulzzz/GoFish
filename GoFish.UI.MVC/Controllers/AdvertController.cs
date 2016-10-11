@@ -12,81 +12,29 @@ namespace GoFish.UI.MVC
     [Route("[controller]")]
     public class AdvertController : SecureController
     {
-        private readonly HttpClient _client;
-        public AdvertController()
-        {
-            _client = new HttpClient();
-        }
-
         [HttpGet]
         [Route("[action]")]
         public async Task<IActionResult> Edit(Guid? advertId)
         {
-            AdvertDto advert;
+            var advert = new AdvertDto();
             if (advertId.HasValue)
-            {
                 advert = await GetAdvert((Guid)advertId);
-            }
-            else
-            {
-                advert = new AdvertDto();
-            }
 
-            var vm = new AdvertViewModel { AdvertData = advert };
-            return View(vm);
-        }
-
-        private async Task<AdvertDto> GetAdvert(Guid advertId)
-        {
-            _client.SetBearerToken(await GetBearerToken());
-
-            var response = await _client.GetAsync($"http://54.171.92.206:5000/api/adverts/{advertId}");
-            var content = response.Content.ReadAsStringAsync().Result;
-
-            return ParseJsonToDto(content);
-        }
-
-        private static AdvertDto ParseJsonToDto(string content)
-        {
-            // TODO: Consider a custom JSON serialiser
-            var jsonObject = JObject.Parse(content);
-            AdvertDto advert = jsonObject.ToObject<AdvertDto>();
-            advert.AdvertiserId = (int)jsonObject.SelectToken("advertiser.id");
-            advert.CatchTypeId = (int)jsonObject.SelectToken("catchType.id");
-            return advert;
+            return View(new AdvertViewModel { AdvertData = advert });
         }
 
         [HttpGet]
         [Route("[action]/{advertId:Guid}")]
         public async Task<IActionResult> PrePublish(Guid advertId)
         {
-            _client.SetBearerToken(await GetBearerToken());
+            var jsonContent = await GetData($"adverts/{advertId}");
 
-            var response = await _client.GetAsync($"http://54.171.92.206:5000/api/adverts/{advertId}");
-            var content = response.Content.ReadAsStringAsync().Result;
             var vm = new AdvertViewModel()
             {
-                // CatchType = (string)jsonObject.SelectToken("catchtype.name"),
-                AdvertData = ParseJsonToDto(content)
+                AdvertData = ParseJsonToDto(jsonContent)
             };
 
             return View(vm);
-        }
-
-        [HttpPost]
-        [Route("[action]")]
-        public IActionResult Publish(AdvertViewModel vm)
-        {
-            if (vm.SubmitButton == "Edit")
-                return RedirectToAction("Edit", "Advert", new { advertId = vm.AdvertData.Id });
-
-            if (vm.SubmitButton == "Publish")
-            {
-                // TODO: Publish the Advert
-                return RedirectToAction("Published", "Advert");
-            }
-
-            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
@@ -98,6 +46,22 @@ namespace GoFish.UI.MVC
 
         [HttpPost]
         [Route("[action]")]
+        public async Task<IActionResult> Publish(AdvertViewModel vm)
+        {
+            if (vm.SubmitButton == "Edit")
+                return RedirectToAction("Edit", "Advert", new { advertId = vm.AdvertData.Id });
+
+            if (vm.SubmitButton == "Publish")
+            {
+                var response = await PutData($"postedadverts/{vm.AdvertData.Id}");
+                return RedirectToAction("Published", "Advert");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [Route("[action]")]
         public async Task<IActionResult> Edit(AdvertViewModel vm)
         {
             if (vm.SubmitButton == "Save")
@@ -105,13 +69,8 @@ namespace GoFish.UI.MVC
                 if (!ModelState.IsValid)
                     return View(vm);
 
-                _client.SetBearerToken(await GetBearerToken());
-
-                var response = await
-                    _client.PutAsync($"http://54.171.92.206:5000/api/adverts/{vm.AdvertData.Id}",
-                    GetContentFromModel(vm));
-
-                // TODO: Act on Response code, return any errors to client
+                var response = await PutData($"adverts/{vm.AdvertData.Id}", GetJsonContentFromModel(vm));
+                // TODO: Check retern codes etc. for error conditions.
 
                 return RedirectToAction("PrePublish", "Advert", new { advertId = vm.AdvertData.Id });
             }
@@ -119,11 +78,26 @@ namespace GoFish.UI.MVC
             return RedirectToAction("Index", "Home");
         }
 
-        private static StringContent GetContentFromModel(AdvertViewModel vm)
+        private static StringContent GetJsonContentFromModel(AdvertViewModel vm)
         {
             var jsonData = JsonConvert.SerializeObject(vm.AdvertData);
             var httpContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             return httpContent;
+        }
+
+        private static AdvertDto ParseJsonToDto(string content)
+        {
+            var jsonObject = JObject.Parse(content);
+            AdvertDto advert = jsonObject.ToObject<AdvertDto>();
+            advert.AdvertiserId = (int)jsonObject.SelectToken("advertiser.id");
+            advert.CatchTypeId = (int)jsonObject.SelectToken("catchType.id");
+            return advert;
+        }
+
+        private async Task<AdvertDto> GetAdvert(Guid advertId)
+        {
+            var jsonContent = await GetData($"adverts/{advertId}");
+            return ParseJsonToDto(jsonContent);
         }
     }
 }
