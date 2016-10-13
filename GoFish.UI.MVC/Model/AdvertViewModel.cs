@@ -25,8 +25,8 @@ namespace GoFish.UI.MVC
             {
                 return new Dictionary<string, string>
                 {
-                   {"1", "Alice"},
-                   {"2", "Bob"}
+                   {"1", "Beth"},
+                   {"2", "Fred"}
                 };
             }
         }

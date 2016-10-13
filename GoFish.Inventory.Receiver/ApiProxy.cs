@@ -15,7 +15,7 @@ namespace GoFish.Inventory.Receiver
         public ApiProxy ()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("http://172.17.0.1:5001/api/"); // Inventory Api
+            client.BaseAddress = new Uri("http://172.17.0.1:5002/api/"); // Inventory Api
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -23,19 +23,34 @@ namespace GoFish.Inventory.Receiver
         public void UpdateInventory(StockItemDto item)
         {
             SetBearerToken();
+            Console.WriteLine("Bearer set");
 
             var jsonString = JsonConvert.SerializeObject(item);
-            System.Console.WriteLine("Sending payload: {0}", jsonString);
+            Console.WriteLine("Sending payload: {0}", jsonString);
 
+            HttpResponseMessage result;
             var payload = new StringContent(jsonString, Encoding.UTF8, "application/json");
-            var result = client.PostAsync(client.BaseAddress + "inventory", payload);
+            try
+            {
+                result = client.PostAsync(client.BaseAddress + "inventory", payload).Result;
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine("Exception from {0}: {1}",client.BaseAddress, ex.Message);
+                throw;
+            }
 
-            Console.WriteLine("Message from {0}: {1}",client.BaseAddress, result.Result);
+            Console.WriteLine("Message from {0}: {1}",client.BaseAddress, result);
         }
 
         private void SetBearerToken()
         {
-            var disco = DiscoveryClient.GetAsync("http://172.17.0.1:5002").Result; // Identity Server API
+            Console.WriteLine("Attempting connect to Identity");
+
+            var disco = DiscoveryClient.GetAsync("http://localhost:5000").Result; // Identity Server API
+            if(disco.IsError)
+                Console.WriteLine("Error connecting to Identity");
+
             var tokenClient = new TokenClient(disco.TokenEndpoint, "rabbitmq", "secret");
             var tokenResponse = tokenClient.RequestClientCredentialsAsync("api1").Result;
             client.SetBearerToken(tokenResponse.AccessToken);

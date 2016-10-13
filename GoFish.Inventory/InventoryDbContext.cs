@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,8 +44,8 @@ namespace GoFish.Inventory
         {
             if (context.StockOwners.Count() == 0)
             {
-                context.StockOwners.Add(new StockOwner(1, "Fred"));
-                context.StockOwners.Add(new StockOwner(2, "Marvin"));
+                context.StockOwners.Add(new StockOwner(1, "Marvin"));
+                context.StockOwners.Add(new StockOwner(2, "Fred"));
                 context.SaveChanges();
             }
         }

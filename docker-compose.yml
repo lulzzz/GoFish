@@ -12,11 +12,31 @@ advert_api:
     links:
       - identity:localhost
 
+inventory_api:
+    container_name: gofish_inventory_api
+    build: ./GoFish.Inventory
+    ports:
+      - "5002:5002"
+
 ui_mvc:
     container_name: gofish_ui_mvc
     build: ./GoFish.UI.MVC
     ports:
       - "5003:5003"
+    links:
+      - identity:localhost
+
+inventory_receiver:
+    container_name: gofish_inventory_receiver
+    build: ./GoFish.Inventory.Receiver
+    tty: true
+    links:
+      - identity:localhost
+
+advert_receiver:
+    container_name: gofish_advert_receiver
+    build: ./GoFish.Advert.Receiver
+    tty: true
     links:
       - identity:localhost
 

@@ -1,15 +1,9 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "outputName": "GoFish.Advert.Receiver",
     "debugType": "portable",
-    "emitEntryPoint": true
-  },
-  "dependencies": {
-    "RabbitMQ.Client": "4.1.0",
-    "Newtonsoft.Json": "9.0.1",
-    "IdentityModel": "2.0.0-rc4",
-    "GoFish.Shared.Dto": "1.0.0-*"
+    "emitEntryPoint": true,
+    "preserveCompilationContext": true
   },
   "frameworks": {
     "netcoreapp1.0": {
@@ -20,5 +14,11 @@
         }
       }
     }
+  },
+  "dependencies": {
+    "RabbitMQ.Client": "4.1.0",
+    "Newtonsoft.Json": "9.0.1",
+    "IdentityModel": "2.0.0-rc4",
+    "GoFish.Shared.Dto": "1.0.0-*"
   }
 }
