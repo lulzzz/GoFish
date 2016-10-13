@@ -1,25 +1,25 @@
-identityserver:
-    container_name: identityserver
+identity:
+    container_name: gofish_identity
     build: ./GoFish.Identity
     ports:
       - "5000:5000"
 
-api:
-    container_name: api
+advert_api:
+    container_name: gofish_advert_api
     build: ./GoFish.Advert
     ports:
       - "5001:5001"
     links:
-      - identityserver:localhost
+      - identity:localhost
 
-client:
-    container_name: client
+ui_mvc:
+    container_name: gofish_ui_mvc
     build: ./GoFish.UI.MVC
     ports:
       - "5003:5003"
     links:
-      - identityserver:localhost
-      - api
+      - identity:localhost
+      - advert_api
 
 eventstore:
     container_name: eventstore
