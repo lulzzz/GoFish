@@ -82,13 +82,13 @@ To get up and running, ideally you will need:
 
     `Username: gofish, Password: gofish`
 
-1. You should now be able to use your browser to access the website at `http://localhost:8084`
+1. You should now be able to use your browser to access the website at `http://localhost:5003`
 
 1. You can use and debug the Api at the following locations with Postman:
 
-    `http://localhost:8081` - Adverts
+    `http://localhost:5001` - Adverts
 
-    `http://localhost:8082` - Inventory
+    `http://localhost:5002` - Inventory
 
     using the following settings in the authentication helper:
 
