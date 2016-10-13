@@ -1,18 +1,9 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "outputName": "GoFish.Identity",
     "debugType": "portable",
-    "emitEntryPoint": true
-  },
-  "dependencies": {
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
-    "Microsoft.AspNetCore.Mvc": "1.0.1",
-    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "IdentityServer4": "1.0.0-rc1-update2"
+    "emitEntryPoint": true,
+    "preserveCompilationContext": true
   },
   "frameworks": {
     "netcoreapp1.0": {
@@ -23,5 +14,20 @@
         }
       }
     }
+  },
+  "dependencies": {
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
+    "Microsoft.AspNetCore.Mvc": "1.0.1",
+    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
+    "Microsoft.AspNetCore.StaticFiles": "1.0.0",
+    "Microsoft.Extensions.Logging.Debug": "1.0.0",
+    "Microsoft.Extensions.Logging.Console": "1.0.0",
+    "IdentityServer4": "1.0.0-rc1-update2"
+  },
+  "publishOptions": {
+    "include": [
+      "Views",
+      "wwwroot"
+    ]
   }
 }

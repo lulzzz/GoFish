@@ -1,0 +1,6 @@
+{
+    "ApplicationSettings": {
+        "IdentityServerUrl": "http://localhost:5000",
+        "AdvertApiUrl": "http://localhost:5001/api/"
+    }
+}

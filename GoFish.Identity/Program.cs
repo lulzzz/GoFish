@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 
 namespace GoFish.Identity
 {
@@ -8,16 +7,12 @@ namespace GoFish.Identity
     {
         public static void Main()
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("hosting.json", optional: true)
-                .Build();
-
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseStartup<ProgramStartup>()
-                .UseConfiguration(config)
+                .UseUrls("http://localhost:5000/") // Local
+                // .UseUrls("http://0.0.0.0:5000/") // Vagrant
                 .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseStartup<ProgramStartup>()
                 .Build();
 
             host.Run();

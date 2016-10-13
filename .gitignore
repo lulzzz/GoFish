@@ -16,4 +16,4 @@ launchSettings.json
 project.lock.json
 
 # libaries
-GoFish.UI.MVC/wwwroot/lib/
+**/wwwroot/lib/
