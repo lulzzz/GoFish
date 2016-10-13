@@ -1,62 +1,29 @@
-version: '2'
-
-services:
-
-  advert.receiver:
-    image: gofish.advert.receiver
-    build: ./GoFish.Advert.Receiver
-    container_name: gofish_advert_receiver
-    tty: true
-
-  inventory.receiver:
-    image: gofish.inventory.receiver
-    build: ./GoFish.Inventory.Receiver
-    container_name: gofish_inventory_receiver
-    tty: true
-
-  advert:
-    image: gofish.advert
-    build: ./GoFish.Advert
-    container_name: gofish_advert
-    ports:
-     - "5000:5000"
-    depends_on:
-      - advert.receiver
-
-  inventory:
-    image: gofish.inventory
-    build: ./GoFish.Inventory
-    container_name: gofish_inventory
-    ports:
-     - "5001:5001"
-    depends_on:
-      - inventory.receiver
-
-  gofish.identity:
-    image: gofish.identity
+identityserver:
+    container_name: identityserver
     build: ./GoFish.Identity
-    container_name: gofish_identity
     ports:
-     - "5002:5002"
+      - "5000:5000"
 
-  gofish.ui.mvc:
-    image: gofish.ui.mvc
-    build: ./GoFish.UI.MVC
-    container_name: gofish_ui_mvc
+api:
+    container_name: api
+    build: ./GoFish.Advert
     ports:
-     - "5003:5003"
+      - "5001:5001"
     links:
-     - gofish.redis
+      - identityserver:localhost
 
-  gofish.redis:
-    image: redis
-    container_name: gofish_redis
+client:
+    container_name: client
+    build: ./GoFish.UI.MVC
     ports:
-     - "6379:6379"
+      - "5003:5003"
+    links:
+      - identityserver:localhost
+      - api
 
-  gofish.eventstore:
+eventstore:
+    container_name: eventstore
     image: eventstore/eventstore
-    container_name: gofish_eventstore
     ports:
      - "1113:1113"
      - "2113:2113"

@@ -10,8 +10,8 @@ namespace GoFish.Advert
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                // .UseUrls("http://0.0.0.0:5001")
-                .UseUrls("http://localhost:5001")
+                .UseUrls("http://0.0.0.0:5001")
+                // .UseUrls("http://localhost:5001")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<ProgramStartup>()
                 .Build();

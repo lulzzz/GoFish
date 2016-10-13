@@ -1,6 +1,7 @@
 {
     "ApplicationSettings": {
         "IdentityServerUrl": "http://localhost:5000",
-        "AdvertApiUrl": "http://localhost:5001/api/"
+        // "AdvertApiUrl": "http://localhost:5001/api/" // Local
+        "AdvertApiUrl": "http://172.17.0.1:5001/api/"   // Docker
     }
 }
