@@ -9,10 +9,10 @@ Vagrant.configure("2") do |config|
     oneServerSetup.vm.network :forwarded_port, guest: 1113, host: 1113    # EventStore
     oneServerSetup.vm.network :forwarded_port, guest: 2113, host: 2113    # EventStore Admin
 
-    oneServerSetup.vm.network :forwarded_port, guest: 5000, host: 8081 # Advert
-    oneServerSetup.vm.network :forwarded_port, guest: 5001, host: 8082 # Inventory
-    oneServerSetup.vm.network :forwarded_port, guest: 5002, host: 8083 # Identity
-    oneServerSetup.vm.network :forwarded_port, guest: 5003, host: 8084 # UI.MVC
+    oneServerSetup.vm.network :forwarded_port, guest: 5000, host: 5000 # Identity
+    oneServerSetup.vm.network :forwarded_port, guest: 5001, host: 5001 # Advert
+    oneServerSetup.vm.network :forwarded_port, guest: 5002, host: 5002 # Identity
+    oneServerSetup.vm.network :forwarded_port, guest: 5003, host: 5003 # UI.MVC
 
     oneServerSetup.vm.synced_folder ".", "/vagrant"
 

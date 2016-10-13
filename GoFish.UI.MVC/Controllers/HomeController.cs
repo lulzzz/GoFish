@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using GoFish.Shared.Dto;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace GoFish.UI.MVC
@@ -10,16 +10,19 @@ namespace GoFish.UI.MVC
     [Route("/")]
     public class HomeController : SecureController
     {
+        public HomeController(IOptions<ApplicationSettings> options) : base(options) { }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var client = new HttpClient();
-            client.SetBearerToken(await GetBearerToken());
+            var content = await GetData("adverts?Status=Active");
 
-            var response = await client.GetAsync($"http://54.171.92.206:5000/api/adverts?Status=Active");
-            var content = response.Content.ReadAsStringAsync().Result;
+            var vm = new HomeViewModel()
+            {
+                ActiveAdverts = JsonConvert.DeserializeObject<List<AdvertDto>>(content)
+            };
 
-            return View(new HomeViewModel { ActiveAdverts = JsonConvert.DeserializeObject<List<AdvertDto>>(content) });
+            return View(vm);
         }
 
         private string REDIS_Test()
@@ -36,6 +39,14 @@ namespace GoFish.UI.MVC
             // return value2;
 
             return string.Empty;
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public async Task Logout()
+        {
+            await HttpContext.Authentication.SignOutAsync("Cookies");
+            await HttpContext.Authentication.SignOutAsync("oidc");
         }
     }
 }

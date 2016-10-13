@@ -8,25 +8,27 @@ namespace GoFish.Identity
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMvc();
+
             services.AddIdentityServer(options => { options.IssuerUri = "WierdnessHere"; })
                 .AddInMemoryStores()
-                .AddInMemoryScopes(IdentityConfiguration.GetScopes())
+                .SetTemporarySigningCredential()
                 .AddInMemoryClients(IdentityConfiguration.GetClients())
-                .AddInMemoryUsers(IdentityConfiguration.GetUsers())
-                .SetTemporarySigningCredential();
-
-            services.AddMvc();
+                .AddInMemoryScopes(IdentityConfiguration.GetScopes())
+                .AddInMemoryUsers(IdentityConfiguration.GetUsers());
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(LogLevel.Error);
+            loggerFactory.AddConsole();
+            loggerFactory.AddDebug();
 
             app.UseDeveloperExceptionPage();
 
             app.UseIdentityServer();
 
-            app.UseMvc();
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

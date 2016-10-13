@@ -93,39 +93,43 @@ namespace GoFish.Advert
             _readModel.SaveChanges();
         }
 
-        internal IEnumerable<Advert> GetDraftAdverts()
+        internal IEnumerable<Advert> GetDraftAdverts(int userId)
         {
             return _readModel.Adverts
                 .Include(ct => ct.CatchType)
                 .Include(a => a.Advertiser)
-                .Where(s => s.Status == AdvertStatus.Created);
+                .Where(s => s.Status == AdvertStatus.Created)
+                .Where(u => u.Advertiser.Id == userId);
         }
 
-        internal IEnumerable<Advert> GetPublished()
+        internal IEnumerable<Advert> GetPublished(int userId)
         {
             return _readModel.Adverts
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
-                .Where(s => s.Status == AdvertStatus.Published);
+                .Where(s => s.Status == AdvertStatus.Published)
+                .Where(u => u.Advertiser.Id == userId);
         }
 
-        internal object GetPosted()
+        internal object GetPosted(int userId)
         {
             return _readModel.Adverts
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
-                .Where(s => s.Status == AdvertStatus.Posted);
+                .Where(s => s.Status == AdvertStatus.Posted)
+                .Where(u => u.Advertiser.Id == userId);
         }
 
-        public object GetWithdrawn()
+        public object GetWithdrawn(int userId)
         {
             return _readModel.Adverts
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
-                .Where(s => s.Status == AdvertStatus.Withdrawn);
+                .Where(s => s.Status == AdvertStatus.Withdrawn)
+                .Where(u => u.Advertiser.Id == userId);
         }
 
-        internal IEnumerable<Advert> Search(AdvertSearchOptions options)
+        internal IEnumerable<Advert> Search(int userId, AdvertSearchOptions options)
         {
             if (options.Status?.ToLower() != "active" && options.Status?.ToLower() != "inactive")
                 throw new ArgumentOutOfRangeException("Status");
@@ -147,6 +151,7 @@ namespace GoFish.Advert
             return _readModel.Adverts
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
+                .Where(u => u.Advertiser.Id == userId)
                 .Where(filter);
         }
 

@@ -1,19 +1,35 @@
 using System;
-using AutoMapper;
 using EventStore.ClientAPI;
-using GoFish.Shared.Dto;
 using GoFish.Shared.Interface;
+using GoFish.Shared.Dto;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace GoFish.Advert
 {
     public class ProgramStartup
     {
+        private readonly IConfiguration _config;
+
+        public ProgramStartup(IHostingEnvironment hostEnv)
+        {
+            _config = new ConfigurationBuilder()
+                .SetBasePath(hostEnv.ContentRootPath)
+                .AddJsonFile("ApplicationSettings.json")
+                .Build();
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.Configure<ApplicationSettings>(_config.GetSection("ApplicationSettings"));
+
             services.AddDbContext<AdvertisingDbContext>();
             services.AddTransient<IMessageBroker<Advert>, AdvertMessageBroker>();
             services.AddTransient<AdvertRepository, AdvertRepository>();
@@ -26,27 +42,34 @@ namespace GoFish.Advert
             services.AddTransient<ICommandHandler<PublishAdvertCommand, Advert>, PublishAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<WithdrawAdvertCommand, Advert>, WithdrawAdvertCommandHandler>();
 
-            var config = new MapperConfiguration(cfg =>
+            var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Advert, AdvertDto>();
             });
 
-            services.AddSingleton<IMapper>(sp => config.CreateMapper());
-            services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@172.17.0.1:1113")));
+            services.AddSingleton<AutoMapper.IMapper>(sp => config.CreateMapper());
+
+            // services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113")));     // Local (With ES running in vagrant)
+            services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@172.17.0.1:1113")));    // Vagrant
+            // services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@54.171.92.206:1113"))); // Live
 
             services.AddScoped<ModelStateActionFilterAttribute>();
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(
+            IApplicationBuilder app,
+            ILoggerFactory loggerFactory,
+            IOptions<ApplicationSettings> options)
         {
-            loggerFactory.AddConsole(LogLevel.Error);
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
-                Authority = "http://172.17.0.1:5002",
-                ScopeName = "api1",
+                Authority = options.Value.IdentityServerUrl,
+                RequireHttpsMetadata = false,
 
-                RequireHttpsMetadata = false
+                ScopeName = "api1",
+                AutomaticAuthenticate = true
             });
 
             app.UseMvc();

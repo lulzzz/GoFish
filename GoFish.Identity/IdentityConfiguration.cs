@@ -1,6 +1,8 @@
 using IdentityServer4.Models;
 using IdentityServer4.Services.InMemory;
 using System.Collections.Generic;
+using System.Security.Claims;
+using IdentityModel;
 
 namespace GoFish.Identity
 {
@@ -11,7 +13,15 @@ namespace GoFish.Identity
         {
             return new List<Scope>
             {
-                new Scope { Name = "api1", Description = "The GoFish Advert API"}
+                StandardScopes.OpenId,
+                StandardScopes.Profile,
+
+                new Scope
+                {
+                    Name = "api1",
+                    DisplayName = "GoFish API",
+                    Description = "The GoFish API"
+                }
             };
         }
 
@@ -34,12 +44,35 @@ namespace GoFish.Identity
                     ClientSecrets = new List<Secret> { new Secret("secret".Sha256()) },
                     AllowedScopes = new List<string> { "api1" }
                 },
-                new Client // Basic resource based Username / Password pair
+                new Client // usual login pair
                 {
-                    ClientId = "ro.client",
-                    AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-                    ClientSecrets = new List<Secret> { new Secret("secret".Sha256()) },
-                    AllowedScopes = new List<string> { "api1" }
+                    ClientId = "gofish",
+                    ClientName = "GoFish client",
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+
+                    RedirectUris = new List<string>
+                    {
+                        // "http://localhost:8003/signin-oidc" // Local
+                        "http://localhost:5003/signin-oidc" // Vagrant
+                    },
+
+                    PostLogoutRedirectUris = new List<string>
+                    {
+                        // "http://localhost:8003/"    // Local
+                        "http://localhost:5003/"    // Vagrant
+                    },
+
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    AllowedScopes = new List<string>
+                    {
+                        StandardScopes.OpenId.Name,
+                        StandardScopes.Profile.Name,
+                        "api1"
+                    }
                 }
             };
         }
@@ -48,18 +81,24 @@ namespace GoFish.Identity
         {
             return new List<InMemoryUser>
             {
-                new InMemoryUser
-                {
-                    Subject = "1",
-                    Username = "alice",
-                    Password = "password"
+                new InMemoryUser{Subject = "1", Username = "Beth", Password = "beth",
+                    Claims = new Claim[]
+                    {
+                        new Claim(JwtClaimTypes.Name, "Beth Buyer"),
+                        new Claim(JwtClaimTypes.GivenName, "Beth"),
+                        new Claim(JwtClaimTypes.FamilyName, "Buyer"),
+                        new Claim(JwtClaimTypes.Role, "Buyer")
+                    }
                 },
-                new InMemoryUser
-                {
-                    Subject = "2",
-                    Username = "bob",
-                    Password = "password2"
-                }
+                new InMemoryUser{Subject = "2", Username = "fred", Password = "fred",
+                    Claims = new Claim[]
+                    {
+                        new Claim(JwtClaimTypes.Name, "Fred Fisherman"),
+                        new Claim(JwtClaimTypes.GivenName, "Bob"),
+                        new Claim(JwtClaimTypes.FamilyName, "Fisherman"),
+                        new Claim(JwtClaimTypes.Role, "Fisherman")
+                    }
+                },
             };
         }
     }

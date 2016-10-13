@@ -1,0 +1,6 @@
+{
+    "ApplicationSettings": {
+        // "IdentityServerUrl": "http://localhost:8000"    // Local
+        "IdentityServerUrl": "http://localhost:5000"    // Vagrant
+    }
+}

@@ -6,12 +6,15 @@ using System.Text;
 using System;
 using GoFish.Shared.Dto;
 using Newtonsoft.Json.Linq;
+using Microsoft.Extensions.Options;
 
 namespace GoFish.UI.MVC
 {
     [Route("[controller]")]
     public class AdvertController : SecureController
     {
+        public AdvertController(IOptions<ApplicationSettings> options) : base(options) { }
+
         [HttpGet]
         [Route("[action]/{advertId:Guid?}")]
         public async Task<IActionResult> Edit(Guid? advertId)
