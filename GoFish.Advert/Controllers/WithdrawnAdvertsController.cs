@@ -16,7 +16,7 @@ namespace GoFish.Advert
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_query.GetWithdrawn());
+            return Ok(_query.GetWithdrawn(GetUserId()));
         }
 
         [HttpGet("{id:Guid}")]

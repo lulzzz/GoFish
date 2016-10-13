@@ -52,12 +52,14 @@ namespace GoFish.Identity
 
                     RedirectUris = new List<string>
                     {
-                        "http://localhost:5003/signin-oidc"
+                        // "http://localhost:8003/signin-oidc" // Local
+                        "http://localhost:5003/signin-oidc" // Vagrant
                     },
 
                     PostLogoutRedirectUris = new List<string>
                     {
-                        "http://localhost:5003/"
+                        // "http://localhost:8003/"    // Local
+                        "http://localhost:5003/"    // Vagrant
                     },
 
                     ClientSecrets = new List<Secret>

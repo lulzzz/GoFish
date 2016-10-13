@@ -9,8 +9,8 @@ namespace GoFish.Identity
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                // .UseUrls("http://localhost:5000/") // Local
-                .UseUrls("http://0.0.0.0:5000/") // Vagrant
+                .UseUrls("http://0.0.0.0:5000/")     // Vagrant
+                // .UseUrls("http://localhost:8000/")   // Local
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<ProgramStartup>()
                 .Build();

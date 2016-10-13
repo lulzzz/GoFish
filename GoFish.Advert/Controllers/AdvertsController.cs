@@ -21,11 +21,11 @@ namespace GoFish.Advert
         public IActionResult Get([FromQuery]AdvertSearchOptions options)
         {
             if (!Request.QueryString.HasValue)
-                return Ok(_queryMediator.GetDraftAdverts());
+                return Ok(_queryMediator.GetDraftAdverts(GetUserId()));
 
             try
             {
-                return Ok(_queryMediator.Search(options));
+                return Ok(_queryMediator.Search(GetUserId(), options));
             }
             catch (System.Exception ex)
             {

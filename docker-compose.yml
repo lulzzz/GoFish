@@ -19,7 +19,6 @@ ui_mvc:
       - "5003:5003"
     links:
       - identity:localhost
-      - advert_api
 
 eventstore:
     container_name: eventstore
