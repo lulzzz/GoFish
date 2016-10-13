@@ -35,6 +35,7 @@ To get up and running, ideally you will need:
 
 - VirtualBox
 - Vagrant
+- Bower
 
 ### Process
 
@@ -42,16 +43,24 @@ To get up and running, ideally you will need:
 
     `git clone https://github.com/jakimber/GoFish`
 
+1. Install the MVC client dependencies:
+
+    ```c#
+    cd ./GoFish/GoFish.UI.MVC/
+    bower install
+    ```
+
 1. Publish the application components:
 
     If you are using a shell like Git-Bash you can simply:
 
     ```ssh
-    cd ./GoFish
+    ' in the root of GoFish there's this shell-script
+    cd ../
     ./build.sh
     ```
 
-    If you are using a command line that doesn't like shell scripts, open the `/build.sh` file and run each of the lines listed
+    If you are using a command line that doesn't like shell scripts, open the `build.sh` file and run each of the lines listed
 
 1. Create the server:
 
@@ -119,7 +128,7 @@ Notes:
 ## Phase 1 roadmap
 
 1. Ensure WebApi conforms to RMM level 4 to enable easy hypermedia navigation
-1. Create web-based UI (ReactJs or Angular2)
+1. Create SPA web-based UI (ReactJs or Angular2)
 1. Create suite of tests for the services
 1. The Shopfront service will probably need splitting into smaller services
 

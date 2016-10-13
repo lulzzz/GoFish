@@ -109,7 +109,7 @@ namespace GoFish.UI.MVC
             if (vm.SubmitButton == "Publish")
             {
                 var response = await PutData($"postedadverts/{advertId}");
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Published", "Advert");
                 // TODO: Act upon response code
             }
 
