@@ -12,7 +12,9 @@ access to a market of buyers including:
 - Restaurants
 
 The live version of the API is published on an AWS EC2 Instance
-here:  `http://54.171.92.206:5000/api/` see the API reference below for usage scenarios
+here:  `http://54.171.92.206:5001/api/` see the API reference below for usage scenarios
+
+A prototype MVC UI which uses the services is available at this AWS location `http://54.171.92.206:5003`
 
 ## Technology stack
 
@@ -48,7 +50,7 @@ To get up and running, ideally you will need:
     ```c#
     cd ./GoFish/GoFish.UI.MVC/
     bower install
-    
+
     cd ../GoFish.Identity/
     bower install
     ```
