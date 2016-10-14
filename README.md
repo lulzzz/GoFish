@@ -48,6 +48,9 @@ To get up and running, ideally you will need:
     ```c#
     cd ./GoFish/GoFish.UI.MVC/
     bower install
+    
+    cd ../GoFish.Identity/
+    bower install
     ```
 
 1. Publish the application components:
