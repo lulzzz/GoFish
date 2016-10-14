@@ -13,7 +13,10 @@ namespace GoFish.Advert.Receiver
         public ApiProxy()
         {
             client = new HttpClient();
-            client.BaseAddress = new Uri("http://172.17.0.1:5001/api/"); // Advert Api
+
+            // client.BaseAddress = new Uri("http://172.17.0.1:5001/api/");    // Advert Api -- Vagrant
+            client.BaseAddress = new Uri("http://54.171.92.206:5001/api/"); // Advert Api -- Live
+
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
@@ -44,7 +47,10 @@ namespace GoFish.Advert.Receiver
         private void SetBearerToken()
         {
             Console.WriteLine("Attempt to get auth token");
-            var disco = DiscoveryClient.GetAsync("http://localhost:5000").Result; // Identity Server API
+
+            // var disco = DiscoveryClient.GetAsync("http://localhost:5000").Result; // Identity Server API -- Vagrant
+            var disco = DiscoveryClient.GetAsync("http://172.17.0.1:5000").Result; // Identity Server API -- Live
+
             var tokenClient = new TokenClient(disco.TokenEndpoint, "rabbitmq", "secret");
             var tokenResponse = tokenClient.RequestClientCredentialsAsync("api1").Result;
             client.SetBearerToken(tokenResponse.AccessToken);
