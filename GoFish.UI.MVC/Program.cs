@@ -9,8 +9,8 @@ namespace GoFish.UI.MVC
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                // .UseUrls("http://0.0.0.0:5003") // Vagrant
-                .UseUrls("http://localhost:8003") // Local
+                .UseUrls("http://0.0.0.0:5003") // Vagrant
+                // .UseUrls("http://localhost:8003") // Local
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<ProgramStartup>()
                 .Build();
