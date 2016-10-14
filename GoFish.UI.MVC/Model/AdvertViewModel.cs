@@ -3,7 +3,7 @@ using GoFish.Shared.Dto;
 
 namespace GoFish.UI.MVC
 {
-    public class AdvertViewModel
+    public class AdvertViewModel : UserOwnedViewModel
     {
         public AdvertDto AdvertData { get; set; }
 
@@ -15,18 +15,6 @@ namespace GoFish.UI.MVC
                 {
                    {"1", "Lobster"},
                    {"2", "Cod"}
-                };
-            }
-        }
-
-        public IDictionary<string, string> Advertisers
-        {
-            get
-            {
-                return new Dictionary<string, string>
-                {
-                   {"1", "Beth"},
-                   {"2", "Fred"}
                 };
             }
         }
@@ -49,7 +37,8 @@ namespace GoFish.UI.MVC
         {
             get
             {
-                return AdvertHasNotBeenPosted() ? "" : "disabled";
+                return AdvertHasNotBeenPosted()
+                    && UserIsAdvertOwner() ? string.Empty : "disabled";
             }
         }
 
@@ -57,15 +46,31 @@ namespace GoFish.UI.MVC
         {
             get
             {
-                return AdvertHasNotBeenPosted() ? "" : "disabled";
+                return AdvertHasNotBeenPosted()
+                    && UserIsAdvertOwner() ? string.Empty : "disabled";
             }
         }
 
-        public string ToolTip
+        public string DeleteButtonState
         {
             get
             {
-                return AdvertHasNotBeenPosted() ? "" : $"You can not do this to a {AdvertData.Status} advert.";
+                return UserIsAdvertOwner() ? string.Empty : "disabled";
+            }
+        }
+
+        public string GetToolTip(string button)
+        {
+            if (button == "Delete")
+            {
+                return UserIsAdvertOwner() ? string.Empty : "You can not do this to someone else's advert";
+            }
+            else
+            {
+                if (!UserIsAdvertOwner())
+                    return "You can not do this to someone else's advert";
+
+                return AdvertHasNotBeenPosted() ? string.Empty : $"You can not do this to a {AdvertData.Status} advert.";
             }
         }
 
@@ -73,6 +78,12 @@ namespace GoFish.UI.MVC
         {
             return AdvertData.Status == AdvertStatus.Created
                     || AdvertData.Status == AdvertStatus.Creating;
+        }
+
+
+        private bool UserIsAdvertOwner()
+        {
+            return AdvertData.AdvertiserId == UserId;
         }
     }
 }

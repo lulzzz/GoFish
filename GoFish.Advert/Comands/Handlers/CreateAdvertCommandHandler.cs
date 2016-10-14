@@ -14,6 +14,9 @@ namespace GoFish.Advert
             // construct an advert
             var advert = _factory.BuildNew(command.Advert);
 
+            if(advert.Advertiser.Id != command.UserId)
+                throw new AdvertNotOwnedException($"Advert not yours: {command.Id}");
+
             // Act
             advert.Create();
 

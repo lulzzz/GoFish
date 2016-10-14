@@ -16,9 +16,10 @@ namespace GoFish.Advert
             var advert = Repository.Get(command.Advert.Id);
 
             if (advert.Status != AdvertStatus.Created)
-            {
                 throw new InvalidOperationException("Can only update adverts in the 'Created' Status");
-            }
+
+            if(advert.Advertiser.Id != command.UserId)
+                throw new AdvertNotOwnedException($"Advert not yours: {command.Advert.Id}");
 
             // Do it!
             var changedAdvert = _factory.Update(advert, command.Advert);

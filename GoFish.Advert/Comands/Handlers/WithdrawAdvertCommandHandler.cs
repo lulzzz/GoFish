@@ -10,9 +10,10 @@ namespace GoFish.Advert
             var advert = Repository.Get(command.Id);
 
             if (advert == null)
-            {
                 throw new AdvertNotFoundException($"Advert not found: {command.Id}");
-            }
+
+            if(advert.Advertiser.Id != command.UserId)
+                throw new AdvertNotOwnedException($"Advert not yours: {command.Id}");
 
             // Do it!
             advert.Withdraw();

@@ -38,7 +38,7 @@ namespace GoFish.Advert
         {
             try
             {
-                _command.Send(new PostAdvertCommand(id));
+                _command.Send(new PostAdvertCommand(id, GetUserId()));
                 return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (AdvertNotFoundException)

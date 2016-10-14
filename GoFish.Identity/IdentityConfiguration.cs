@@ -81,22 +81,22 @@ namespace GoFish.Identity
         {
             return new List<InMemoryUser>
             {
-                new InMemoryUser{Subject = "1", Username = "Beth", Password = "beth",
+                new InMemoryUser{Subject = "1", Username = "nina", Password = "nina",
                     Claims = new Claim[]
                     {
-                        new Claim(JwtClaimTypes.Name, "Beth Buyer"),
-                        new Claim(JwtClaimTypes.GivenName, "Beth"),
-                        new Claim(JwtClaimTypes.FamilyName, "Buyer"),
-                        new Claim(JwtClaimTypes.Role, "Buyer")
+                        new Claim(JwtClaimTypes.Name, "Netter Nina"),
+                        new Claim(JwtClaimTypes.GivenName, "Nina"),
+                        new Claim(JwtClaimTypes.FamilyName, "Netter"),
+                        new Claim(JwtClaimTypes.Role, "Fisher")
                     }
                 },
                 new InMemoryUser{Subject = "2", Username = "fred", Password = "fred",
                     Claims = new Claim[]
                     {
-                        new Claim(JwtClaimTypes.Name, "Fred Fisherman"),
-                        new Claim(JwtClaimTypes.GivenName, "Bob"),
+                        new Claim(JwtClaimTypes.Name, "Fisherman Fred"),
+                        new Claim(JwtClaimTypes.GivenName, "Fred"),
                         new Claim(JwtClaimTypes.FamilyName, "Fisherman"),
-                        new Claim(JwtClaimTypes.Role, "Fisherman")
+                        new Claim(JwtClaimTypes.Role, "Fisher")
                     }
                 },
             };

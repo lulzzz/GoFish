@@ -23,7 +23,14 @@ namespace GoFish.UI.MVC
             if (advertId.HasValue)
                 advert = await GetAdvert((Guid)advertId);
 
-            return View(new AdvertViewModel { AdvertData = advert });
+            var vm = new AdvertViewModel()
+            {
+                AdvertData = advert,
+                UserId = GetUserId(),
+                UserName = GetUserName()
+            };
+
+            return View(vm);
         }
 
         [HttpGet]
@@ -34,7 +41,9 @@ namespace GoFish.UI.MVC
 
             var vm = new AdvertViewModel()
             {
-                AdvertData = ParseJsonToDto(jsonContent)
+                AdvertData = ParseJsonToDto(jsonContent),
+                UserId = GetUserId(),
+                UserName = GetUserName()
             };
 
             return View(vm);
@@ -48,7 +57,9 @@ namespace GoFish.UI.MVC
 
             var vm = new AdvertViewModel()
             {
-                AdvertData = ParseJsonToDto(jsonContent)
+                AdvertData = ParseJsonToDto(jsonContent),
+                UserId = GetUserId(),
+                UserName = GetUserName()
             };
 
             return View(vm);
@@ -63,7 +74,9 @@ namespace GoFish.UI.MVC
 
             var vm = new AdvertViewModel()
             {
-                AdvertData = ParseJsonToDto(jsonContent)
+                AdvertData = ParseJsonToDto(jsonContent),
+                UserId = GetUserId(),
+                UserName = GetUserName()
             };
 
             return View(vm);
@@ -73,7 +86,7 @@ namespace GoFish.UI.MVC
         [Route("[action]")]
         public IActionResult Published()
         {
-            return View();
+            return View(new UserOwnedViewModel() { UserName = GetUserName() });
         }
 
         [HttpPost]

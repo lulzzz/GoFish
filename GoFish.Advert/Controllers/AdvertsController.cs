@@ -69,7 +69,7 @@ namespace GoFish.Advert
         {
             try
             {
-                _commandMediator.Send(new WithdrawAdvertCommand(id));
+                _commandMediator.Send(new WithdrawAdvertCommand(id, GetUserId()));
                 return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (System.Exception ex)
@@ -81,9 +81,9 @@ namespace GoFish.Advert
         private ICommand<Advert> CreateCommandForState(AdvertDto newState)
         {
             if (_queryMediator.Get(newState.Id) == null)
-                return new CreateAdvertCommand(newState);
+                return new CreateAdvertCommand(newState, GetUserId());
 
-            return new UpdateAdvertCommand(newState);
+            return new UpdateAdvertCommand(newState, GetUserId());
         }
     }
 }

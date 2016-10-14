@@ -39,7 +39,7 @@ namespace GoFish.Advert
         {
             if (context.Advertisers.Count() == 0)
             {
-                context.Advertisers.Add(new Advertiser(1, "Beth"));
+                context.Advertisers.Add(new Advertiser(1, "Nina"));
                 context.Advertisers.Add(new Advertiser(2, "Fred"));
                 context.SaveChanges();
             }

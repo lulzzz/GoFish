@@ -1,32 +1,33 @@
 @model GoFish.UI.MVC.AdvertViewModel
 
 <h2>Delete advert?</h2>
-<p>You are about to withdraw this advert from your list.  Are you sure you want to?</p>
+<p>You are about to withdraw this advert from your list. Are you sure you want to?</p>
 <p>Plase note that this operation cannot be reversed!</p>
 <form class="form" asp-action="Delete">
-    <input type="hidden" asp-for="AdvertData.Id"></input>
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label" asp-for="AdvertData.Pitch"></label>
-        <div class="col-sm-10">
-            @Model.AdvertData.Pitch
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label" asp-for="AdvertData.Quantity"></label>
-        <div class="col-sm-10">
-            @Model.AdvertData.Quantity
-        </div>
-    </div>
-    <div class="form-group row">
-        <label class="col-sm-2 col-form-label" asp-for="AdvertData.Price"></label>
-        <div class="col-sm-10">
-            @Model.AdvertData.Price
-        </div>
-    </div>
-    <div class="form-group row">
-        <div class="offset-sm-2 col-sm-10">
-            <button name="SubmitButton" type="submit" class="btn btn-default" value="Cancel">No, go back</button>
-            <button name="SubmitButton" type="submit" class="btn btn-danger" value="Delete">Yes, delete it</button>
-        </div>
-    </div>
+	<input type="hidden" asp-for="AdvertData.Id"></input>
+	<input type="hidden" asp-for="UserId"></input>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" asp-for="AdvertData.Pitch"></label>
+		<div class="col-sm-10">
+			@Model.AdvertData.Pitch
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" asp-for="AdvertData.Quantity"></label>
+		<div class="col-sm-10">
+			@Model.AdvertData.Quantity
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" asp-for="AdvertData.Price"></label>
+		<div class="col-sm-10">
+			@Model.AdvertData.Price
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="offset-sm-2 col-sm-10">
+			<button name="SubmitButton" type="submit" class="btn btn-default" value="Cancel">No, go back</button>
+			<button name="SubmitButton" type="submit" class="btn btn-danger" value="Delete">Yes, delete it</button>
+		</div>
+	</div>
 </form>

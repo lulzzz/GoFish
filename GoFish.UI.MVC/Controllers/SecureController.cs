@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -20,6 +21,21 @@ namespace GoFish.UI.MVC
         {
             _client = new HttpClient();
             _options = options;
+        }
+
+        protected string GetUserName()
+        {
+            var userClaim = HttpContext.User.Claims.Where(u => u.Type == "name").SingleOrDefault();
+            return userClaim == null ? "" : userClaim.Value;
+        }
+
+        protected int GetUserId()
+        {
+            var userClaim = HttpContext.User.Claims.Where(u => u.Type == "sub").SingleOrDefault();
+            if (userClaim == null)
+                throw new InvalidOperationException("UserId cannot be read");
+
+            return int.Parse(userClaim.Value);
         }
 
         protected async Task<string> GetData(string uri)
