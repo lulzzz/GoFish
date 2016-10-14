@@ -50,6 +50,9 @@ namespace GoFish.Advert
             // Set the Id from the URI to the DTO to send on
             if (newState.Id == Guid.Empty) newState.Id = id;
 
+            // Ensure the posting user is the advertiserId
+            newState.AdvertiserId = GetUserId();
+
             try
             {
                 _commandMediator.Send(CreateCommandForState(newState));

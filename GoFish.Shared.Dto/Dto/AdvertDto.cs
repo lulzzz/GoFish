@@ -31,8 +31,6 @@ namespace GoFish.Shared.Dto
         [Range(0, Double.MaxValue)]
         public double? Price { get; set; }
 
-        [Required]
-        [Display(Name = "Advertiser")]
         [Range(1, Int32.MaxValue)] // TODO: See GitHub Issue #4
         public int? AdvertiserId { get; set; }
 
@@ -56,6 +54,9 @@ namespace GoFish.Shared.Dto
     public enum AdvertStatus
     {
         Creating,
-        Created
+        Created,
+        Posted,
+        Published,
+        Withdrawn
     }
 }

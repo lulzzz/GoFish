@@ -52,8 +52,8 @@ namespace GoFish.UI.MVC
 
                 Authority = settings.Value.IdentityServerUrl,
                 RequireHttpsMetadata = false,
-                // PostLogoutRedirectUri = "http://localhost:8003/",   // Local
-                PostLogoutRedirectUri = "http://localhost:5003/",   // Vagrant
+                PostLogoutRedirectUri = "http://localhost:8003/",   // Local
+                // PostLogoutRedirectUri = "http://localhost:5003/",   // Vagrant
                 ClientId = "gofish",
                 ClientSecret = "secret",
                 ResponseType = "code id_token",

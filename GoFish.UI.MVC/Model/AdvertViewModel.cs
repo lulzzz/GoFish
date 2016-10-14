@@ -44,5 +44,35 @@ namespace GoFish.UI.MVC
         }
 
         public string SubmitButton { get; set; }
+
+        public string EditButtonState
+        {
+            get
+            {
+                return AdvertHasNotBeenPosted() ? "" : "disabled";
+            }
+        }
+
+        public string PublishButtonState
+        {
+            get
+            {
+                return AdvertHasNotBeenPosted() ? "" : "disabled";
+            }
+        }
+
+        public string ToolTip
+        {
+            get
+            {
+                return AdvertHasNotBeenPosted() ? "" : $"You can not do this to a {AdvertData.Status} advert.";
+            }
+        }
+
+        private bool AdvertHasNotBeenPosted()
+        {
+            return AdvertData.Status == AdvertStatus.Created
+                    || AdvertData.Status == AdvertStatus.Creating;
+        }
     }
 }
