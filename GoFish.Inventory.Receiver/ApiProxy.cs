@@ -16,8 +16,8 @@ namespace GoFish.Inventory.Receiver
         {
             client = new HttpClient();
 
-            // client.BaseAddress = new Uri("http://172.17.0.1:5002/api/"); // Inventory Api - Vagrant
-            client.BaseAddress = new Uri("http://54.171.92.206:5002/api/"); // Inventory Api - Live
+            client.BaseAddress = new Uri("http://172.17.0.1:5002/api/"); // Inventory Api - Vagrant
+            // client.BaseAddress = new Uri("http://54.171.92.206:5002/api/"); // Inventory Api - Live
 
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -50,8 +50,8 @@ namespace GoFish.Inventory.Receiver
         {
             Console.WriteLine("Attempting connect to Identity");
 
-            // var disco = DiscoveryClient.GetAsync("http://localhost:5000").Result; // Identity Server API -- vagrant
-            var disco = DiscoveryClient.GetAsync("http://172.17.0.1:5000").Result; // Identity Server API -- live
+            var disco = DiscoveryClient.GetAsync("http://localhost:5000").Result; // Identity Server API -- vagrant
+            // var disco = DiscoveryClient.GetAsync("http://172.17.0.1:5000").Result; // Identity Server API -- live
 
             if(disco.IsError)
                 Console.WriteLine("Error connecting to Identity");

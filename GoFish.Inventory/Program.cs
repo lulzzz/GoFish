@@ -9,8 +9,8 @@ namespace GoFish.Inventory
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseUrls("http://0.0.0.0:5002")
-                // .UseUrls("http://localhost:8002")
+                // .UseUrls("http://localhost:8002")    // Local
+                .UseUrls("http://0.0.0.0:5002")         // Vagrant & Live
                 .UseStartup<Startup>()
                 .Build();
 
