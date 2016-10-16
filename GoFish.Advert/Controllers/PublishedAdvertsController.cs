@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
@@ -34,11 +35,12 @@ namespace GoFish.Advert
         }
 
         [HttpPut("{id:Guid}")]
+        [Authorize("SystemMessagingPolicy")]
         public IActionResult PublishAdvert(Guid id)
         {
             try
             {
-                _command.Send(new PublishAdvertCommand(id, GetUserId()));
+                _command.Send(new PublishAdvertCommand(id));
                 return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (AdvertNotFoundException)

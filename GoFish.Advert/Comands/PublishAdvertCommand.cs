@@ -2,11 +2,11 @@ using System;
 
 namespace GoFish.Advert
 {
-    public class PublishAdvertCommand : UserCommand
+    public class PublishAdvertCommand : ICommand<Advert>
     {
         public readonly Guid Id;
 
-        public PublishAdvertCommand(Guid id, int userId) : base(userId)
+        public PublishAdvertCommand(Guid id)
         {
             Id = id;
         }

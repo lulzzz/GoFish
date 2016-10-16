@@ -19,8 +19,14 @@ namespace GoFish.Identity
                 new Scope
                 {
                     Name = "api1",
-                    DisplayName = "GoFish API",
-                    Description = "The GoFish API"
+                    DisplayName = "GoFish",
+                    Description = "The GoFish System"
+                },
+                new Scope
+                {
+                    Name = "gofish.messaging",
+                    DisplayName = "GoFish System Messaging",
+                    Description = "System Level Scope For Messaging"
                 }
             };
         }
@@ -42,7 +48,8 @@ namespace GoFish.Identity
                     ClientId = "rabbitmq",
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     ClientSecrets = new List<Secret> { new Secret("secret".Sha256()) },
-                    AllowedScopes = new List<string> { "api1" }
+
+                    AllowedScopes = new List<string> { "gofish.messaging" }
                 },
                 new Client // usual login pair
                 {

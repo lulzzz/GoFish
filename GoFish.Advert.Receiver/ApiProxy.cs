@@ -52,7 +52,7 @@ namespace GoFish.Advert.Receiver
             // var disco = DiscoveryClient.GetAsync("http://172.17.0.1:5000").Result; // Identity Server API -- Live
 
             var tokenClient = new TokenClient(disco.TokenEndpoint, "rabbitmq", "secret");
-            var tokenResponse = tokenClient.RequestClientCredentialsAsync("api1").Result;
+            var tokenResponse = tokenClient.RequestClientCredentialsAsync("gofish.messaging").Result;
             client.SetBearerToken(tokenResponse.AccessToken);
         }
     }

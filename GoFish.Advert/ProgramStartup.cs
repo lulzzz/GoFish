@@ -26,6 +26,14 @@ namespace GoFish.Advert
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("SystemMessagingPolicy", policyAdmin =>
+                {
+                    policyAdmin.RequireClaim("scope", "gofish.messaging");
+                });
+            });
+
             services.AddMvc();
 
             services.Configure<ApplicationSettings>(_config.GetSection("ApplicationSettings"));
@@ -65,9 +73,9 @@ namespace GoFish.Advert
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
                 Authority = options.Value.IdentityServerUrl,
-                RequireHttpsMetadata = false,
-
                 ScopeName = "api1",
+                AdditionalScopes = new[] { "gofish.messaging" },
+                RequireHttpsMetadata = false,
                 AutomaticAuthenticate = true
             });
 
