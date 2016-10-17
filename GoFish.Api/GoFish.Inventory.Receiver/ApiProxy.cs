@@ -12,7 +12,7 @@ namespace GoFish.Inventory.Receiver
     {
         private readonly HttpClient client;
 
-        public ApiProxy ()
+        public ApiProxy()
         {
             client = new HttpClient();
 
@@ -26,10 +26,8 @@ namespace GoFish.Inventory.Receiver
         public void UpdateInventory(StockItemDto item)
         {
             SetBearerToken();
-            Console.WriteLine("Bearer set");
 
             var jsonString = JsonConvert.SerializeObject(item);
-            Console.WriteLine("Sending payload: {0}", jsonString);
 
             HttpResponseMessage result;
             var payload = new StringContent(jsonString, Encoding.UTF8, "application/json");
@@ -39,25 +37,22 @@ namespace GoFish.Inventory.Receiver
             }
             catch (System.Exception ex)
             {
-                Console.WriteLine("Exception from {0}: {1}",client.BaseAddress, ex.Message);
+                Console.WriteLine("Exception from {0}: {1}", client.BaseAddress, ex.Message);
                 throw;
             }
-
-            Console.WriteLine("Message from {0}: {1}",client.BaseAddress, result);
         }
 
         private void SetBearerToken()
         {
-            Console.WriteLine("Attempting connect to Identity");
-
             var disco = DiscoveryClient.GetAsync("http://localhost:5000").Result; // Identity Server API -- vagrant
             // var disco = DiscoveryClient.GetAsync("http://172.17.0.1:5000").Result; // Identity Server API -- live
 
-            if(disco.IsError)
+            if (disco.IsError)
                 Console.WriteLine("Error connecting to Identity");
 
             var tokenClient = new TokenClient(disco.TokenEndpoint, "rabbitmq", "secret");
-            var tokenResponse = tokenClient.RequestClientCredentialsAsync("api1").Result;
+            var tokenResponse = tokenClient.RequestClientCredentialsAsync("gofish.messaging").Result;
+
             client.SetBearerToken(tokenResponse.AccessToken);
         }
     }

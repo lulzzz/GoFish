@@ -24,9 +24,6 @@ namespace GoFish.Advert.Receiver
         public void UpdateAdvert(Guid advertId)
         {
             SetBearerToken();
-            Console.WriteLine("Bearer set");
-
-            Console.WriteLine($"About to publish {advertId}");
 
             var jsonString = JsonConvert.SerializeObject(advertId);
 
@@ -40,14 +37,10 @@ namespace GoFish.Advert.Receiver
                 Console.WriteLine("Exception from {0}: {1}",client.BaseAddress, ex.Message);
                 throw;
             }
-
-            Console.WriteLine("Message from {0}: {1}",client.BaseAddress, result);
         }
 
         private void SetBearerToken()
         {
-            Console.WriteLine("Attempt to get auth token");
-
             var disco = DiscoveryClient.GetAsync("http://localhost:5000").Result; // Identity Server API -- Vagrant
             // var disco = DiscoveryClient.GetAsync("http://172.17.0.1:5000").Result; // Identity Server API -- Live
 

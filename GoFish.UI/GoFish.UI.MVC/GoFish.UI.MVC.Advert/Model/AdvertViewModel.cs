@@ -14,7 +14,8 @@ namespace GoFish.UI.MVC.Advert
                 return new Dictionary<string, string>
                 {
                    {"1", "Lobster"},
-                   {"2", "Cod"}
+                   {"2", "Cod"},
+                   {"3", "Halibut"}
                 };
             }
         }
@@ -26,7 +27,8 @@ namespace GoFish.UI.MVC.Advert
                 return new Dictionary<string, string>
                 {
                    {"1", "Line"},
-                   {"2", "Net"}
+                   {"2", "Net"},
+                   {"3", "Basket"}
                 };
             }
         }

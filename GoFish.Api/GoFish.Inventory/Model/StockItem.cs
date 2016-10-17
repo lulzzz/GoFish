@@ -6,8 +6,9 @@ namespace GoFish.Inventory
     {
         private StockItem () { }
 
-        public StockItem (ProductType productType, int quantity, double price, StockOwner owner, Guid advertId)
+        public StockItem (Guid id, ProductType productType, int quantity, double price, StockOwner owner, Guid advertId)
         {
+            Id = id;
             ProductType = productType;
             Quantity = quantity;
             Price = price;
@@ -15,7 +16,7 @@ namespace GoFish.Inventory
             AdvertId = advertId;
         }
 
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
         public ProductType ProductType { get; private set; }
         public int Quantity { get; private set; }
         public double Price { get; private set; }

@@ -53,7 +53,6 @@ namespace GoFish.Inventory.Receiver
                         };
 
                         channel.BasicConsume(queue: QUEUE_NAME, noAck: true, consumer: consumer);
-                        System.Console.WriteLine("Started");
                         Console.ReadLine();
                     }
                 }

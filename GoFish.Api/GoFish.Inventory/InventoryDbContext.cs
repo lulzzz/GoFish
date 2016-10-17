@@ -44,7 +44,7 @@ namespace GoFish.Inventory
         {
             if (context.StockOwners.Count() == 0)
             {
-                context.StockOwners.Add(new StockOwner(1, "Marvin"));
+                context.StockOwners.Add(new StockOwner(1, "Nina"));
                 context.StockOwners.Add(new StockOwner(2, "Fred"));
                 context.SaveChanges();
             }

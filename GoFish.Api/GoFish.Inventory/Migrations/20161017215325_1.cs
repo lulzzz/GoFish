@@ -38,8 +38,7 @@ namespace GoFish.Inventory.Migrations
                 name: "StockItems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Autoincrement", true),
+                    Id = table.Column<Guid>(nullable: false),
                     AdvertId = table.Column<Guid>(nullable: false),
                     OwnerId = table.Column<int>(nullable: true),
                     Price = table.Column<double>(nullable: false),

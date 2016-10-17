@@ -17,6 +17,8 @@ inventory_api:
     build: ./GoFish.Api/GoFish.Inventory
     ports:
       - "5002:5002"
+    links:
+      - identity:localhost
 
 ui_mvc_advert:
     container_name: gofish_ui_mvc_advert

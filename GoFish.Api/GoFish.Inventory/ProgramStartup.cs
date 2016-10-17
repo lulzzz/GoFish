@@ -1,4 +1,5 @@
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using EventStore.ClientAPI;
 using GoFish.Shared.Dto;
 using GoFish.Shared.Interface;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace GoFish.Inventory
 {
@@ -24,11 +26,20 @@ namespace GoFish.Inventory
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("SystemMessagingPolicy", policyAdmin =>
+                {
+                    policyAdmin.RequireClaim("scope", "gofish.messaging");
+                });
+            });
+
             services.AddMvc();
-            services.AddDbContext<InventoryDbContext>();
-            services.AddTransient<IMessageBroker<StockItem>, InventoryMessageBroker>();
 
             services.Configure<ApplicationSettings>(_config.GetSection("ApplicationSettings"));
+
+            services.AddDbContext<InventoryDbContext>();
+            services.AddTransient<IMessageBroker<StockItem>, InventoryMessageBroker>();
 
             var mapperConfig = new AutoMapper.MapperConfiguration(cfg =>
             {
@@ -40,10 +51,24 @@ namespace GoFish.Inventory
             services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri(_config["ApplicationSettings:EventStoreUrl"])));
         }
 
-        public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
+        public void Configure(
+            IApplicationBuilder app,
+            ILoggerFactory loggerFactory,
+            IOptions<ApplicationSettings> options)
         {
             loggerFactory.AddConsole();
             loggerFactory.AddDebug();
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = options.Value.IdentityServerUrl,
+                ScopeName = "api1",
+                AdditionalScopes = new[] { "gofish.messaging" },
+                RequireHttpsMetadata = false,
+                AutomaticAuthenticate = true
+            });
 
             app.UseMvc();
 

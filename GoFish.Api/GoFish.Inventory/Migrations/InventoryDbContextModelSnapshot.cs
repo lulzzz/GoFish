@@ -29,7 +29,7 @@ namespace GoFish.Inventory.Migrations
 
             modelBuilder.Entity("GoFish.Inventory.StockItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<Guid>("AdvertId");
