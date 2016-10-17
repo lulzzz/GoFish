@@ -15,12 +15,12 @@ namespace GoFish.UI.MVC.Advert
     {
         protected readonly HttpClient _client;
 
-        private readonly IOptions<ApplicationSettings> _options;
+        protected readonly IOptions<ApplicationSettings> Options;
 
         public SecureController(IOptions<ApplicationSettings> options)
         {
             _client = new HttpClient();
-            _options = options;
+            Options = options;
         }
 
         protected string GetUserName()
@@ -48,7 +48,7 @@ namespace GoFish.UI.MVC.Advert
 
         private void SetAuthToken()
         {
-            _client.BaseAddress = new Uri(_options.Value.AdvertApiUrl);
+            _client.BaseAddress = new Uri(Options.Value.AdvertApiUrl);
 
             var accessToken = HttpContext.Authentication.GetTokenAsync("access_token").Result;
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);

@@ -8,6 +8,10 @@
         "AdvertApiUrl": "http://172.17.0.1:5001/api/",   // Vagrant
         // "AdvertApiUrl": "http://54.171.92.206:5001/api/",   // live
 
+        // "DashboardUrl": "http://localhost:8005/",    // Local
+        "DashboardUrl": "http://localhost:5005/",   // Vagrant
+        // "DashboardUrl": "http://54.171.92.206:5005/",   // live
+
         // PostLogoutRedirectUri: "http://localhost:8003/",   // Local
         "PostLogoutRedirectUri": "http://localhost:5003/"   // Vagrant
         // PostLogoutRedirectUri: "http://54.171.92.206:5003/"   // Live

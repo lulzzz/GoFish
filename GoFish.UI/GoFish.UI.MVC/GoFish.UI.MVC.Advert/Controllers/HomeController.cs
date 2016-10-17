@@ -20,7 +20,8 @@ namespace GoFish.UI.MVC.Advert
             var vm = new HomeViewModel()
             {
                 ActiveAdverts = JsonConvert.DeserializeObject<List<AdvertDto>>(content),
-                UserName = GetUserName()
+                UserName = GetUserName(),
+                DashboardUrl = Options.Value.DashboardUrl
             };
 
             return View(vm);

@@ -10,11 +10,14 @@ A web-application giving fishermen and fish merchants easy access to a market of
 - The wholesale market
 - Restaurants
 
-The live version of the API is published on an AWS EC2 Instance
-[here](http://54.171.92.206:5001/api/ "API URL") (see the API reference below for API usage scenarios)
+The live version of the API is published on an AWS EC2 Instance.  See the API reference below for API usage scenarios.
 
-A prototype MVC Web UI which uses the services is published to [this AWS location](http://54.171.92.206:5003 "Live User Interface")
-(If you want to try it out, use the test user accounts of "nina" or "fred".  The passwords are the same as the user name)
+- [Advert Api](http://54.171.92.206:5001/api/ "API URL")
+- [Inventory Api](http://54.171.92.206:5002/api/ "API URL")
+
+A set of prototype MVC web-based user-interfaces which use the services are also published to AWS and the entry point is at [this AWS location](http://54.171.92.206:5003 "Live User Interface")
+
+If you want to try it out, use the test user accounts of "nina" or "fred".  The passwords are the same as the user name
 
 ## Technology stack
 
@@ -47,30 +50,22 @@ To get up and running, ideally you will need the following prerequisites on your
 
     `git clone https://github.com/jakimber/GoFish`
 
-1. Install the MVC client dependencies:
-
-    ```c#
-    cd ./GoFish/GoFish.UI.MVC/
-    bower install
-
-    cd ../GoFish.Identity/
-    bower install
-    ```
-
 1. Publish the application components:
 
-    If you are using a shell like Git-Bash you can simply:
+    If you are using a shell like Git-Bash you can simply run this in the root of the GoFish project:
 
     ```ssh
-    cd ../
     ./build.sh
     ```
 
-    If you are using a command line that doesn't like shell scripts, open the `build.sh` file and run each of the lines listed
+    If you are using a command line that doesn't like shell scripts, open the `build.sh` file and run each of the lines containing the following instructions:
+
+    - Bower installations in the roots of all MVC projects.
+    - dotnet restore, dotnet build and dotnet publish for each .NET application.
 
 1. Create the server:
 
-    If required:
+    If you haven't installed it already:
         `vagrant plugin install vagrant-docker-compose`
 
     and then: `vagrant up`
@@ -84,11 +79,19 @@ To get up and running, ideally you will need the following prerequisites on your
 
     It also then runs the Docker-Compose file for the application and gets the application components running.
 
-1. You will need to configure a new user in the [RabbitMQ instance](http://localhost:15672 "Local Rabbit MQ User Interface") to match the one that is currently hard-coded in the service code that uses it.  It is currently:
+1. You will need to configure a new user in the [RabbitMQ instance](http://localhost:15672 "Local Rabbit MQ User Interface") to match the one that is currently hard-coded in the service code that uses it.
 
-    `Username: gofish, Password: gofish`
+    To access the RabbitMQ instance log in using the default:
 
-1. You should now be able to use your browser to access the website at [this location](http://localhost:5003, "Locally published Web UI")
+        `Username: guest, Password: guest`
+
+    Select `Admin`, `Users`, `Add a User`.  Add the gofish user:
+
+        `Username: gofish, Password: gofish`
+
+    Ensure the user has access permissions by selecting it once created and clicking the `Set Permissions` button.
+
+1. You should now be able to use your browser to access the website at [this location](http://localhost:5005, "Locally published Web UI")
 
 1. You can use and debug the Api at the following locations with Postman:
 
@@ -99,7 +102,6 @@ To get up and running, ideally you will need the following prerequisites on your
     using the following settings in the authentication helper:
 
 <img src="./Readme.Resources/postman-auth.png" alt="Drawing" style="width: 300px;margin-left:100px;"/>
-
 
 ---
 
