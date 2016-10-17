@@ -3,9 +3,6 @@
         "bin/": true,
         "obj/": true,
 
-        ".vscode/launch.json" : true,
-        ".vscode/tasks.json" : true,
-
         "project.lock.json": true
     }
 }

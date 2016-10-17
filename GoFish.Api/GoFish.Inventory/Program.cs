@@ -11,7 +11,7 @@ namespace GoFish.Inventory
                 .UseKestrel()
                 // .UseUrls("http://localhost:8002")    // Local
                 .UseUrls("http://0.0.0.0:5002")         // Vagrant & Live
-                .UseStartup<Startup>()
+                .UseStartup<ProgramStartup>()
                 .Build();
 
             host.Run();

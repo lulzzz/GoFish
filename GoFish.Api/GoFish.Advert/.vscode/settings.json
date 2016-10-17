@@ -3,8 +3,6 @@
         "bin/": true,
         "obj/": true,
 
-        ".vscode/tasks.json" : true,
-
         "project.lock.json": true
     }
 }

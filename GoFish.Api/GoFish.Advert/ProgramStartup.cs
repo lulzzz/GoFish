@@ -57,8 +57,7 @@ namespace GoFish.Advert
 
             services.AddSingleton<AutoMapper.IMapper>(sp => config.CreateMapper());
 
-            // services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@localhost:1113")));     // Local (With ES running in vagrant)
-            services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri("tcp://admin:changeit@172.17.0.1:1113")));    // Vagrant and Live
+            services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri(_config["ApplicationSettings:EventStoreUrl"])));
 
             services.AddScoped<ModelStateActionFilterAttribute>();
         }
