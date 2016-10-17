@@ -68,7 +68,7 @@ To get up and running, ideally you will need the following prerequisites on your
     If you haven't installed it already:
         `vagrant plugin install vagrant-docker-compose`
 
-    and then: `vagrant up`
+    and then: `vagrant up` in the root of the GoFish project.
 
     This configures a virtual machine with:
 
