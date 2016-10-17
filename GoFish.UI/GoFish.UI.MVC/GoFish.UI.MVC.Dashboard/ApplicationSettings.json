@@ -1,0 +1,19 @@
+{
+    "ApplicationSettings": {
+        // "IdentityServerUrl": "http://localhost:8000",   // Local
+        "IdentityServerUrl": "http://localhost:5000",   // Vagrant
+        // "IdentityServerUrl": "http://54.171.92.206:5000",   // Live
+
+        // "AdvertApiUrl": "http://localhost:8001/api/",    // Local
+        "AdvertApiUrl": "http://172.17.0.1:5001/api/",   // Vagrant
+        // "AdvertApiUrl": "http://54.171.92.206:5001/api/",   // live
+
+        // "InventoryApiUrl": "http://localhost:8001/api/",    // Local
+        "InventoryApiUrl": "http://172.17.0.1:5002/api/",   // Vagrant
+        // "InventoryApiUrl": "http://54.171.92.206:5001/api/",   // live
+
+        // PostLogoutRedirectUri: "http://localhost:8005/",   // Local
+        "PostLogoutRedirectUri": "http://localhost:5005/"   // Vagrant
+        // PostLogoutRedirectUri: "http://54.171.92.206:5005/"   // Live
+    }
+}

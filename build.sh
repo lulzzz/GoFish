@@ -17,4 +17,5 @@ dotnet publish -c release ./GoFish.Api/GoFish.Inventory
 dotnet publish -c release ./GoFish.Api/GoFish.Advert.Receiver
 dotnet publish -c release ./GoFish.Api/GoFish.Inventory.Receiver
 dotnet publish -c release ./GoFish.Identity
-dotnet publish -c release ./GoFish.UI/GoFish.UI.MVC
+dotnet publish -c release ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Advert
+dotnet publish -c release ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Dashboard
