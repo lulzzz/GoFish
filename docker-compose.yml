@@ -6,7 +6,7 @@ identity:
 
 advert_api:
     container_name: gofish_advert_api
-    build: ./GoFish.Advert
+    build: ./GoFish.Api/GoFish.Advert
     ports:
       - "5001:5001"
     links:
@@ -14,13 +14,13 @@ advert_api:
 
 inventory_api:
     container_name: gofish_inventory_api
-    build: ./GoFish.Inventory
+    build: ./GoFish.Api/GoFish.Inventory
     ports:
       - "5002:5002"
 
 ui_mvc:
     container_name: gofish_ui_mvc
-    build: ./GoFish.UI.MVC
+    build: ./GoFish.UI/GoFish.UI.MVC
     ports:
       - "5003:5003"
     links:
@@ -28,14 +28,14 @@ ui_mvc:
 
 inventory_receiver:
     container_name: gofish_inventory_receiver
-    build: ./GoFish.Inventory.Receiver
+    build: ./GoFish.Api/GoFish.Inventory.Receiver
     tty: true
     links:
       - identity:localhost
 
 advert_receiver:
     container_name: gofish_advert_receiver
-    build: ./GoFish.Advert.Receiver
+    build: ./GoFish.Api/GoFish.Advert.Receiver
     tty: true
     links:
       - identity:localhost
