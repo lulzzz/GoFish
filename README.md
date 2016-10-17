@@ -32,7 +32,7 @@ If you want to try it out, use the test user accounts of "nina" or "fred".  The 
 - EventStore
 - Amazon Web Services
 
-## Developer Setup options
+## Developer Setup
 
 ### Prerequisites
 
