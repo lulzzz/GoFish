@@ -91,7 +91,7 @@ To get up and running, ideally you will need the following prerequisites on your
 
     Ensure the user has access permissions by selecting it once created and clicking the `Set Permissions` button.
 
-1. You should now be able to use your browser to access the website at [this location](http://localhost:5005, "Locally published Web UI")
+1. You should now be able to use your browser to access the website at [this location](http://localhost:5005 "Locally published Web UI")
 
 1. You can use and debug the Api at the following locations with Postman:
 
