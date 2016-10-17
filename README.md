@@ -182,3 +182,5 @@ The options are all contained in the following config locations (with comments i
 - GoFish.UI.MVC: ApplicationSettings.json
 - GoFish.Advert.Receiver/ApiProxy (in 2 places)
 - GoFish.Inventory.Receiver:  ApiProxy (in 2 places)
+
+Also the program.cs files in any of the components that you intend to run/debug locally will need the UseUrls() changed.
