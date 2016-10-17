@@ -32,7 +32,7 @@ If you want to try it out, use the test user accounts of "nina" or "fred".  The 
 - EventStore
 - Amazon Web Services
 
-## Developer Setup options
+## Developer Setup
 
 ### Prerequisites
 
@@ -68,7 +68,7 @@ To get up and running, ideally you will need the following prerequisites on your
     If you haven't installed it already:
         `vagrant plugin install vagrant-docker-compose`
 
-    and then: `vagrant up`
+    and then: `vagrant up` in the root of the GoFish project.
 
     This configures a virtual machine with:
 
@@ -91,7 +91,7 @@ To get up and running, ideally you will need the following prerequisites on your
 
     Ensure the user has access permissions by selecting it once created and clicking the `Set Permissions` button.
 
-1. You should now be able to use your browser to access the website at [this location](http://localhost:5005, "Locally published Web UI")
+1. You should now be able to use your browser to access the website at [this location](http://localhost:5005 "Locally published Web UI")
 
 1. You can use and debug the Api at the following locations with Postman:
 
@@ -182,3 +182,5 @@ The options are all contained in the following config locations (with comments i
 - GoFish.UI.MVC: ApplicationSettings.json
 - GoFish.Advert.Receiver/ApiProxy (in 2 places)
 - GoFish.Inventory.Receiver:  ApiProxy (in 2 places)
+
+Also the program.cs files in any of the components that you intend to run/debug locally will need the UseUrls() changed.
