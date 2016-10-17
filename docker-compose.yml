@@ -18,11 +18,19 @@ inventory_api:
     ports:
       - "5002:5002"
 
-ui_mvc:
-    container_name: gofish_ui_mvc
-    build: ./GoFish.UI/GoFish.UI.MVC
+ui_mvc_advert:
+    container_name: gofish_ui_mvc_advert
+    build: ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Advert
     ports:
       - "5003:5003"
+    links:
+      - identity:localhost
+
+ui_mvc_dashboard:
+    container_name: gofish_ui_mvc_dashboard
+    build: ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Dashboard
+    ports:
+      - "5005:5005"
     links:
       - identity:localhost
 

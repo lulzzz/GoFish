@@ -1,0 +1,20 @@
+@model GoFish.UI.MVC.Advert.HomeViewModel
+<h2>Your adverts</h2>
+<div class="list-group">
+    @foreach(var advert in Model.ActiveAdverts)
+    {
+        var statusClass = (int)advert.Status > 1 ? "info" : "success";
+
+        <a class="list-group-item list-group-item-@statusClass"
+            asp-controller="Advert"
+            asp-action="Summary"
+            asp-route-advertId="@advert.Id">
+            <h3>@advert.Pitch</h3>
+            <p>Quantity: @advert.Quantity. Price: @advert.Price.Value.ToString("N2")</p>
+        </a>
+    }
+</div>
+<div>
+    <a href="/Advert/Edit/" class="btn btn-primary">Create a new advert</a>
+    <a href="/Logout/" class="btn btn-default">Sign out</a>
+</div>
