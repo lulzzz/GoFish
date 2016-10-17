@@ -4,5 +4,6 @@ namespace GoFish.UI.MVC
     {
         public string IdentityServerUrl { get; set; }
         public string AdvertApiUrl { get; set; }
+        public string PostLogoutRedirectUri { get; set; }
     }
 }
