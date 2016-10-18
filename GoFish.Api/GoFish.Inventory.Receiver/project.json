@@ -1,7 +1,6 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "outputName": "GoFish.Inventory.Receiver",
     "debugType": "portable",
     "emitEntryPoint": true
   },
@@ -16,8 +15,6 @@
     }
   },
   "dependencies": {
-    "Microsoft.Extensions.Logging.Debug": "1.0.0",
-    "Microsoft.Extensions.Logging.Console": "1.0.0",
     "RabbitMQ.Client": "4.1.0",
     "Newtonsoft.Json": "9.0.1",
     "GoFish.Shared.Dto": "1.0.0-*",

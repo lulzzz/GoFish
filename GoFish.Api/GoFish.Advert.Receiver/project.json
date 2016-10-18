@@ -2,8 +2,7 @@
   "version": "1.0.0-*",
   "buildOptions": {
     "debugType": "portable",
-    "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "emitEntryPoint": true
   },
   "frameworks": {
     "netcoreapp1.0": {
