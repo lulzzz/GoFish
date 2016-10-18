@@ -3,6 +3,8 @@ identity:
     build: ./GoFish.Identity
     ports:
       - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT
 
 advert_api:
     container_name: gofish_advert_api
@@ -11,6 +13,8 @@ advert_api:
       - "5001:5001"
     links:
       - identity:localhost
+    environment:
+      - ASPNETCORE_ENVIRONMENT
 
 inventory_api:
     container_name: gofish_inventory_api
@@ -19,6 +23,8 @@ inventory_api:
       - "5002:5002"
     links:
       - identity:localhost
+    environment:
+      - ASPNETCORE_ENVIRONMENT
 
 ui_mvc_advert:
     container_name: gofish_ui_mvc_advert
@@ -27,6 +33,8 @@ ui_mvc_advert:
       - "5003:5003"
     links:
       - identity:localhost
+    environment:
+      - ASPNETCORE_ENVIRONMENT
 
 ui_mvc_dashboard:
     container_name: gofish_ui_mvc_dashboard
@@ -35,6 +43,8 @@ ui_mvc_dashboard:
       - "5005:5005"
     links:
       - identity:localhost
+    environment:
+      - ASPNETCORE_ENVIRONMENT
 
 inventory_receiver:
     container_name: gofish_inventory_receiver
@@ -42,6 +52,8 @@ inventory_receiver:
     tty: true
     links:
       - identity:localhost
+    environment:
+      - ASPNETCORE_ENVIRONMENT
 
 advert_receiver:
     container_name: gofish_advert_receiver
@@ -49,6 +61,8 @@ advert_receiver:
     tty: true
     links:
       - identity:localhost
+    environment:
+      - ASPNETCORE_ENVIRONMENT
 
 eventstore:
     container_name: eventstore

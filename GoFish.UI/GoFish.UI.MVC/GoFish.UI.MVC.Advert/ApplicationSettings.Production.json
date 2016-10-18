@@ -1,0 +1,8 @@
+{
+    "ApplicationSettings": {
+        "IdentityServerUrl": "http://54.171.92.206:5000",
+        "AdvertApiUrl": "http://54.171.92.206:5001/api/",
+        "DashboardUrl": "http://54.171.92.206:5005/",
+        "PostLogoutRedirectUri": "http://54.171.92.206:5003/"
+    }
+}

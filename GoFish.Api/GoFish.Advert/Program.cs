@@ -10,8 +10,6 @@ namespace GoFish.Advert
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                // .UseUrls("http://localhost:8001")    // Local
-                .UseUrls("http://0.0.0.0:5001")      // Vagrant & Live
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<ProgramStartup>()
                 .Build();

@@ -9,8 +9,6 @@ namespace GoFish.UI.MVC.Dashboard
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                // .UseUrls("http://localhost:8005")
-                .UseUrls("http://0.0.0.0:5005")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<ProgramStartup>()
                 .Build();

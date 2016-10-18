@@ -1,0 +1,13 @@
+{
+    "ApplicationSettings": {
+        "PostLogoutRedirectUri": "http://localhost:8005/",
+
+        // "IdentityServerUrl": "http://localhost:8000",    // Local
+        // "AdvertApiUrl": "http://localhost:8001/api/",    // Local
+        // "InventoryApiUrl": "http://localhost:8001/api/", // Local
+
+        "IdentityServerUrl": "http://localhost:5000",       // Vagrant
+        "AdvertApiUrl": "http://localhost:5001/api/",       // Vagrant
+        "InventoryApiUrl": "http://localhost:5002/api/"     // Vagrant
+    }
+}

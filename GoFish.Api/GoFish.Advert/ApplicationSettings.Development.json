@@ -1,0 +1,10 @@
+{
+    "ApplicationSettings": {
+        // Local dev with IdentityServer & EventStore already running in vagrant
+        // Need to change these if working completely in Development IDE's'
+        "IdentityServerUrl": "http://localhost:5000",
+        // "IdentityServerUrl": "http://localhost:8000",
+
+        "EventStoreUrl":  "tcp://admin:changeit@localhost:1113"
+    }
+}

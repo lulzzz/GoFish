@@ -1,0 +1,6 @@
+{
+    "ApplicationSettings": {
+        "IdentityServerUrl": "http://172.17.0.1:5000",
+        "EventStoreUrl":  "tcp://admin:changeit@172.17.0.1:1113"
+    }
+}

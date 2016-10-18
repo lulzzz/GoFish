@@ -38,7 +38,9 @@
   },
   "publishOptions": {
     "includeFiles": [
-      "ApplicationSettings.json"
+      "ApplicationSettings.Development.json",
+      "ApplicationSettings.Staging.json",
+      "ApplicationSettings.Production.json"
     ]
   }
 }

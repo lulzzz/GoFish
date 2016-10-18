@@ -20,7 +20,7 @@ namespace GoFish.Advert
         {
             _config = new ConfigurationBuilder()
                 .SetBasePath(hostEnv.ContentRootPath)
-                .AddJsonFile("ApplicationSettings.json")
+                .AddJsonFile($"ApplicationSettings.{hostEnv.EnvironmentName}.json", optional: false)
                 .Build();
         }
 

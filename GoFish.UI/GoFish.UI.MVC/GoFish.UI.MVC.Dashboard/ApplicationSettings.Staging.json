@@ -1,0 +1,8 @@
+{
+    "ApplicationSettings": {
+        "IdentityServerUrl": "http://localhost:5000",
+        "AdvertApiUrl": "http://172.17.0.1:5001/api/",
+        "InventoryApiUrl": "http://172.17.0.1:5002/api/",
+        "PostLogoutRedirectUri": "http://localhost:5005/"
+    }
+}

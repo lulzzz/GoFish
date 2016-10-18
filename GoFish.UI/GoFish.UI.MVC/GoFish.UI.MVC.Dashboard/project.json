@@ -33,7 +33,9 @@
   },
   "publishOptions": {
     "include": [
-      "ApplicationSettings.json",
+      "ApplicationSettings.Development.json",
+      "ApplicationSettings.Staging.json",
+      "ApplicationSettings.Production.json",
       "wwwroot",
       "Views"
     ]
