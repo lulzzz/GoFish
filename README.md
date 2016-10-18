@@ -137,8 +137,8 @@ Notes:
 1. Ensure WebApi conforms to appropriate RMM level to enable easy hypermedia navigation
 1. Create SPA web-based UI (ReactJs or Angular2)
 1. Create a native app for iOS, Android, Windows Phone (Xamarin)
-1. Create suite of unit tests for the services
-1. The shopfront service will probably need splitting into smaller services
+1. Testing, Testing, Testing!!
+1. The shopfront service will probably need splitting into smaller services when we get to it
 
 ## Phase 2 feature list
 
@@ -174,13 +174,13 @@ Follow the Postman diagram above, exchanging the AuthUrl and AccessTokenUrl for 
 
 ## Configuration options
 
-The repository allows for al local instance to get up and running in Docker on a Vagrant box.
-If you want to develop locally, you will need to change the configuration accordingly.
-The options are all contained in the following config locations (with comments indicating the right config to use)
+The repository allows for all local instance to get up and running in Docker on a Vagrant box.
 
-- GoFish.Advert: ApplicationSettings.json
-- GoFish.UI.MVC: ApplicationSettings.json
+Environment variables are used to load the correct config for each of the environments.
+
+If you want to develop locally, you will need to manually change a the following configuration accordingly.
+
 - GoFish.Advert.Receiver/ApiProxy (in 2 places)
-- GoFish.Inventory.Receiver:  ApiProxy (in 2 places)
+- GoFish.Inventory.Receiver/ApiProxy (in 2 places)
 
-Also the program.cs files in any of the components that you intend to run/debug locally will need the UseUrls() changed.
+All other configuration is controlled by ASPNETCORE_ENVIRONMENT and ASPNETCORE_URLS environment variables, and in the case of VSCode the launch.json files.
