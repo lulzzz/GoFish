@@ -27,7 +27,8 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
     "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
     "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.0.0",
-    "GoFish.UI.MVC.Shared": "1.0.0-*"
+    "GoFish.UI.MVC.Shared": "1.0.0-*",
+    "GoFish.Shared.Dto": "1.0.0-*"
   },
   "publishOptions": {
     "include": [
