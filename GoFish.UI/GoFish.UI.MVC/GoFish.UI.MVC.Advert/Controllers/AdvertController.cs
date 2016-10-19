@@ -89,7 +89,7 @@ namespace GoFish.UI.MVC.Advert
                 // TODO: Act upon response code
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Summary", "Advert", new { advertId = vm.AdvertData.Id });
         }
 
         [HttpPost]
