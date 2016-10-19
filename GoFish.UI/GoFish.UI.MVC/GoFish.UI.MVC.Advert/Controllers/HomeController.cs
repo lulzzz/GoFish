@@ -33,22 +33,6 @@ namespace GoFish.UI.MVC.Advert
             return View(vm);
         }
 
-        private string REDIS_Test()
-        {
-            // REDIS for the Read Model - still to do.  This connection works as P.O.C only for now
-
-            // ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost:8085");
-            // ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("172.17.0.1:6379");
-            // ConnectionMultiplexer redis = ConnectionMultiplexer.ConnectAsync("gofish.redis:6379").Result;
-            // IDatabase db = redis.GetDatabase();
-            // string value = "abcdefg";
-            // db.StringSet("mykey", value);
-            // string value2 = db.StringGet("mykey");
-            // return value2;
-
-            return string.Empty;
-        }
-
         [HttpGet]
         [Route("[action]")]
         public async Task Logout()
