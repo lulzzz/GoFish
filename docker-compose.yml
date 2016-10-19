@@ -4,7 +4,7 @@ identity:
     ports:
       - "5000:5000"
     environment:
-      - ASPNETCORE_ENVIRONMENT
+      - ASPNETCORE_ENVIRONMENT=Staging
 
 advert_api:
     container_name: gofish_advert_api
@@ -14,7 +14,7 @@ advert_api:
     links:
       - identity:localhost
     environment:
-      - ASPNETCORE_ENVIRONMENT
+      - ASPNETCORE_ENVIRONMENT=Staging
 
 inventory_api:
     container_name: gofish_inventory_api
@@ -24,7 +24,7 @@ inventory_api:
     links:
       - identity:localhost
     environment:
-      - ASPNETCORE_ENVIRONMENT
+      - ASPNETCORE_ENVIRONMENT=Staging
 
 ui_mvc_advert:
     container_name: gofish_ui_mvc_advert
@@ -34,7 +34,7 @@ ui_mvc_advert:
     links:
       - identity:localhost
     environment:
-      - ASPNETCORE_ENVIRONMENT
+      - ASPNETCORE_ENVIRONMENT=Staging
 
 ui_mvc_dashboard:
     container_name: gofish_ui_mvc_dashboard
@@ -44,7 +44,7 @@ ui_mvc_dashboard:
     links:
       - identity:localhost
     environment:
-      - ASPNETCORE_ENVIRONMENT
+      - ASPNETCORE_ENVIRONMENT=Staging
 
 inventory_receiver:
     container_name: gofish_inventory_receiver
@@ -53,7 +53,7 @@ inventory_receiver:
     links:
       - identity:localhost
     environment:
-      - ASPNETCORE_ENVIRONMENT
+      - ASPNETCORE_ENVIRONMENT=Staging
 
 advert_receiver:
     container_name: gofish_advert_receiver
@@ -62,7 +62,7 @@ advert_receiver:
     links:
       - identity:localhost
     environment:
-      - ASPNETCORE_ENVIRONMENT
+      - ASPNETCORE_ENVIRONMENT=Staging
 
 eventstore:
     container_name: eventstore
