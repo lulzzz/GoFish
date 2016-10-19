@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -11,31 +10,15 @@ using Microsoft.Extensions.Options;
 namespace GoFish.UI.MVC.Advert
 {
     [Authorize]
-    public class SecureController : Controller
+    public class SecureApiController : Controller
     {
         protected readonly HttpClient _client;
-
         protected readonly IOptions<ApplicationSettings> Options;
 
-        public SecureController(IOptions<ApplicationSettings> options)
+        public SecureApiController(IOptions<ApplicationSettings> options)
         {
             _client = new HttpClient();
             Options = options;
-        }
-
-        protected string GetUserName()
-        {
-            var userClaim = HttpContext.User.Claims.Where(u => u.Type == "name").SingleOrDefault();
-            return userClaim == null ? "" : userClaim.Value;
-        }
-
-        protected int GetUserId()
-        {
-            var userClaim = HttpContext.User.Claims.Where(u => u.Type == "sub").SingleOrDefault();
-            if (userClaim == null)
-                throw new InvalidOperationException("UserId cannot be read");
-
-            return int.Parse(userClaim.Value);
         }
 
         protected async Task<string> GetData(string uri)
@@ -44,14 +27,6 @@ namespace GoFish.UI.MVC.Advert
             var response = await _client.GetAsync(_client.BaseAddress + uri);
             var content = response.Content.ReadAsStringAsync().Result;
             return content;
-        }
-
-        private void SetAuthToken()
-        {
-            _client.BaseAddress = new Uri(Options.Value.AdvertApiUrl);
-
-            var accessToken = HttpContext.Authentication.GetTokenAsync("access_token").Result;
-            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }
 
         protected async Task<HttpResponseMessage> PutData(string uri)
@@ -70,6 +45,14 @@ namespace GoFish.UI.MVC.Advert
         {
             SetAuthToken();
             return await _client.PutAsync(uri, content);
+        }
+
+        private void SetAuthToken()
+        {
+            _client.BaseAddress = new Uri(Options.Value.AdvertApiUrl);
+
+            var accessToken = HttpContext.Authentication.GetTokenAsync("access_token").Result;
+            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }
     }
 }

@@ -4,13 +4,19 @@ using GoFish.Shared.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using GoFish.UI.MVC.Shared;
 
 namespace GoFish.UI.MVC.Advert
 {
     [Route("/")]
-    public class HomeController : SecureController
+    public class HomeController : SecureApiController
     {
-        public HomeController(IOptions<ApplicationSettings> options) : base(options) { }
+        private readonly IUserDetails _userDetails;
+
+        public HomeController(IOptions<ApplicationSettings> options, IUserDetails userDetails) : base(options)
+        {
+            _userDetails = userDetails;
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index()
@@ -20,7 +26,7 @@ namespace GoFish.UI.MVC.Advert
             var vm = new HomeViewModel()
             {
                 ActiveAdverts = JsonConvert.DeserializeObject<List<AdvertDto>>(content),
-                UserName = GetUserName(),
+                UserName = _userDetails.GetUserName(),
                 DashboardUrl = Options.Value.DashboardUrl
             };
 

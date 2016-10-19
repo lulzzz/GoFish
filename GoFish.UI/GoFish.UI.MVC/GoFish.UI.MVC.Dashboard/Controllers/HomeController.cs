@@ -1,5 +1,5 @@
-using System.Linq;
 using System.Threading.Tasks;
+using GoFish.UI.MVC.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,16 +9,17 @@ namespace GoFish.UI.MVC.Dashboard
     [Route("/")]
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IUserDetails _userDetails;
+
+        public HomeController (IUserDetails userdetails)
         {
-            var vm = new UserOwnedViewModel { UserName = GetUserName() };
-            return View(vm);
+            _userDetails = userdetails;
         }
 
-        protected string GetUserName()
+        public IActionResult Index()
         {
-            var userClaim = HttpContext.User.Claims.Where(u => u.Type == "name").SingleOrDefault();
-            return userClaim == null ? "" : userClaim.Value;
+            var vm = new UserOwnedViewModel { UserName = _userDetails.GetUserName() };
+            return View(vm);
         }
 
         [HttpGet]

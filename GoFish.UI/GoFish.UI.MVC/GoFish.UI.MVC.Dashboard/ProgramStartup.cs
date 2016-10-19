@@ -1,6 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
+using GoFish.UI.MVC.Shared;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,6 +26,9 @@ namespace GoFish.UI.MVC.Dashboard
         {
             services.AddMvc();
             services.Configure<ApplicationSettings>(_config.GetSection("ApplicationSettings"));
+
+            services.AddSingleton<IUserDetails, UserDetails>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         public void Configure(

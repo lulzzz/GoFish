@@ -7,13 +7,19 @@ using System;
 using GoFish.Shared.Dto;
 using Newtonsoft.Json.Linq;
 using Microsoft.Extensions.Options;
+using GoFish.UI.MVC.Shared;
 
 namespace GoFish.UI.MVC.Advert
 {
     [Route("[controller]")]
-    public class AdvertController : SecureController
+    public class AdvertController : SecureApiController
     {
-        public AdvertController(IOptions<ApplicationSettings> options) : base(options) { }
+        private readonly IUserDetails _userDetails;
+
+        public AdvertController(IOptions<ApplicationSettings> options, IUserDetails userDetails) : base(options)
+        {
+            _userDetails = userDetails;
+        }
 
         [HttpGet]
         [Route("[action]/{advertId:Guid?}")]
@@ -26,8 +32,8 @@ namespace GoFish.UI.MVC.Advert
             var vm = new AdvertViewModel()
             {
                 AdvertData = advert,
-                UserId = GetUserId(),
-                UserName = GetUserName()
+                UserId = _userDetails.GetUserId(),
+                UserName = _userDetails.GetUserName()
             };
 
             return View(vm);
@@ -42,8 +48,8 @@ namespace GoFish.UI.MVC.Advert
             var vm = new AdvertViewModel()
             {
                 AdvertData = ParseJsonToDto(jsonContent),
-                UserId = GetUserId(),
-                UserName = GetUserName()
+                UserId = _userDetails.GetUserId(),
+                UserName = _userDetails.GetUserName()
             };
 
             return View(vm);
@@ -58,8 +64,8 @@ namespace GoFish.UI.MVC.Advert
             var vm = new AdvertViewModel()
             {
                 AdvertData = ParseJsonToDto(jsonContent),
-                UserId = GetUserId(),
-                UserName = GetUserName()
+                UserId = _userDetails.GetUserId(),
+                UserName = _userDetails.GetUserName()
             };
 
             return View(vm);
@@ -75,8 +81,8 @@ namespace GoFish.UI.MVC.Advert
             var vm = new AdvertViewModel()
             {
                 AdvertData = ParseJsonToDto(jsonContent),
-                UserId = GetUserId(),
-                UserName = GetUserName()
+                UserId = _userDetails.GetUserId(),
+                UserName = _userDetails.GetUserName()
             };
 
             return View(vm);
@@ -86,7 +92,7 @@ namespace GoFish.UI.MVC.Advert
         [Route("[action]")]
         public IActionResult Published()
         {
-            return View(new UserOwnedViewModel() { UserName = GetUserName() });
+            return View(new UserOwnedViewModel() { UserName = _userDetails.GetUserName() });
         }
 
         [HttpPost]

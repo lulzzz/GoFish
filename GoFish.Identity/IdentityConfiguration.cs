@@ -60,20 +60,26 @@ namespace GoFish.Identity
                     RedirectUris = new List<string>
                     {
                         "http://localhost:8003/signin-oidc",     // Local (Advert)
+                        "http://localhost:8004/signin-oidc",     // Local (Inventory)
                         "http://localhost:8005/signin-oidc",     // Local (Dashboard)
                         "http://localhost:5003/signin-oidc",     // Vagrant (Advert)
+                        "http://localhost:5004/signin-oidc",     // Vagrant (Inventory)
                         "http://localhost:5005/signin-oidc",     // Vagrant (Dashboard)
                         "http://54.171.92.206:5003/signin-oidc", // Live (Advert)
+                        "http://54.171.92.206:5004/signin-oidc", // Live (Inventory)
                         "http://54.171.92.206:5005/signin-oidc"  // Live (Dashboard)
                     },
 
                     PostLogoutRedirectUris = new List<string>
                     {
                         "http://localhost:8003/",     // Local (Advert)
+                        "http://localhost:8004/",     // Local (Inventory)
                         "http://localhost:8005/",     // Local (Dashboard)
                         "http://localhost:5003/",     // Vagrant (Advert)
+                        "http://localhost:5004/",     // Vagrant (Inventory)
                         "http://localhost:5005/",     // Vagrant (Dashboard)
                         "http://54.171.92.206:5003/", // Live (Advert)
+                        "http://54.171.92.206:5004/", // Live (Inventory)
                         "http://54.171.92.206:5005/"  // Live (Dashboard)
                     },
 
