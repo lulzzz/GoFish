@@ -1,10 +1,8 @@
 #!/bin/sh
-while [[ "$#" > 1 ]]; do case $1 in
-    --publish-only) publishonly="$2";;
-    --skip-bower) skipbower="$2";;
+case $1 in
+    --publish-only) publishonly="true";;
     *) break;;
-  esac; shift; shift
-done
+esac;
 
 if [ "$publishonly" = "true" ]; then
     echo "publish-only flag set"
@@ -16,7 +14,7 @@ else
     dotnet build ./**/project.json
 fi
 
-if [ "$skipbower" = "true" ]; then
+if [ "$publishonly" = "true" ]; then
     echo "Bower install skipped"
 else
     echo "Restoring Bower Dependencies..."
