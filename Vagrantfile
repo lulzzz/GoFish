@@ -19,6 +19,7 @@ Vagrant.configure("2") do |config|
     oneServerSetup.vm.network :forwarded_port, guest: 5001, host: 5001 # Advert
     oneServerSetup.vm.network :forwarded_port, guest: 5002, host: 5002 # Identity
     oneServerSetup.vm.network :forwarded_port, guest: 5003, host: 5003 # UI.MVC.Advert
+    oneServerSetup.vm.network :forwarded_port, guest: 5004, host: 5004 # UI.MVC.Inventory
     oneServerSetup.vm.network :forwarded_port, guest: 5005, host: 5005 # UI.MVC.Dashboard
 
     oneServerSetup.vm.synced_folder ".", "/vagrant"

@@ -36,6 +36,16 @@ ui_mvc_advert:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
+ui_mvc_inventory:
+    container_name: gofish_ui_mvc_inventory
+    build: ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Inventory
+    ports:
+      - "5004:5004"
+    links:
+      - identity:localhost
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
 ui_mvc_dashboard:
     container_name: gofish_ui_mvc_dashboard
     build: ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Dashboard
