@@ -29,14 +29,7 @@ namespace GoFish.UI.MVC.Advert
             if (advertId.HasValue)
                 advert = await GetAdvert((Guid)advertId);
 
-            var vm = new AdvertViewModel()
-            {
-                AdvertData = advert,
-                UserId = _userDetails.GetUserId(),
-                UserName = _userDetails.GetUserName()
-            };
-
-            return View(vm);
+            return View(CreateAdvertViewModel(advert));
         }
 
         [HttpGet]
@@ -44,15 +37,7 @@ namespace GoFish.UI.MVC.Advert
         public async Task<IActionResult> Summary(Guid advertId)
         {
             var jsonContent = await GetData($"adverts/{advertId}");
-
-            var vm = new AdvertViewModel()
-            {
-                AdvertData = ParseJsonToDto(jsonContent),
-                UserId = _userDetails.GetUserId(),
-                UserName = _userDetails.GetUserName()
-            };
-
-            return View(vm);
+            return View(CreateAdvertViewModel(ParseJsonToDto(jsonContent)));
         }
 
         [HttpGet]
@@ -60,32 +45,15 @@ namespace GoFish.UI.MVC.Advert
         public async Task<IActionResult> PrePublish(Guid advertId)
         {
             var jsonContent = await GetData($"adverts/{advertId}");
-
-            var vm = new AdvertViewModel()
-            {
-                AdvertData = ParseJsonToDto(jsonContent),
-                UserId = _userDetails.GetUserId(),
-                UserName = _userDetails.GetUserName()
-            };
-
-            return View(vm);
+            return View(CreateAdvertViewModel(ParseJsonToDto(jsonContent)));
         }
-
 
         [HttpGet]
         [Route("[action]/{advertId:Guid}")]
         public async Task<IActionResult> PreDelete(Guid advertId)
         {
             var jsonContent = await GetData($"adverts/{advertId}");
-
-            var vm = new AdvertViewModel()
-            {
-                AdvertData = ParseJsonToDto(jsonContent),
-                UserId = _userDetails.GetUserId(),
-                UserName = _userDetails.GetUserName()
-            };
-
-            return View(vm);
+            return View(CreateAdvertViewModel(ParseJsonToDto(jsonContent)));
         }
 
         [HttpGet]
@@ -153,6 +121,9 @@ namespace GoFish.UI.MVC.Advert
                 return RedirectToAction("Summary", "Advert", new { advertId = vm.AdvertData.Id });
             }
 
+            if (vm.SubmitButton == "Cancel" && advertId != Guid.Empty)
+                return RedirectToAction("Summary", "Advert", new { advertId = advertId });
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -176,6 +147,17 @@ namespace GoFish.UI.MVC.Advert
         {
             var jsonContent = await GetData($"adverts/{advertId}");
             return ParseJsonToDto(jsonContent);
+        }
+
+        private AdvertViewModel CreateAdvertViewModel(AdvertDto advertData)
+        {
+            return new AdvertViewModel()
+            {
+                DashboardUrl = Options.Value.DashboardUrl,
+                UserName = _userDetails.GetUserName(),
+                UserId = _userDetails.GetUserId(),
+                AdvertData = advertData
+            };
         }
     }
 }

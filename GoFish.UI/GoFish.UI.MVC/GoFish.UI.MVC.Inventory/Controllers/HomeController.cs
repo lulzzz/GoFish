@@ -1,17 +1,15 @@
 using GoFish.UI.MVC.Shared;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace GoFish.UI.MVC.Inventory
 {
-    [Authorize]
-    public class HomeController : Controller
+    public class HomeController : SecureApiController
     {
         private readonly IOptions<ApplicationSettings> _options;
         private readonly IUserDetails _userDetails;
 
-        public HomeController (IOptions<ApplicationSettings> options, IUserDetails userDetails)
+        public HomeController (IOptions<ApplicationSettings> options, IUserDetails userDetails) : base(options)
         {
             _options = options;
             _userDetails = userDetails;

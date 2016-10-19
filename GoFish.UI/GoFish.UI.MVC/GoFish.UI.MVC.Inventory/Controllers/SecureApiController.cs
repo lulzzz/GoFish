@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace GoFish.UI.MVC.Advert
+namespace GoFish.UI.MVC.Inventory
 {
     [Authorize]
     public class SecureApiController : Controller
@@ -49,7 +49,7 @@ namespace GoFish.UI.MVC.Advert
 
         private void SetAuthToken()
         {
-            _client.BaseAddress = new Uri(Options.Value.AdvertApiUrl);
+            _client.BaseAddress = new Uri(Options.Value.InventoryApiUrl);
 
             var accessToken = HttpContext.Authentication.GetTokenAsync("access_token").Result;
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
