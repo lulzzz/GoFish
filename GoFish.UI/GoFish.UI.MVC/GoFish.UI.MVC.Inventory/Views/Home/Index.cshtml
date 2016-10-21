@@ -4,7 +4,10 @@
 
 <div class="list-group">
 	@foreach(var stockItem in Model.Stock) {
-        <a href="#" class="list-group-item">
+        <a asp-controller="Stock"
+            asp-action="Summary"
+            asp-route-stockItemId="@stockItem.ProductTypeId"
+            class="list-group-item">
             <h3>@stockItem.AdvertId</h3>
             <p>Quantity: @stockItem.Quantity. Price: @stockItem.Price.ToString("N2")</p>
         </a>
