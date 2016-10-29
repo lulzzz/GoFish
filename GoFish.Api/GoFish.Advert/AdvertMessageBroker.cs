@@ -30,6 +30,7 @@ namespace GoFish.Advert
             // whitelist of events that have associated MQ messages sent
             var whiteList = new List<string>() {
                 "AdvertPostedEvent",
+                "AdvertPostedToStockEvent",
                 "AdvertPublishedEvent"
             };
 
