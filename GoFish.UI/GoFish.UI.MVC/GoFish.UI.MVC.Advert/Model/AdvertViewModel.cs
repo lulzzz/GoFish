@@ -61,6 +61,14 @@ namespace GoFish.UI.MVC.Advert
             }
         }
 
+        public string RemovalText
+        {
+            get
+            {
+                return AdvertHasNotBeenPosted() ? "Delete" : "Withdraw";
+            }
+        }
+
         public string GetToolTip(string button)
         {
             if (button == "Delete")
