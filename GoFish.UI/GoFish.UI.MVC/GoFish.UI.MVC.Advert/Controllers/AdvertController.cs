@@ -87,6 +87,7 @@ namespace GoFish.UI.MVC.Advert
             {
                 var response = await Delete($"adverts/{vm.AdvertData.Id}");
                 // TODO: Act upon response code
+                return RedirectToAction("Index", "Home");
             }
 
             return RedirectToAction("Summary", "Advert", new { advertId = vm.AdvertData.Id });

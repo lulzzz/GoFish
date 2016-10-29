@@ -36,7 +36,7 @@
 			<button name="SubmitButton" type="submit" class="btn btn-default @Model.EditButtonState" @Model.EditButtonState value="Edit"
 				title="@Model.GetToolTip("Edit")">Edit</button>
 			<button name="SubmitButton" type="submit" class="btn btn-danger" @Model.DeleteButtonState value="Delete"
-				title="@Model.GetToolTip("Delete")">Delete</button>
+				title="@Model.GetToolTip("Delete")">@Model.RemovalText</button>
 			<button name="SubmitButton" type="submit" class="btn btn-primary @Model.EditButtonState" @Model.EditButtonState value="Publish"
 				title="@Model.GetToolTip("Publish")">Publish</button>
 		</div>
