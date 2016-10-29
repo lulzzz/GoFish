@@ -34,11 +34,11 @@ namespace GoFish.Advert
         }
 
         [HttpPut("{id:Guid}")]
-        public IActionResult PostAdvert(Guid id)
+        public IActionResult PostAdvert(Guid id, [FromBody]PostAdvertPayload data)
         {
             try
             {
-                _command.Send(new PostAdvertCommand(id, GetUserId()));
+                _command.Send(new PostAdvertCommand(id, GetUserId(), data.PublishType=="PublishAndAdd"));
                 return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (AdvertNotFoundException)
@@ -54,5 +54,10 @@ namespace GoFish.Advert
                 return NotFound(); // Better a 404 than a potential hack vector.
             }
         }
+    }
+
+    public class PostAdvertPayload
+    {
+        public string PublishType { get; set; }
     }
 }

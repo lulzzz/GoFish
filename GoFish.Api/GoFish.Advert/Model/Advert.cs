@@ -80,7 +80,17 @@ namespace GoFish.Advert
                 throw new InvalidOperationException("Can only post non-posted & non-published adverts.");
             }
 
-            Apply(new AdvertPostedEvent(Id), true);
+            Apply(new AdvertPostedEvent(Id), isNewEvent: true);
+        }
+
+        public void PostToStock()
+        {
+            if (Status != AdvertStatus.Posted)
+            {
+                throw new InvalidOperationException("Can only add a posted advert to stock.");
+            }
+
+            Apply(new AdvertPostedToStockEvent(Id), isNewEvent: true);
         }
 
         public void Publish()
@@ -130,6 +140,11 @@ namespace GoFish.Advert
         }
 
         private void When(AdvertPostedEvent e)
+        {
+            Status = AdvertStatus.Posted;
+        }
+
+        private void When(AdvertPostedToStockEvent e)
         {
             Status = AdvertStatus.Posted;
         }

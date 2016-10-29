@@ -5,9 +5,6 @@ bin/
 
 # VS Code Configuration
 .vs/
-**/.vscode/*
-!settings.json
-!launch.json
 
 # user files
 *.user

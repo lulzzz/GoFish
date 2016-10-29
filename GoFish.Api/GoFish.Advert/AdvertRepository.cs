@@ -55,6 +55,11 @@ namespace GoFish.Advert
                     var d2 = JsonConvert.DeserializeObject<AdvertPostedEvent>(d);
                     eventList.Add(d2);
                 }
+                if (e.Event.EventType == "AdvertPostedToStockEvent")
+                {
+                    var d2 = JsonConvert.DeserializeObject<AdvertPostedToStockEvent>(d);
+                    eventList.Add(d2);
+                }
                 if (e.Event.EventType == "AdvertPublishedEvent")
                 {
                     var d2 = JsonConvert.DeserializeObject<AdvertPublishedEvent>(d);
