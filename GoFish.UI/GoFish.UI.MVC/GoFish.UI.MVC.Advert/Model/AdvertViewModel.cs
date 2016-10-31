@@ -42,9 +42,28 @@ namespace GoFish.UI.MVC.Advert
                     || AdvertData.Status == AdvertStatus.Creating;
         }
 
+        protected bool AdvertIsNew()
+        {
+            return AdvertData.Status == AdvertStatus.Creating;
+        }
+
         protected bool UserIsAdvertOwner()
         {
             return AdvertData.AdvertiserId == UserId;
+        }
+
+        private string _referringPage;
+        public string ReferringPage
+        {
+            get
+            {
+                return _referringPage == string.Empty || _referringPage == null
+                    ? "Summary" : _referringPage;
+            }
+            set
+            {
+                _referringPage = value;
+            }
         }
     }
 }

@@ -50,10 +50,12 @@ namespace GoFish.UI.MVC.Advert
 
         [HttpGet]
         [Route("[action]/{advertId:Guid}")]
-        public async Task<IActionResult> PreDelete(Guid advertId)
+        public async Task<IActionResult> PreDelete(Guid advertId, string referringPage)
         {
             var jsonContent = await GetData($"adverts/{advertId}");
-            return View(CreateAdvertViewModel<EditAdvertViewModel>(ParseJsonToDto(jsonContent)));
+            var vm = CreateAdvertViewModel<EditAdvertViewModel>(ParseJsonToDto(jsonContent));
+            vm.ReferringPage = referringPage;
+            return View(vm);
         }
 
         [HttpGet]
@@ -71,7 +73,7 @@ namespace GoFish.UI.MVC.Advert
                 return RedirectToAction("Edit", "Advert", new { advertId = vm.AdvertData.Id });
 
             if (vm.SubmitButton == "Delete")
-                return RedirectToAction("PreDelete", "Advert", new { advertId = vm.AdvertData.Id });
+                return RedirectToAction("PreDelete", "Advert", new { advertId = vm.AdvertData.Id, referringPage = "Summary" });
 
             if (vm.SubmitButton == "Publish")
                 return RedirectToAction("PrePublish", "Advert");
@@ -85,12 +87,16 @@ namespace GoFish.UI.MVC.Advert
         {
             if (vm.SubmitButton == "Delete")
             {
-                var response = await Delete($"adverts/{vm.AdvertData.Id}");
-                // TODO: Act upon response code
+                var response = await Delete($"adverts/{vm.AdvertData.Id}"); // TODO: Act upon response code
                 return RedirectToAction("Index", "Home");
             }
 
-            return RedirectToAction("Summary", "Advert", new { advertId = vm.AdvertData.Id });
+            return RedirectToAction(WhiteListReferrers(vm.ReferringPage), "Advert", new { advertId = vm.AdvertData.Id });
+        }
+
+        private string WhiteListReferrers(string referringPage)
+        {
+            return (referringPage != "Summary" && referringPage != "Edit") ? "Summary" : referringPage;
         }
 
         [HttpPost]
@@ -104,9 +110,8 @@ namespace GoFish.UI.MVC.Advert
                 if (!ModelState.IsValid)
                     return View("PrePublish", RehydratePrePublishViewModel(vm));
 
-                var response = await PutData($"postedadverts/{advertId}", GetJsonContent(vm));
+                var response = await PutData($"postedadverts/{advertId}", GetJsonContent(vm)); // TODO: Act upon response code
                 return RedirectToAction("Published", "Advert");
-                // TODO: Act upon response code
             }
 
             return RedirectToAction("Summary", "Advert", new { advertId = advertId });
@@ -118,14 +123,14 @@ namespace GoFish.UI.MVC.Advert
         {
             if (vm.SubmitButton == "Save")
             {
-                if (!ModelState.IsValid)
-                    return View(vm);
+                if (!ModelState.IsValid) return View(vm);
 
-                var response = await PutData($"adverts/{vm.AdvertData.Id}", GetJsonContent(vm.AdvertData));
-                // TODO: Check return codes etc. for error conditions.
-
+                var response = await PutData($"adverts/{vm.AdvertData.Id}", GetJsonContent(vm.AdvertData)); // TODO: Check return codes etc. for error conditions.
                 return RedirectToAction("Summary", "Advert", new { advertId = vm.AdvertData.Id });
             }
+
+            if (vm.SubmitButton == "Delete")
+                return RedirectToAction("PreDelete", "Advert", new { advertId = vm.AdvertData.Id, referringPage = "Edit" });
 
             if (vm.SubmitButton == "Cancel" && advertId != Guid.Empty)
                 return RedirectToAction("Summary", "Advert", new { advertId = advertId });
@@ -157,26 +162,26 @@ namespace GoFish.UI.MVC.Advert
 
         private AdvertViewModel CreateAdvertViewModel<T>(AdvertDto advertData) where T : AdvertViewModel, new()
         {
-            var vm = BuildBaseViewModel<T>();
-            vm.AdvertData = advertData;
-            return vm;
+            advertData.AdvertiserId = _userDetails.GetUserId();
+            return BuildBaseViewModel<T>(advertData);
         }
 
         private PrePublishAdvertViewModel RehydratePrePublishViewModel(PublishAdvertViewModel vm)
         {
-            var newVm = BuildBaseViewModel<PrePublishAdvertViewModel>();
+            var advertData = GetAdvert(vm.Id).Result;
+            var newVm = BuildBaseViewModel<PrePublishAdvertViewModel>(advertData);
             newVm.PublishType = vm.PublishType;
-            newVm.AdvertData = GetAdvert(vm.Id).Result;
             return newVm;
         }
 
-        private T BuildBaseViewModel<T>() where T : AdvertViewModel, new()
+        private T BuildBaseViewModel<T>(AdvertDto advertData) where T : AdvertViewModel, new()
         {
             return new T()
             {
                 DashboardUrl = Options.Value.DashboardUrl,
                 UserName = _userDetails.GetUserName(),
-                UserId = _userDetails.GetUserId()
+                UserId = _userDetails.GetUserId(),
+                AdvertData = advertData
             };
         }
     }

@@ -24,6 +24,9 @@ namespace GoFish.UI.MVC.Advert
         {
             get
             {
+                if (AdvertIsNew())
+                    return "disabled";
+
                 return UserIsAdvertOwner() ? string.Empty : "disabled";
             }
         }
@@ -42,13 +45,8 @@ namespace GoFish.UI.MVC.Advert
             {
                 return UserIsAdvertOwner() ? string.Empty : "You can not do this to someone else's advert";
             }
-            else
-            {
-                if (!UserIsAdvertOwner())
-                    return "You can not do this to someone else's advert";
 
-                return AdvertHasNotBeenPosted() ? string.Empty : $"You can not do this to a {AdvertData.Status} advert.";
-            }
+            return AdvertHasNotBeenPosted() ? string.Empty : $"You can not do this.  The advert status is {AdvertData.Status}.";
         }
     }
 }
