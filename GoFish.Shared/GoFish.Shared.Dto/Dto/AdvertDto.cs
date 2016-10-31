@@ -45,7 +45,7 @@ namespace GoFish.Shared.Dto
 
         [Required]
         [Display(Name = "Fishing Method")]
-        [Range(1, Int32.MaxValue)] // TODO: This'll probably end up being something else, Guid? Enum?
+        [Range(0, Int32.MaxValue)] // TODO: This'll probably end up being something else, Guid? Enum?
         public int? FishingMethod { get; set; }
 
         public AdvertStatus Status { get; set; } = AdvertStatus.Creating;

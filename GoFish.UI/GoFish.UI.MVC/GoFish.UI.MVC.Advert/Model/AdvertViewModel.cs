@@ -26,6 +26,7 @@ namespace GoFish.UI.MVC.Advert
             {
                 return new Dictionary<string, string>
                 {
+                   {"0", "-- Detail Unknown --"},
                    {"1", "Line"},
                    {"2", "Net"},
                    {"3", "Basket"}
