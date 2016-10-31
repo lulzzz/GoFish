@@ -1,6 +1,9 @@
+using System;
+using System.Threading.Tasks;
 using GoFish.UI.MVC.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 
 namespace GoFish.UI.MVC.Inventory
 {
@@ -15,14 +18,26 @@ namespace GoFish.UI.MVC.Inventory
             _userDetails = userDetails;
         }
 
-        public IActionResult Summary(int productTypeId)
+
+        private static StockItemViewModel ParseJsonToDto(string content)
         {
+            var jsonObject = JObject.Parse(content);
+            StockItemViewModel stock = jsonObject.ToObject<StockItemViewModel>();
+            return stock;
+        }
+
+        public async Task<IActionResult> Summary(int id)
+        {
+            var stock = await GetData($"inventory/{id}");
+            var stockItem = ParseJsonToDto(stock);
+
             var vm = new StockViewModel()
             {
                 DashboardUrl = _options.Value.DashboardUrl,
                 UserName = _userDetails.GetUserName(),
                 //
-                ProductName = "Lobster"
+                StockItem = stockItem,
+                ProductType = stockItem.ProductType
             };
 
             return View(vm);

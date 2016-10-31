@@ -5,6 +5,7 @@ using GoFish.Shared.Dto;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using System.Linq;
 
 namespace GoFish.Inventory
 {
@@ -24,9 +25,21 @@ namespace GoFish.Inventory
         [HttpGet]
         public IEnumerable<StockItem> Get()
         {
+            // TODO: Stock Vs StockItem changes required
             return _context.StockItems
                 .Include(pt => pt.ProductType)
-                .Include(so => so.Owner);
+                .Include(so => so.Owner)
+                .Where(o => o.Owner.Id == GetUserId());
+        }
+
+        [HttpGet("{id}")]
+        public StockItem Get(int id)
+        {
+            // TODO: Stock Vs StockItem changes required
+            return _context.StockItems
+                .Include(pt => pt.ProductType)
+                .Include(so => so.Owner)
+                .Where(p => p.ProductType.Id == id).Single();
         }
 
         [HttpPost]
@@ -51,7 +64,7 @@ namespace GoFish.Inventory
             _messageBroker.SendMessagesFor(stockItem);
         }
 
-        [HttpPut("id:Guid")]
+        [HttpPut("{id:Guid}")]
         public IActionResult Put(Guid id, [FromBody]StockItemDto newState)
         {
             // Set the Id from the URI to the DTO to send on
@@ -62,6 +75,21 @@ namespace GoFish.Inventory
 
             try
             {
+                // TODO: See Commented code below
+                var stockItem = new StockItem(
+                                Guid.NewGuid(),
+                                new ProductType(newState.ProductTypeId),
+                                newState.Quantity,
+                                newState.Price,
+                                new StockOwner(newState.OwnerId),
+                                newState.AdvertId
+                            );
+
+                _context.StockItems.Add(stockItem);
+                _context.ProductTypes.Attach(stockItem.ProductType);
+                _context.StockOwners.Attach(stockItem.Owner);
+                _context.SaveChanges();
+
                 // _commandMediator.Send(CreateCommandForState(newState));
                 // return Created($"/api/{GetControllerName()}/{id}", _queryMediator.Get(id));
                 return Ok();

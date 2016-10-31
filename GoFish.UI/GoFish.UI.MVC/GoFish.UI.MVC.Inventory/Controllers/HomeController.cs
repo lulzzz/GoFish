@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using GoFish.Shared.Dto;
 using GoFish.UI.MVC.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -27,7 +26,7 @@ namespace GoFish.UI.MVC.Inventory
             {
                 DashboardUrl = _options.Value.DashboardUrl,
                 UserName = _userDetails.GetUserName(),
-                Stock = JsonConvert.DeserializeObject<List<StockItemDto>>(content)
+                Stock = JsonConvert.DeserializeObject<List<StockViewModel>>(content)
             };
 
             return View(vm);

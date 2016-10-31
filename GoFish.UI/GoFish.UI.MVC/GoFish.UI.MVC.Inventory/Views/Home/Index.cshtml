@@ -6,10 +6,9 @@
 	@foreach(var stockItem in Model.Stock) {
         <a asp-controller="Stock"
             asp-action="Summary"
-            asp-route-stockItemId="@stockItem.ProductTypeId"
+            asp-route-id="@stockItem.ProductType.Id"
             class="list-group-item">
-            <h3>@stockItem.AdvertId</h3>
-            <p>Quantity: @stockItem.Quantity. Price: @stockItem.Price.ToString("N2")</p>
+            <h3>@stockItem.ProductType.Name</h3>
         </a>
     }
 </div>
