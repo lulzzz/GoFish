@@ -1,35 +1,7 @@
-using System.Collections.Generic;
-
 namespace GoFish.UI.MVC.Advert
 {
     public class EditAdvertViewModel : AdvertViewModel
     {
-        public IDictionary<string, string> CatchTypes
-        {
-            get
-            {
-                return new Dictionary<string, string>
-                {
-                   {"1", "Lobster"},
-                   {"2", "Cod"},
-                   {"3", "Halibut"}
-                };
-            }
-        }
-
-        public IDictionary<string, string> FishingMethods
-        {
-            get
-            {
-                return new Dictionary<string, string>
-                {
-                   {"1", "Line"},
-                   {"2", "Net"},
-                   {"3", "Basket"}
-                };
-            }
-        }
-
         public string EditButtonState
         {
             get
