@@ -1,20 +1,23 @@
+using System;
 using GoFish.Shared.Dto;
 
 namespace GoFish.Advert
 {
     public class AdvertFactory : IAdvertFactory
     {
-        public Advert BuildNew(AdvertDto fromDto)
+        public Advert BuildNew(AdvertDto buildData)
         {
-            var resultingAdvert = new Advert(
-                fromDto.Id,
-                CatchType.FromId((int)fromDto.CatchTypeId),
-                (int)fromDto.Quantity,
-                (double)fromDto.Price,
-                Advertiser.FromId((int)fromDto.AdvertiserId));
+            ValidateInput(buildData);
 
-            resultingAdvert.Pitch = fromDto.Pitch;
-            resultingAdvert.FishingMethod = (FishingMethod)fromDto.FishingMethod;
+            var resultingAdvert = new Advert(
+                buildData.Id,
+                CatchType.FromId((int)buildData.CatchTypeId),
+                (int)buildData.Quantity,
+                (double)buildData.Price,
+                Advertiser.FromId((int)buildData.AdvertiserId));
+
+            resultingAdvert.Pitch = buildData.Pitch;
+            resultingAdvert.FishingMethod = (FishingMethod)(buildData.FishingMethod ?? (int)FishingMethod.Unknown);
 
             return resultingAdvert;
         }
@@ -25,6 +28,16 @@ namespace GoFish.Advert
             resultingAdvert.Status = advert.Status;
             resultingAdvert.Update();
             return resultingAdvert;
+
+        }
+
+        private static void ValidateInput(AdvertDto fromDto)
+        {
+            if (fromDto.CatchTypeId == null)
+                throw new ArgumentNullException("Catch Type");
+
+            if (fromDto.CatchTypeId == 0)
+                throw new ArgumentOutOfRangeException("Catch Type");
         }
     }
 }
