@@ -9,16 +9,30 @@ namespace GoFish.Advert
 
         public override void Handle(PostAdvertCommand command)
         {
+            // Get and check it
             var advert = Repository.Get(command.Id);
 
             if (advert == null)
                 throw new AdvertNotFoundException($"Advert not found: {command.Id}");
 
-            if(advert.Advertiser.Id != command.UserId)
+            if (advert.Advertiser.Id != command.UserId)
                 throw new AdvertNotOwnedException($"Advert not yours: {command.Id}");
 
-            // Do it!
+            // Do stuff
             advert.Post();
+
+            if (command.AlsoPostToStock)
+            {
+                advert.PostToStock();
+            }
+            else
+            {
+                // TODO: this will get handled out of process eventually, but
+                // at the moment, there is no receiver for the "just publish" message
+                // so set it to published here for now
+                advert.Publish();
+            }
+
 
             SaveEvents(advert);
 

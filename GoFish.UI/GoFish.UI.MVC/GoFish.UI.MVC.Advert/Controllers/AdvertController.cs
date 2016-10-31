@@ -29,7 +29,7 @@ namespace GoFish.UI.MVC.Advert
             if (advertId.HasValue)
                 advert = await GetAdvert((Guid)advertId);
 
-            return View(CreateAdvertViewModel(advert));
+            return View(CreateAdvertViewModel<EditAdvertViewModel>(advert));
         }
 
         [HttpGet]
@@ -37,7 +37,7 @@ namespace GoFish.UI.MVC.Advert
         public async Task<IActionResult> Summary(Guid advertId)
         {
             var jsonContent = await GetData($"adverts/{advertId}");
-            return View(CreateAdvertViewModel(ParseJsonToDto(jsonContent)));
+            return View(CreateAdvertViewModel<EditAdvertViewModel>(ParseJsonToDto(jsonContent)));
         }
 
         [HttpGet]
@@ -45,7 +45,7 @@ namespace GoFish.UI.MVC.Advert
         public async Task<IActionResult> PrePublish(Guid advertId)
         {
             var jsonContent = await GetData($"adverts/{advertId}");
-            return View(CreateAdvertViewModel(ParseJsonToDto(jsonContent)));
+            return View(CreateAdvertViewModel<PrePublishAdvertViewModel>(ParseJsonToDto(jsonContent)));
         }
 
         [HttpGet]
@@ -53,7 +53,7 @@ namespace GoFish.UI.MVC.Advert
         public async Task<IActionResult> PreDelete(Guid advertId)
         {
             var jsonContent = await GetData($"adverts/{advertId}");
-            return View(CreateAdvertViewModel(ParseJsonToDto(jsonContent)));
+            return View(CreateAdvertViewModel<EditAdvertViewModel>(ParseJsonToDto(jsonContent)));
         }
 
         [HttpGet]
@@ -65,7 +65,7 @@ namespace GoFish.UI.MVC.Advert
 
         [HttpPost]
         [Route("[action]/{advertId:Guid}")]
-        public IActionResult Summary(Guid advertId, AdvertViewModel vm)
+        public IActionResult Summary(Guid advertId, EditAdvertViewModel vm)
         {
             if (vm.SubmitButton == "Edit")
                 return RedirectToAction("Edit", "Advert", new { advertId = vm.AdvertData.Id });
@@ -81,7 +81,7 @@ namespace GoFish.UI.MVC.Advert
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<IActionResult> Delete(AdvertViewModel vm)
+        public async Task<IActionResult> Delete(EditAdvertViewModel vm)
         {
             if (vm.SubmitButton == "Delete")
             {
@@ -95,11 +95,16 @@ namespace GoFish.UI.MVC.Advert
 
         [HttpPost]
         [Route("[action]/{advertId:Guid}")]
-        public async Task<IActionResult> Publish(Guid advertId, AdvertViewModel vm)
+        public async Task<IActionResult> Publish(Guid advertId, PublishAdvertViewModel vm)
         {
             if (vm.SubmitButton == "Publish")
             {
-                var response = await PutData($"postedadverts/{advertId}");
+                vm.Id = advertId;
+
+                if (!ModelState.IsValid)
+                    return View("PrePublish", RehydratePrePublishViewModel(vm));
+
+                var response = await PutData($"postedadverts/{advertId}", GetJsonContent(vm));
                 return RedirectToAction("Published", "Advert");
                 // TODO: Act upon response code
             }
@@ -109,14 +114,14 @@ namespace GoFish.UI.MVC.Advert
 
         [HttpPost]
         [Route("[action]/{advertId:Guid?}")]
-        public async Task<IActionResult> Edit(Guid advertId, AdvertViewModel vm)
+        public async Task<IActionResult> Edit(Guid advertId, EditAdvertViewModel vm)
         {
             if (vm.SubmitButton == "Save")
             {
                 if (!ModelState.IsValid)
                     return View(vm);
 
-                var response = await PutData($"adverts/{vm.AdvertData.Id}", GetJsonContentFromModel(vm));
+                var response = await PutData($"adverts/{vm.AdvertData.Id}", GetJsonContent(vm.AdvertData));
                 // TODO: Check return codes etc. for error conditions.
 
                 return RedirectToAction("Summary", "Advert", new { advertId = vm.AdvertData.Id });
@@ -128,9 +133,9 @@ namespace GoFish.UI.MVC.Advert
             return RedirectToAction("Index", "Home");
         }
 
-        private static StringContent GetJsonContentFromModel(AdvertViewModel vm)
+        private static StringContent GetJsonContent(object vm)
         {
-            var jsonData = JsonConvert.SerializeObject(vm.AdvertData);
+            var jsonData = JsonConvert.SerializeObject(vm);
             var httpContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             return httpContent;
         }
@@ -150,14 +155,28 @@ namespace GoFish.UI.MVC.Advert
             return ParseJsonToDto(jsonContent);
         }
 
-        private AdvertViewModel CreateAdvertViewModel(AdvertDto advertData)
+        private AdvertViewModel CreateAdvertViewModel<T>(AdvertDto advertData) where T : AdvertViewModel, new()
         {
-            return new AdvertViewModel()
+            var vm = BuildBaseViewModel<T>();
+            vm.AdvertData = advertData;
+            return vm;
+        }
+
+        private PrePublishAdvertViewModel RehydratePrePublishViewModel(PublishAdvertViewModel vm)
+        {
+            var newVm = BuildBaseViewModel<PrePublishAdvertViewModel>();
+            newVm.PublishType = vm.PublishType;
+            newVm.AdvertData = GetAdvert(vm.Id).Result;
+            return newVm;
+        }
+
+        private T BuildBaseViewModel<T>() where T : AdvertViewModel, new()
+        {
+            return new T()
             {
                 DashboardUrl = Options.Value.DashboardUrl,
                 UserName = _userDetails.GetUserName(),
-                UserId = _userDetails.GetUserId(),
-                AdvertData = advertData
+                UserId = _userDetails.GetUserId()
             };
         }
     }

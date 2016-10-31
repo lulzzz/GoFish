@@ -6,9 +6,12 @@ namespace GoFish.Advert
     {
         public readonly Guid Id;
 
-        public PostAdvertCommand(Guid id, int userId) : base(userId)
+        public readonly bool AlsoPostToStock;
+
+        public PostAdvertCommand(Guid id, int userId, bool alsoPostToStock) : base(userId)
         {
             Id = id;
+            AlsoPostToStock = alsoPostToStock;
         }
     }
 }
