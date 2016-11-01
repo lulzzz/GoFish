@@ -14,7 +14,9 @@ namespace GoFish.UI.MVC.Advert
         {
             get
             {
-                return CatchTypes.Where(i => i.Key == AdvertData.CatchTypeId.ToString()).Single().Value;
+                return AdvertData.CatchTypeId.HasValue ?
+                    CatchTypes.Where(i => i.Key == AdvertData.CatchTypeId.ToString()).Single().Value :
+                    string.Empty;
             }
         }
 
@@ -23,10 +25,11 @@ namespace GoFish.UI.MVC.Advert
         {
             get
             {
-                return FishingMethods.Where(i => i.Key == AdvertData.FishingMethod.ToString()).Single().Value;
+                return AdvertData.FishingMethod.HasValue ?
+                    FishingMethods.Where(i => i.Key == AdvertData.FishingMethod.ToString()).Single().Value :
+                    string.Empty;
             }
         }
-
 
         public IDictionary<string, string> CatchTypes
         {
