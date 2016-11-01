@@ -20,13 +20,14 @@ namespace GoFish.UI.MVC.Inventory
 
         public async Task<IActionResult> Index()
         {
-            var content = await GetData("inventory");
+            var content = await GetData("shelves");
+            var shelves = JsonConvert.DeserializeObject<List<ShelfViewModel>>(content);
 
             var vm = new HomeViewModel()
             {
                 DashboardUrl = _options.Value.DashboardUrl,
                 UserName = _userDetails.GetUserName(),
-                Stock = JsonConvert.DeserializeObject<List<StockViewModel>>(content)
+                Shelves = shelves
             };
 
             return View(vm);

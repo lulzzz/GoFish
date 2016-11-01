@@ -1,6 +1,7 @@
 using System;
 using EventStore.ClientAPI;
 using GoFish.Shared.Interface;
+using GoFish.Shared.Command;
 using GoFish.Shared.Dto;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

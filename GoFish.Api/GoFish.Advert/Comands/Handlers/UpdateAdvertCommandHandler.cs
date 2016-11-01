@@ -1,4 +1,5 @@
 using System;
+using GoFish.Shared.Command;
 
 namespace GoFish.Advert
 {
@@ -19,7 +20,7 @@ namespace GoFish.Advert
                 throw new InvalidOperationException("Can only update adverts in the 'Created' Status");
 
             if(advert.Advertiser.Id != command.UserId)
-                throw new AdvertNotOwnedException($"Advert not yours: {command.Advert.Id}");
+                throw new ItemNotOwnedException($"Advert not yours: {command.Advert.Id}");
 
             // Do it!
             var changedAdvert = _factory.Update(advert, command.Advert);

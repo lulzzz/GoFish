@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using GoFish.Shared.Dto;
+using GoFish.Shared.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
@@ -81,9 +82,9 @@ namespace GoFish.Advert
         private ICommand<Advert> CreateCommandForState(AdvertDto newState)
         {
             if (_queryMediator.Get(newState.Id) == null)
-                return new CreateAdvertCommand(newState, GetUserId());
+                return (ICommand<Advert>)new CreateAdvertCommand(newState, GetUserId());
 
-            return new UpdateAdvertCommand(newState, GetUserId());
+            return (ICommand<Advert>)new UpdateAdvertCommand(newState, GetUserId());
         }
     }
 }

@@ -1,3 +1,5 @@
+using GoFish.Shared.Command;
+
 namespace GoFish.Advert
 {
     public class CreateAdvertCommandHandler : AdvertCommandHandler<CreateAdvertCommand>
@@ -15,7 +17,7 @@ namespace GoFish.Advert
             var advert = _factory.BuildNew(command.Advert);
 
             if(advert.Advertiser.Id != command.UserId)
-                throw new AdvertNotOwnedException($"Advert not yours: {command.Id}");
+                throw new ItemNotOwnedException($"Advert not yours: {command.Id}");
 
             // Act
             advert.Create();

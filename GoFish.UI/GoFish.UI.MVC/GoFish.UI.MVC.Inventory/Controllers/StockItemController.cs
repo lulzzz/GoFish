@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using GoFish.UI.MVC.Shared;
 using Microsoft.AspNetCore.Mvc;
@@ -7,20 +8,20 @@ using Newtonsoft.Json;
 namespace GoFish.UI.MVC.Inventory
 {
     [Route("[controller]")]
-    public class StockController : SecureApiController
+    public class StockItemController : SecureApiController
     {
         private readonly IUserDetails _userDetails;
 
-        public StockController(IOptions<ApplicationSettings> options, IUserDetails userDetails) : base(options)
+        public StockItemController(IOptions<ApplicationSettings> options, IUserDetails userDetails) : base(options)
         {
             _userDetails = userDetails;
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Shelf(int id)
+        public async Task<IActionResult> Summary(Guid id)
         {
-            var stock = await GetData($"shelves/{id}");
-            var vm = JsonConvert.DeserializeObject<ShelfViewModel>(stock);
+            var stock = await GetData($"inventory/{id}");
+            var vm = JsonConvert.DeserializeObject<StockItemViewModel>(stock);
 
             vm.DashboardUrl = Options.Value.DashboardUrl;
             vm.UserName = _userDetails.GetUserName();

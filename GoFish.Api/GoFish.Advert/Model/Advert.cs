@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
 {
-    public class Advert
+    public class Advert: ICommandable
     {
         private IList<AdvertEvent> _changes = new List<AdvertEvent>();
 

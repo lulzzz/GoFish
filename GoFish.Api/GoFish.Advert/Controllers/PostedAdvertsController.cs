@@ -1,5 +1,7 @@
 using System;
 using System.Net;
+using GoFish.Shared.Command;
+using GoFish.Shared.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoFish.Advert
@@ -41,7 +43,7 @@ namespace GoFish.Advert
                 _command.Send(new PostAdvertCommand(id, GetUserId(), data.PublishType=="PublishAndAdd"));
                 return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
-            catch (AdvertNotFoundException)
+            catch (ItemNotFoundException)
             {
                 return NotFound();
             }

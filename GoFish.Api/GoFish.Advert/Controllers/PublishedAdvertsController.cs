@@ -1,5 +1,7 @@
 using System;
 using System.Net;
+using GoFish.Shared.Command;
+using GoFish.Shared.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +45,7 @@ namespace GoFish.Advert
                 _command.Send(new PublishAdvertCommand(id));
                 return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
-            catch (AdvertNotFoundException)
+            catch (ItemNotFoundException)
             {
                 return NotFound();
             }

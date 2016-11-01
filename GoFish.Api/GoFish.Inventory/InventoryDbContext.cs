@@ -13,6 +13,12 @@ namespace GoFish.Inventory
         {
             options.UseSqlite("Filename=./Inventory_Database.db");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<StockItem>()
+                .Ignore(b => b.History);
+        }
     }
 
     public static class InventoryDbContextExtensions

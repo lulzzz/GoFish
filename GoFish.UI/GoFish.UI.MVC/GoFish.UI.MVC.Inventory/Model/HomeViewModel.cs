@@ -4,6 +4,6 @@ namespace GoFish.UI.MVC.Inventory
 {
     public class HomeViewModel : UserOwnedViewModel
     {
-        public IEnumerable<StockViewModel> Stock { get; set; }
+        public IEnumerable<ShelfViewModel> Shelves { get; set; }
     }
 }

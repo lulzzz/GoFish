@@ -1,4 +1,5 @@
 using System;
+using GoFish.Shared.Command;
 using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
@@ -13,7 +14,7 @@ namespace GoFish.Advert
             var advert = Repository.Get(command.Id);
 
             if (advert == null)
-                throw new AdvertNotFoundException($"Advert not found: {command.Id}");
+                throw new ItemNotFoundException($"Advert not found: {command.Id}");
 
             if (advert.Status != AdvertStatus.Posted)
                 throw new InvalidOperationException("Can only publish adverts in the posted status.");

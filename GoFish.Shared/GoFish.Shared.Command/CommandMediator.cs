@@ -1,13 +1,9 @@
 using System;
 using System.Reflection;
+using GoFish.Shared.Interface;
 
-namespace GoFish.Advert
+namespace GoFish.Shared.Command
 {
-    public interface ICommandMediator
-    {
-        void Send<TResult>(ICommand<TResult> query);
-    }
-
     public class CommandMediator : ICommandMediator
     {
         private IServiceProvider _serviceProvider;
@@ -30,7 +26,7 @@ namespace GoFish.Advert
             }
             catch (TargetInvocationException ex)
             {
-                if (ex.InnerException is AdvertNotFoundException)
+                if (ex.InnerException is ItemNotFoundException)
                 {
                     throw ex.InnerException;
                 }

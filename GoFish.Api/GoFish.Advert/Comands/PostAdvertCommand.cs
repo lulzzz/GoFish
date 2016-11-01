@@ -1,8 +1,10 @@
 using System;
+using GoFish.Shared.Command;
+using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
 {
-    public class PostAdvertCommand : UserCommand
+    public class PostAdvertCommand : UserCommand, ICommand<Advert>
     {
         public readonly Guid Id;
 

@@ -1,4 +1,5 @@
 using System;
+using GoFish.Shared.Interface;
 
 namespace GoFish.Advert
 {

@@ -2,7 +2,7 @@ namespace GoFish.Inventory
 {
     public class ProductType
     {
-        private ProductType() {}
+        private ProductType() { }
 
         internal ProductType(int id)
         {
@@ -17,5 +17,10 @@ namespace GoFish.Inventory
 
         public int Id { get; private set; }
         public string Name { get; private set; }
+
+        internal static ProductType FromId(int id)
+        {
+            return new ProductType() { Id = id };
+        }
     }
 }

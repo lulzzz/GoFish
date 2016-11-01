@@ -1,0 +1,18 @@
+@model GoFish.UI.MVC.Inventory.StockItemViewModel
+
+<h2>Stock Item - @Model.ProductType.Name</h2>
+
+<form class="form" asp-action="Summary">
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" asp-for="Quantity"></label>
+		<div class="col-sm-10">
+			@Model.Quantity
+		</div>
+	</div>
+	<div class="form-group row">
+		<label class="col-sm-2 col-form-label" asp-for="Price"></label>
+		<div class="col-sm-10">
+			@Model.Price
+		</div>
+	</div>
+</form>

@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using EventStore.ClientAPI;
 using GoFish.Shared.Dto;
 using GoFish.Shared.Interface;
+using GoFish.Shared.Command;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -39,6 +40,10 @@ namespace GoFish.Inventory
             services.Configure<ApplicationSettings>(_config.GetSection("ApplicationSettings"));
 
             services.AddDbContext<InventoryDbContext>();
+            services.AddTransient<InventoryRepository, InventoryRepository>();
+            services.AddTransient<ICommandMediator, CommandMediator>();
+            services.AddTransient<IStockItemFactory, StockItemFactory>();
+            services.AddTransient<ICommandHandler<CreateStockItemCommand, StockItem>, CreateStockItemCommandHandler>();
             services.AddTransient<IMessageBroker<StockItem>, InventoryMessageBroker>();
 
             var mapperConfig = new AutoMapper.MapperConfiguration(cfg =>
@@ -47,7 +52,6 @@ namespace GoFish.Inventory
             });
 
             services.AddSingleton<AutoMapper.IMapper>(sp => mapperConfig.CreateMapper());
-
             services.AddSingleton<IEventStoreConnection>(sp => EventStoreConnection.Create(new Uri(_config["ApplicationSettings:EventStoreUrl"])));
         }
 
