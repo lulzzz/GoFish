@@ -8,8 +8,7 @@
             asp-action="Summary"
             asp-route-id="@stockItem.Id"
             class="list-group-item">
-            <h3>@stockItem.ProductType.Name</h3>
-            <span>Qty: @stockItem.Quantity</span>
+            <h3>Batch of @stockItem.Quantity @stockItem.ProductType.Name</h3>
             <span>Price: @stockItem.Price</span>
         </a>
     }

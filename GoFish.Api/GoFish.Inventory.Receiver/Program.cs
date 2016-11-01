@@ -44,6 +44,7 @@ namespace GoFish.Inventory.Receiver
                             var api = new ApiProxy();
                             api.UpdateInventory(new StockItemDto()
                             {
+                                Id = Guid.NewGuid(),
                                 ProductTypeId = (int)advert.CatchTypeId,
                                 Quantity = (int)advert.Quantity,
                                 Price = (double)advert.Price,

@@ -22,7 +22,7 @@ namespace GoFish.Shared.Messaging
             Port = port;
         }
 
-        public string HostName { get; set; } = "localhost";
+        public string HostName { get; set; } = "172.17.0.1";
         public int Port { get; set; } = 5672;
 
         public void SendMessage(string queueName, byte[] payload)

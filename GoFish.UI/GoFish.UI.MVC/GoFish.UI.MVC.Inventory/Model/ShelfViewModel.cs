@@ -25,7 +25,7 @@ namespace GoFish.UI.MVC.Inventory
         {
             get
             {
-                return StockItems.Count;
+                return StockItems.Sum(q => q.Quantity);
             }
         }
 
@@ -49,6 +49,9 @@ namespace GoFish.UI.MVC.Inventory
         {
             get
             {
+                if (LowestPrice == HighestPrice)
+                    return LowestPrice.ToString();
+
                 return $"{LowestPrice} to {HighestPrice}";
             }
         }

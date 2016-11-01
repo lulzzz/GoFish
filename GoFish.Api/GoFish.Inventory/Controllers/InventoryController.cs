@@ -3,7 +3,7 @@ using GoFish.Shared.Dto;
 using GoFish.Shared.Interface;
 using Microsoft.AspNetCore.Authorization;
 using System;
-
+using Microsoft.Extensions.Logging;
 
 namespace GoFish.Inventory
 {
@@ -15,11 +15,14 @@ namespace GoFish.Inventory
 
         private readonly InventoryRepository _queryMediator;
 
+        private readonly ILogger<InventoryController> _logger;
         public InventoryController(ICommandMediator commandMediator,
-            InventoryRepository repository)
+            InventoryRepository repository,
+            ILogger<InventoryController> logger)
         {
             _commandMediator = commandMediator;
             _queryMediator = repository;
+            _logger = logger;
         }
 
         [HttpGet("{id:Guid}")]
@@ -37,6 +40,9 @@ namespace GoFish.Inventory
         [Authorize("SystemMessagingPolicy")]
         public void Post([FromBody]StockItemDto item)
         {
+            if (item == null)
+                _logger.LogInformation("Uh Oh");
+
             _commandMediator.Send(CreateCommandForState(item));
         }
 

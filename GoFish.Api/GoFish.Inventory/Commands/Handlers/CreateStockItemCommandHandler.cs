@@ -1,4 +1,5 @@
 using GoFish.Shared.Command;
+using GoFish.Shared.Interface;
 
 namespace GoFish.Inventory
 {
@@ -6,7 +7,11 @@ namespace GoFish.Inventory
     {
         private readonly IStockItemFactory _factory;
 
-        public CreateStockItemCommandHandler(InventoryRepository repository, IStockItemFactory factory) : base(repository)
+        public CreateStockItemCommandHandler(
+            InventoryRepository repository,
+            IMessageBroker<StockItem> messageBroker,
+            IStockItemFactory factory
+            ) : base(repository, messageBroker)
         {
             _factory = factory;
         }
@@ -16,7 +21,7 @@ namespace GoFish.Inventory
             // construct an advert
             var stockItem = _factory.BuildNew(command.StockItem);
 
-            if(stockItem.Owner.Id != command.UserId)
+            if (stockItem.Owner.Id != command.UserId)
                 throw new ItemNotOwnedException($"Advert not yours: {command.Id}");
 
             // Act
@@ -28,6 +33,8 @@ namespace GoFish.Inventory
             // TODO: This can be done out of process by responding to the events/messages
             // For now, the simplest thing is to refresh here but this needs changing.
             RefreshReadModel(stockItem);
+
+            SendEventNotifications(stockItem);
         }
     }
 }
