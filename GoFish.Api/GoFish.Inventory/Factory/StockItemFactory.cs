@@ -11,10 +11,10 @@ namespace GoFish.Inventory
 
             var resultingStockItem = new StockItem(
                 buildData.Id,
-                ProductType.FromId((int)buildData.ProductTypeId),
+                LookupItem.GetFromCache<ProductType>((int)buildData.ProductTypeId),
                 (int)buildData.Quantity,
                 (double)buildData.Price,
-                StockOwner.FromId((int)buildData.OwnerId),
+                LookupItem.GetFromCache<StockOwner>((int)buildData.OwnerId),
                 buildData.AdvertId);
 
             return resultingStockItem;

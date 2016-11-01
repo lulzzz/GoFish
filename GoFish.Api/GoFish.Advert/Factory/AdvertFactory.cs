@@ -11,10 +11,10 @@ namespace GoFish.Advert
 
             var resultingAdvert = new Advert(
                 buildData.Id,
-                CatchType.FromId((int)buildData.CatchTypeId),
+                LookupItem.GetFromCache<CatchType>((int)buildData.CatchTypeId),
                 (int)buildData.Quantity,
                 (double)buildData.Price,
-                Advertiser.FromId((int)buildData.AdvertiserId));
+                LookupItem.GetFromCache<Advertiser>((int)buildData.AdvertiserId));
 
             resultingAdvert.Pitch = buildData.Pitch;
             resultingAdvert.FishingMethod = (FishingMethod)(buildData.FishingMethod ?? (int)FishingMethod.Unknown);
@@ -28,7 +28,6 @@ namespace GoFish.Advert
             resultingAdvert.Status = advert.Status;
             resultingAdvert.Update();
             return resultingAdvert;
-
         }
 
         private static void ValidateInput(AdvertDto fromDto)

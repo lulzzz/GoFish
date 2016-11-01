@@ -1,6 +1,6 @@
 namespace GoFish.Inventory
 {
-    public class StockOwner
+    public class StockOwner : LookupItem
     {
         private StockOwner() { }
 
@@ -13,14 +13,6 @@ namespace GoFish.Inventory
         {
             Id = id;
             Name = name;
-        }
-
-        public int Id { get; private set; }
-        public string Name { get; private set; }
-
-        internal static StockOwner FromId(int stockOwnerId)
-        {
-            return new StockOwner() { Id = stockOwnerId };
         }
     }
 }

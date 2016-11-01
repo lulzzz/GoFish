@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using GoFish.Shared.Dto;
 
 namespace GoFish.UI.MVC.Advert
@@ -6,6 +8,25 @@ namespace GoFish.UI.MVC.Advert
     public abstract class AdvertViewModel : UserOwnedViewModel
     {
         public AdvertDto AdvertData { get; set; }
+
+        [Display(Name = "Catch type")]
+        public string CatchType
+        {
+            get
+            {
+                return CatchTypes.Where(i => i.Key == AdvertData.CatchTypeId.ToString()).Single().Value;
+            }
+        }
+
+        [Display(Name = "Fishing method")]
+        public string FishingMethod
+        {
+            get
+            {
+                return FishingMethods.Where(i => i.Key == AdvertData.FishingMethod.ToString()).Single().Value;
+            }
+        }
+
 
         public IDictionary<string, string> CatchTypes
         {
