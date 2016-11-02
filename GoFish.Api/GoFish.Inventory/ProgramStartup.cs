@@ -45,6 +45,7 @@ namespace GoFish.Inventory
             services.AddTransient<IStockItemFactory, StockItemFactory>();
             services.AddTransient<ICommandHandler<CreateStockItemCommand, StockItem>, CreateStockItemCommandHandler>();
             services.AddTransient<ICommandHandler<StockSoldCommand, StockItem>, StockSoldCommandHandler>();
+            services.AddTransient<ICommandHandler<StockDisposedCommand, StockItem>, StockDisposedCommandHandler>();
             services.AddTransient<IMessageBroker<StockItem>, InventoryMessageBroker>();
 
             var mapperConfig = new AutoMapper.MapperConfiguration(cfg =>
