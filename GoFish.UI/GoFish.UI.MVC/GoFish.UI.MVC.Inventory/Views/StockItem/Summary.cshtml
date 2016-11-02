@@ -15,12 +15,13 @@
 			@Model.Price
 		</div>
 	</div>
-</form>
 
-<div>
-	<a href="#" class="btn btn-primary">Stock sold</a>
-	<a href="#" class="btn btn-primary">Change price</a>
-	<a href="#" class="btn btn-primary">Stock disposed</a>
-	<a href="@Url.Action("Index", "Home")" class="btn btn-default">Inventory</a>
-	<a href="@Model.DashboardUrl" class="btn btn-default">Dashboard</a>
-</div>
+	<div>
+		<button name="SubmitButton" type="submit" class="btn btn-default" value="Cancel">Back</button>
+		<button name="SubmitButton" type="submit" class="btn btn-default" value="Sold">Stock sold</button>
+		<a href="#" class="btn btn-primary">Change price</a>
+		<a href="#" class="btn btn-primary">Stock disposed</a>
+		<a href="@Url.Action("Index", "Home")" class="btn btn-default">Inventory</a>
+		<a href="@Model.DashboardUrl" class="btn btn-default">Dashboard</a>
+	</div>
+</form>

@@ -18,6 +18,7 @@ namespace GoFish.Inventory
             Price = price;
             StockOwner = owner;
             AdvertId = advertId;
+            Status = StockItemStatus.ForSale;
         }
 
         public ProductType ProductType { get; set; }
@@ -25,5 +26,6 @@ namespace GoFish.Inventory
         public double Price { get; set; }
         public StockOwner StockOwner { get; set; }
         public Guid AdvertId { get; set; }
+        public StockItemStatus Status { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace GoFish.UI.MVC.Inventory
 
             if (env.IsDevelopment())
             {
-                loggerFactory.AddDebug();
+                loggerFactory.AddDebug(LogLevel.Warning);
                 app.UseDeveloperExceptionPage();
             }
 

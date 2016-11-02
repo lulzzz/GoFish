@@ -44,6 +44,7 @@ namespace GoFish.Inventory
             services.AddTransient<ICommandMediator, CommandMediator>();
             services.AddTransient<IStockItemFactory, StockItemFactory>();
             services.AddTransient<ICommandHandler<CreateStockItemCommand, StockItem>, CreateStockItemCommandHandler>();
+            services.AddTransient<ICommandHandler<StockSoldCommand, StockItem>, StockSoldCommandHandler>();
             services.AddTransient<IMessageBroker<StockItem>, InventoryMessageBroker>();
 
             var mapperConfig = new AutoMapper.MapperConfiguration(cfg =>
@@ -56,12 +57,17 @@ namespace GoFish.Inventory
         }
 
         public void Configure(
+            IHostingEnvironment env,
             IApplicationBuilder app,
             ILoggerFactory loggerFactory,
             IOptions<ApplicationSettings> options)
         {
-            loggerFactory.AddConsole();
-            loggerFactory.AddDebug();
+            loggerFactory.AddConsole(LogLevel.Warning);
+
+            if(env.IsDevelopment())
+            {
+                loggerFactory.AddDebug(LogLevel.Warning);
+            }
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 

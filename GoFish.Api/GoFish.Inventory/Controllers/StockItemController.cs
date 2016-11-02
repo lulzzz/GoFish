@@ -4,6 +4,7 @@ using GoFish.Shared.Interface;
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
+using System.Net;
 
 namespace GoFish.Inventory
 {
@@ -55,6 +56,21 @@ namespace GoFish.Inventory
             {
                 _commandMediator.Send(CreateCommandForState(newState));
                 return Created($"/api/stockitem/{id}", _queryMediator.Get(id));
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id:Guid}")]
+        public IActionResult Delete(Guid id)
+        {
+            // May need another resource to post to instead of overloading this delete verb
+            try
+            {
+                _commandMediator.Send(new StockSoldCommand(id, GetUserId()));
+                return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (System.Exception ex)
             {

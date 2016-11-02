@@ -42,6 +42,8 @@ namespace GoFish.Inventory.Migrations
 
                     b.Property<int>("Quantity");
 
+                    b.Property<int>("Status");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");

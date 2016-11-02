@@ -8,7 +8,7 @@ using GoFish.Inventory;
 namespace GoFish.Inventory.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    [Migration("20161017215325_1")]
+    [Migration("20161102205751_1")]
     partial class _1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,8 @@ namespace GoFish.Inventory.Migrations
                     b.Property<int?>("ProductTypeId");
 
                     b.Property<int>("Quantity");
+
+                    b.Property<int>("Status");
 
                     b.HasKey("Id");
 

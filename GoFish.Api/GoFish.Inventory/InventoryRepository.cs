@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using EventStore.ClientAPI;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace GoFish.Inventory
@@ -70,9 +71,9 @@ namespace GoFish.Inventory
 
         internal void DeleteStockItem(StockItem StockItem)
         {
-            // _readModel.StockItems.Attach(StockItem);
-            // _readModel.Entry(StockItem).State = EntityState.Deleted;
-            // _readModel.SaveChanges();
+            _readModel.StockItems.Attach(StockItem);
+            _readModel.Entry(StockItem).State = EntityState.Deleted;
+            _readModel.SaveChanges();
         }
 
         internal void Save(StockItem item)

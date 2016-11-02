@@ -43,7 +43,8 @@ namespace GoFish.Inventory.Migrations
                     OwnerId = table.Column<int>(nullable: true),
                     Price = table.Column<double>(nullable: false),
                     ProductTypeId = table.Column<int>(nullable: true),
-                    Quantity = table.Column<int>(nullable: false)
+                    Quantity = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

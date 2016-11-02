@@ -20,7 +20,7 @@ namespace GoFish.UI.MVC.Inventory
             _options = options;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("[action]/{id:Guid}")]
         public async Task<IActionResult> Summary(Guid id)
         {
             var stock = await GetData($"{_options.Value.InventoryApiUrl}stockitem/{id}");
@@ -62,6 +62,18 @@ namespace GoFish.UI.MVC.Inventory
 
                 var response = await PutData($"{_options.Value.InventoryApiUrl}stockitem/{vm.StockItem.Id}", GetJsonContent(vm.StockItem)); // TODO: Check return codes etc. for error conditions.
                 return RedirectToAction("Summary", "StockItem", new { id = vm.StockItem.Id });
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [Route("[action]/{id:Guid}")]
+        public async Task<IActionResult> Summary(Guid id, EditStockItemViewModel vm)
+        {
+            if (vm.SubmitButton == "Sold")
+            {
+                var response = await Delete($"{_options.Value.InventoryApiUrl}stockitem/{id}");
             }
 
             return RedirectToAction("Index", "Home");

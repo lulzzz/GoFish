@@ -40,6 +40,10 @@ namespace GoFish.Inventory
                 AdvertId), isNewEvent: true);
         }
 
+        public void Sell()
+        {
+            Apply(new StockItemSoldEvent(Id), isNewEvent: true);
+        }
 
         private void Apply(StockItemEvent @event, bool isNewEvent)
         {
@@ -55,6 +59,7 @@ namespace GoFish.Inventory
         public StockOwner Owner { get; private set; }
         public Guid AdvertId { get; private set; }
         public IList<StockItemEvent> History { get; } = new List<StockItemEvent>();
+        public StockItemStatus Status { get; set; }
 
         public IList<StockItemEvent> GetChanges()
         {
@@ -69,6 +74,12 @@ namespace GoFish.Inventory
             Price = e.Price;
             Owner = e.StockOwner;
             AdvertId = e.AdvertId;
+            Status = e.Status;
+        }
+
+        private void When(StockItemSoldEvent e)
+        {
+            Status = StockItemStatus.Sold;
         }
     }
 }
