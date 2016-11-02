@@ -21,7 +21,7 @@ If you want to try it out, use the test user accounts of "nina" or "fred".  The 
 
 ## Technology stack
 
-- MS .NET Core 1.0.1 + WebApi + MVC (C#)
+- MS .NET Core 1.0.1 or MS .NET Core 1.1.0-preview1 + ASP.NET MVC + WebApi (C#)
 - EF Core 1.0.1 + Migrations
 - Sqlite DB
 - RabbitMQ
@@ -41,6 +41,7 @@ To get up and running, ideally you will need the following prerequisites on your
 - VirtualBox
 - Vagrant
 - Bower
+- .NET Core 1.0.1 SDK and .NET Core 1.1.0 SDK (In process of upgrading entire stack, so need both for now)
 
 ### Process
 
@@ -62,6 +63,7 @@ To get up and running, ideally you will need the following prerequisites on your
 
     - Bower installations in the roots of all MVC projects.
     - dotnet restore, dotnet build and dotnet publish for each .NET application.
+    - dotnet razor-precompile for each of the ASP.NET MVC applications.
 
 1. Create the server:
 
