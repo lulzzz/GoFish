@@ -1,4 +1,4 @@
-namespace GoFish.UI.MVC.Inventory
+namespace GoFish.UI.MVC.Shared
 {
     public class UserOwnedViewModel
     {

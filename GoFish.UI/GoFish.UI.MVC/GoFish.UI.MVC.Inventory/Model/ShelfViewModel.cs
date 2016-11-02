@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GoFish.UI.MVC.Shared;
 
 namespace GoFish.UI.MVC.Inventory
 {
@@ -53,6 +54,14 @@ namespace GoFish.UI.MVC.Inventory
                     return LowestPrice.ToString();
 
                 return $"{LowestPrice} to {HighestPrice}";
+            }
+        }
+
+        public bool ShelfHasBatches
+        {
+            get
+            {
+                return StockItems.Count > 1;
             }
         }
 

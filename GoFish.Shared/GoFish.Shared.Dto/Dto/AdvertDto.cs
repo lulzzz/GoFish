@@ -5,20 +5,20 @@ namespace GoFish.Shared.Dto
 {
     public class AdvertDto
     {
-        private Guid _advertId;
+        private Guid _id;
 
         public Guid Id
         {
             get
             {
-                if (_advertId == Guid.Empty)
+                if (_id == Guid.Empty)
                     return Guid.NewGuid();
 
-                return _advertId;
+                return _id;
             }
             set
             {
-                _advertId = value;
+                _id = value;
             }
         }
 

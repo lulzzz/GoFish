@@ -5,16 +5,18 @@
     "emitEntryPoint": false
   },
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.1"
+          "version": "1.1.0-preview1-001100-00"
         }
       }
     }
   },
   "dependencies": {
-    "Microsoft.AspNetCore.Http": "1.0.0"
+    "Microsoft.AspNetCore.Mvc": "1.1.0-preview1-final",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0-preview1-final",
+    "Newtonsoft.Json": "9.0.1"
   }
 }

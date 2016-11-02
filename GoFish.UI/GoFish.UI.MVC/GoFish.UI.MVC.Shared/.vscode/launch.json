@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.0\\GoFish.UI.MVC.Shared.dll",
+            "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\GoFish.UI.MVC.Shared.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "externalConsole": false,

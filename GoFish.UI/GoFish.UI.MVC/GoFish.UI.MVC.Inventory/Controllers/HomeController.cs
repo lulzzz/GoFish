@@ -12,7 +12,7 @@ namespace GoFish.UI.MVC.Inventory
         private readonly IOptions<ApplicationSettings> _options;
         private readonly IUserDetails _userDetails;
 
-        public HomeController(IOptions<ApplicationSettings> options, IUserDetails userDetails) : base(options)
+        public HomeController(IOptions<ApplicationSettings> options, IUserDetails userDetails)
         {
             _options = options;
             _userDetails = userDetails;
@@ -20,7 +20,7 @@ namespace GoFish.UI.MVC.Inventory
 
         public async Task<IActionResult> Index()
         {
-            var content = await GetData("shelves");
+            var content = await GetData(_options.Value.InventoryApiUrl + "shelves");
             var shelves = JsonConvert.DeserializeObject<List<ShelfViewModel>>(content);
 
             var vm = new HomeViewModel()

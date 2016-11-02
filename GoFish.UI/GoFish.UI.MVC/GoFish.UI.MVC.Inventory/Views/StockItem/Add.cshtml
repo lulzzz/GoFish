@@ -1,0 +1,39 @@
+@model GoFish.UI.MVC.Inventory.EditStockItemViewModel
+
+<h3>Stock-item details</h3>
+
+<div>
+	<form class="form" asp-action="Add" autocomplete="off">
+		<input type="hidden" asp-for="StockItem.Id"></input>
+		<input type="hidden" asp-for="UserId"></input>
+		<input type="hidden" asp-for="UserName"></input>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label" asp-for="StockItem.ProductTypeId"></label>
+			<div class="col-sm-10">
+                <select class="form-control" asp-for="StockItem.ProductTypeId" asp-items="@(new SelectList(Model.ProductTypes,"Key","Value"))"></select>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label" asp-for="StockItem.Quantity"></label>
+			<div class="col-sm-10">
+				<input class="form-control" type="text" asp-for="StockItem.Quantity"></input>
+				<span asp-validation-for="StockItem.Quantity" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label" asp-for="StockItem.Price"></label>
+			<div class="col-sm-10">
+				<input class="form-control" type="text" asp-for="StockItem.Price"></input>
+				<span asp-validation-for="StockItem.Price" class="text-danger"></span>
+			</div>
+		</div>
+		<div class="form-group row">
+			<div class="offset-sm-2 col-sm-10">
+				<button name="SubmitButton" type="submit" class="btn btn-default" value="Cancel">Back</button>
+				<button name="SubmitButton" type="submit" class="btn btn-danger" @Model.DeleteButtonState value="Delete"
+					title="@Model.GetToolTip("Delete")">Delete</button>
+				<button name="SubmitButton" type="submit" class="btn btn-primary" value="Save">Save changes</button>
+			</div>
+		</div>
+	</form>
+</div>

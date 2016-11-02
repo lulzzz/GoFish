@@ -1,24 +1,22 @@
-using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 
-namespace GoFish.UI.MVC.Inventory
+namespace GoFish.UI.MVC.Shared
 {
     [Authorize]
     public class SecureApiController : Controller
     {
         private readonly HttpClient _client;
-        protected readonly IOptions<ApplicationSettings> Options;
 
-        public SecureApiController(IOptions<ApplicationSettings> options)
+        public SecureApiController()
         {
             _client = new HttpClient();
-            Options = options;
         }
 
         protected async Task<string> GetData(string uri)
@@ -47,10 +45,15 @@ namespace GoFish.UI.MVC.Inventory
             return await _client.DeleteAsync(uri);
         }
 
+        protected static StringContent GetJsonContent(object vm)
+        {
+            var jsonData = JsonConvert.SerializeObject(vm);
+            var httpContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            return httpContent;
+        }
+
         private void SetAuthToken()
         {
-            _client.BaseAddress = new Uri(Options.Value.InventoryApiUrl);
-
             var accessToken = HttpContext.Authentication.GetTokenAsync("access_token").Result;
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }

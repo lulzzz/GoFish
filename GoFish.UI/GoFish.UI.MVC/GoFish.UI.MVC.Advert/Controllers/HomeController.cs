@@ -12,22 +12,24 @@ namespace GoFish.UI.MVC.Advert
     public class HomeController : SecureApiController
     {
         private readonly IUserDetails _userDetails;
+        private readonly IOptions<ApplicationSettings> _options;
 
-        public HomeController(IOptions<ApplicationSettings> options, IUserDetails userDetails) : base(options)
+        public HomeController(IOptions<ApplicationSettings> options, IUserDetails userDetails)
         {
             _userDetails = userDetails;
+            _options = options;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var content = await GetData("adverts?Status=Active");
+            var content = await GetData("{_options.Value.AdvertApiUrl}adverts?Status=Active");
 
             var vm = new HomeViewModel()
             {
                 ActiveAdverts = JsonConvert.DeserializeObject<List<AdvertDto>>(content),
                 UserName = _userDetails.GetUserName(),
-                DashboardUrl = Options.Value.DashboardUrl
+                DashboardUrl = _options.Value.DashboardUrl
             };
 
             return View(vm);

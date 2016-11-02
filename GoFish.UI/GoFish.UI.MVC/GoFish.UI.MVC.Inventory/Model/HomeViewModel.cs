@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GoFish.UI.MVC.Shared;
 
 namespace GoFish.UI.MVC.Inventory
 {
