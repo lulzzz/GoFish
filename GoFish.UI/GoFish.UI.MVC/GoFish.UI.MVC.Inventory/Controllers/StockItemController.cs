@@ -58,13 +58,21 @@ namespace GoFish.UI.MVC.Inventory
             if (vm.SubmitButton == "Save")
             {
                 if (!ModelState.IsValid)
-                    return View(vm);
+                    return View(RebuildViewModel(vm));
 
                 var response = await PutData($"{_options.Value.InventoryApiUrl}stockitem/{vm.StockItem.Id}", GetJsonContent(vm.StockItem)); // TODO: Check return codes etc. for error conditions.
                 return RedirectToAction("Summary", "StockItem", new { id = vm.StockItem.Id });
             }
 
             return RedirectToAction("Index", "Home");
+        }
+
+        private EditStockItemViewModel RebuildViewModel(EditStockItemViewModel vm)
+        {
+            vm.DashboardUrl = _options.Value.DashboardUrl;
+            vm.UserId = _userDetails.GetUserId();
+            vm.UserName = _userDetails.GetUserName();
+            return vm;
         }
     }
 }
