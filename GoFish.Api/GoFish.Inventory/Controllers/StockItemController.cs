@@ -3,6 +3,7 @@ using GoFish.Shared.Dto;
 using GoFish.Shared.Interface;
 using System;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GoFish.Inventory
 {
