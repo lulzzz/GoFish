@@ -1,15 +1,15 @@
-using GoFish.Advert;
 using GoFish.Shared.Dto;
 using Xunit;
 
-namespace GoFish.Api.Tests
+namespace GoFish.Advert.Tests
 {
     public class AdvertTests
     {
         [Fact]
         public void NewAdvertHasStatusUnknown()
         {
-            var factory = new AdvertFactory();
+            var cache = new CacheProviderStub();
+            var factory = new AdvertFactory(cache);
             var data = CreateBasicDto();
 
             var sut = factory.BuildNew(data);

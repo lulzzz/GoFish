@@ -23,7 +23,7 @@ namespace GoFish.UI.MVC.Advert
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var content = await GetData("{_options.Value.AdvertApiUrl}adverts?Status=Active");
+            var content = await GetData($"{_options.Value.AdvertApiUrl}adverts?Status=Active");
 
             var vm = new HomeViewModel()
             {

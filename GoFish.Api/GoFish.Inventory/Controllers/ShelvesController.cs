@@ -1,14 +1,12 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 
 namespace GoFish.Inventory
 {
-    [Authorize]
     [Route("api/[controller]")]
-    public class ShelvesController : Controller
+    public class ShelvesController : InventoryController
     {
         private readonly InventoryDbContext _context;
 
@@ -40,12 +38,6 @@ namespace GoFish.Inventory
                     .Where(o => o.Owner.Id == GetUserId());
 
             return new Shelf(stock);
-        }
-
-
-        private int GetUserId()
-        {
-            return 1; // TODO:  Change this - use a shared library?
         }
     }
 }

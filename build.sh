@@ -52,3 +52,8 @@ cd ../GoFish.UI.MVC.Inventory
 dotnet razor-precompile -c release -f netcoreapp1.1 -o ./bin/release/netcoreapp1.1/publish
 cd ../../../GoFish.Identity
 dotnet razor-precompile -c release -f netcoreapp1.1 -o ./bin/release/netcoreapp1.1/publish
+cd ../
+
+echo "running tests"
+cd ./GoFish.Api/GoFish.Advert.tests
+dotnet test

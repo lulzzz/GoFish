@@ -5,16 +5,23 @@ namespace GoFish.Advert
 {
     public class AdvertFactory : IAdvertFactory
     {
+        private readonly ILookupCacheProvider _cache;
+
+        public AdvertFactory (ILookupCacheProvider cache)
+        {
+            _cache = cache;
+        }
+
         public Advert BuildNew(AdvertDto buildData)
         {
             ValidateInput(buildData);
 
             var resultingAdvert = new Advert(
                 buildData.Id,
-                LookupItem.GetFromCache<CatchType>((int)buildData.CatchTypeId),
+                LookupItem.GetFromCache<CatchType>(_cache, (int)buildData.CatchTypeId),
                 (int)buildData.Quantity,
                 (double)buildData.Price,
-                LookupItem.GetFromCache<Advertiser>((int)buildData.AdvertiserId));
+                LookupItem.GetFromCache<Advertiser>(_cache, (int)buildData.AdvertiserId));
 
             resultingAdvert.Pitch = buildData.Pitch;
             resultingAdvert.FishingMethod = (FishingMethod)(buildData.FishingMethod ?? (int)FishingMethod.Unknown);

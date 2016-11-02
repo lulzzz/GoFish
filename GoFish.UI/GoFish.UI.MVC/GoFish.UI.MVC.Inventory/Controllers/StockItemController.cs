@@ -23,7 +23,7 @@ namespace GoFish.UI.MVC.Inventory
         [HttpGet("{id}")]
         public async Task<IActionResult> Summary(Guid id)
         {
-            var stock = await GetData($"{_options.Value.InventoryApiUrl}inventory/{id}");
+            var stock = await GetData($"{_options.Value.InventoryApiUrl}stockitem/{id}");
             var vm = JsonConvert.DeserializeObject<StockItemViewModel>(stock);
 
             vm.DashboardUrl = _options.Value.DashboardUrl;
@@ -58,7 +58,7 @@ namespace GoFish.UI.MVC.Inventory
             if (!ModelState.IsValid)
                 return View(vm);
 
-            var response = await PutData($"{_options.Value.InventoryApiUrl}inventory/{vm.StockItem.Id}", GetJsonContent(vm.StockItem)); // TODO: Check return codes etc. for error conditions.
+            var response = await PutData($"{_options.Value.InventoryApiUrl}stockitem/{vm.StockItem.Id}", GetJsonContent(vm.StockItem)); // TODO: Check return codes etc. for error conditions.
             return RedirectToAction("Summary", "StockItem", new { id = vm.StockItem.Id });
         }
     }

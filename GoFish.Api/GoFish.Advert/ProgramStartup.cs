@@ -44,6 +44,7 @@ namespace GoFish.Advert
             services.AddTransient<AdvertRepository, AdvertRepository>();
             services.AddTransient<ICommandMediator, CommandMediator>();
             services.AddTransient<IAdvertFactory, AdvertFactory>();
+            services.AddTransient<ILookupCacheProvider, LookupCacheProvider>();
 
             services.AddTransient<ICommandHandler<CreateAdvertCommand, Advert>, CreateAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<UpdateAdvertCommand, Advert>, UpdateAdvertCommandHandler>();

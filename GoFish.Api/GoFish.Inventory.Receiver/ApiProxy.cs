@@ -33,7 +33,7 @@ namespace GoFish.Inventory.Receiver
             var payload = new StringContent(jsonString, Encoding.UTF8, "application/json");
             try
             {
-                result = client.PostAsync(client.BaseAddress + "inventory", payload).Result;
+                result = client.PostAsync(client.BaseAddress + "stockitem", payload).Result;
             }
             catch (System.Exception ex)
             {
