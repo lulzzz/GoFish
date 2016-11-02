@@ -32,6 +32,7 @@ namespace GoFish.UI.MVC.Inventory
         }
 
         public void Configure(
+            IHostingEnvironment env,
             IApplicationBuilder app,
             ILoggerFactory loggerFactory,
             IOptions<ApplicationSettings> settings)
@@ -39,9 +40,13 @@ namespace GoFish.UI.MVC.Inventory
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
             loggerFactory.AddConsole();
-            loggerFactory.AddDebug();
 
-            app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                loggerFactory.AddDebug();
+                app.UseDeveloperExceptionPage();
+            }
+
             app.UseStaticFiles();
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions
