@@ -4,11 +4,11 @@ using GoFish.Shared.Command;
 
 namespace GoFish.Inventory
 {
-    public class StockDisposedCommand : UserCommand, ICommand<StockItem>
+    public class StockSoldCommand : UserCommand, ICommand<StockItem>
     {
         public readonly Guid StockItemId;
 
-        public StockDisposedCommand(Guid stockItemId, int userId) : base(userId)
+        public StockSoldCommand(Guid stockItemId, int userId) : base(userId)
         {
             StockItemId = stockItemId;
         }

@@ -73,7 +73,12 @@ namespace GoFish.UI.MVC.Inventory
         {
             if (vm.SubmitButton == "Sold")
             {
-                var response = await Delete($"{_options.Value.InventoryApiUrl}stockitem/{id}");
+                var response = await PutData($"{_options.Value.InventoryApiUrl}soldstockitem/{id}");
+            }
+
+            if (vm.SubmitButton == "Disposed")
+            {
+                var response = await PutData($"{_options.Value.InventoryApiUrl}disposedstockitem/{id}");
             }
 
             return RedirectToAction("Index", "Home");

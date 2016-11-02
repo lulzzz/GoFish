@@ -28,7 +28,15 @@ namespace GoFish.Inventory
         [HttpGet("{id:Guid}")]
         public IActionResult Get(Guid id)
         {
-            var stockItem = _queryMediator.Get(id);
+            StockItem stockItem;
+            try
+            {
+                stockItem = _queryMediator.Get(id);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
 
             if (stockItem == null)
                 return NotFound();

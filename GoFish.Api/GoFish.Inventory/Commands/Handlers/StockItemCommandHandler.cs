@@ -47,7 +47,7 @@ namespace GoFish.Inventory
                 {
                     Repository.SaveCreatedStockItem(StockItem);
                 }
-                if (item.GetType().Name == "StockItemSoldEvent")
+                if (item.GetType().Name == "StockItemSoldEvent" || item.GetType().Name == "StockItemDisposedEvent")
                 {
                     Repository.DeleteStockItem(StockItem);
                 }

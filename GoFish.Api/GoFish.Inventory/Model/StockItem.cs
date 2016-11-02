@@ -45,6 +45,11 @@ namespace GoFish.Inventory
             Apply(new StockItemSoldEvent(Id), isNewEvent: true);
         }
 
+        public void Dispose()
+        {
+            Apply(new StockItemDisposedEvent(Id), isNewEvent: true);
+        }
+
         private void Apply(StockItemEvent @event, bool isNewEvent)
         {
             ((dynamic)this).When((dynamic)@event);
@@ -80,6 +85,11 @@ namespace GoFish.Inventory
         private void When(StockItemSoldEvent e)
         {
             Status = StockItemStatus.Sold;
+        }
+
+        private void When(StockItemDisposedEvent e)
+        {
+            Status = StockItemStatus.Disposed;
         }
     }
 }

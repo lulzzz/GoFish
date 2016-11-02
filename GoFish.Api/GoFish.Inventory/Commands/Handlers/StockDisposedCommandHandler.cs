@@ -2,11 +2,11 @@ using GoFish.Shared.Command;
 
 namespace GoFish.Inventory
 {
-    public class StockSoldCommandHandler : StockItemCommandHandler<StockSoldCommand>
+    public class StockDisposedCommandHandler : StockItemCommandHandler<StockDisposedCommand>
     {
         private readonly IStockItemFactory _factory;
 
-        public StockSoldCommandHandler(
+        public StockDisposedCommandHandler(
             InventoryRepository repository,
             IStockItemFactory factory
             ) : base(repository)
@@ -14,7 +14,7 @@ namespace GoFish.Inventory
             _factory = factory;
         }
 
-        public override void Handle(StockSoldCommand command)
+        public override void Handle(StockDisposedCommand command)
         {
             // construct an advert
             var stockItem = Repository.Get(command.StockItemId);
@@ -23,7 +23,7 @@ namespace GoFish.Inventory
                 throw new ItemNotOwnedException($"Advert not yours: {command.StockItemId} requested: {stockItem.Owner.Id} is: {command.UserId}");
 
             // Act
-            stockItem.Sell();
+            stockItem.Dispose();
 
             // Save resulting events
             SaveEvents(stockItem);

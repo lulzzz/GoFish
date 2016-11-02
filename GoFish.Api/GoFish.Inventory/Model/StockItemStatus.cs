@@ -4,6 +4,7 @@ namespace GoFish.Inventory
     {
         Unknown,
         ForSale,
-        Sold
+        Sold,
+        Disposed
     }
 }
