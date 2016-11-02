@@ -21,6 +21,8 @@ namespace GoFish.UI.MVC.Inventory
             }
         }
 
+        public string SubmitButton { get; set; }
+
         public string DeleteButtonState
         {
             get

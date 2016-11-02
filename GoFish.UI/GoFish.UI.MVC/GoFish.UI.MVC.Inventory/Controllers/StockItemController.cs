@@ -55,11 +55,16 @@ namespace GoFish.UI.MVC.Inventory
         [Route("[action]/{id:Guid?}")]
         public async Task<IActionResult> Add(Guid id, EditStockItemViewModel vm)
         {
-            if (!ModelState.IsValid)
-                return View(vm);
+            if (vm.SubmitButton == "Save")
+            {
+                if (!ModelState.IsValid)
+                    return View(vm);
 
-            var response = await PutData($"{_options.Value.InventoryApiUrl}stockitem/{vm.StockItem.Id}", GetJsonContent(vm.StockItem)); // TODO: Check return codes etc. for error conditions.
-            return RedirectToAction("Summary", "StockItem", new { id = vm.StockItem.Id });
+                var response = await PutData($"{_options.Value.InventoryApiUrl}stockitem/{vm.StockItem.Id}", GetJsonContent(vm.StockItem)); // TODO: Check return codes etc. for error conditions.
+                return RedirectToAction("Summary", "StockItem", new { id = vm.StockItem.Id });
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
