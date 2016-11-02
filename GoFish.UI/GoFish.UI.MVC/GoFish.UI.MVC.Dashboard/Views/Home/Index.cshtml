@@ -1,7 +1,21 @@
-<h2>Dashboard</h2>
+@model GoFish.UI.MVC.Dashboard.HomeViewModel
 
 <a href="http://localhost:5003" class="btn btn-primary">Adverts</a>
 <a href="http://localhost:5004" class="btn btn-primary">Inventory</a>
 <a href="#" class="btn btn-default">Shop</a>
 <a href="#" class="btn btn-default">Profile</a>
 <a href="/Logout/" class="btn btn-warning">Sign out</a>
+
+@if(@Model.CurrentAdverts.Count > 0)
+{
+    <h2>Recent Adverts</h2>
+    <div class="list-group">
+        @foreach(var advert in Model.CurrentAdverts)
+        {
+            <span class="list-group-item">
+                <h3>@advert.Pitch</h3>
+                <p>@advert.Quantity at @advert.Price</p>
+            </span>
+        }
+    </div>
+}

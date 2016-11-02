@@ -22,7 +22,7 @@ namespace GoFish.Advert
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_query.GetPublished(GetUserId()));
+            return Ok(_query.GetPublished());
         }
 
         [HttpGet("{id:Guid}")]

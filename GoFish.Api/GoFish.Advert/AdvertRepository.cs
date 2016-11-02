@@ -107,13 +107,12 @@ namespace GoFish.Advert
                 .Where(u => u.Advertiser.Id == userId);
         }
 
-        internal IEnumerable<Advert> GetPublished(int userId)
+        internal IEnumerable<Advert> GetPublished()
         {
             return _readModel.Adverts
                 .Include(a => a.Advertiser)
                 .Include(ct => ct.CatchType)
-                .Where(s => s.Status == AdvertStatus.Published)
-                .Where(u => u.Advertiser.Id == userId);
+                .Where(s => s.Status == AdvertStatus.Published);
         }
 
         internal object GetPosted(int userId)
