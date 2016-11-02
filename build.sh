@@ -42,3 +42,11 @@ dotnet publish -c release ./GoFish.Identity
 dotnet publish -c release ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Dashboard
 dotnet publish -c release ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Advert
 dotnet publish -c release ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Inventory
+
+echo "Precompiling Razor Views"
+cd ./GoFish.UI/GoFish.UI.MVC/GoFish.UI.MVC.Dashboard
+dotnet razor-precompile -c release -f netcoreapp1.1 -o ./bin/release/netcoreapp1.1/publish
+cd ../GoFish.UI.MVC.Advert
+dotnet razor-precompile -c release -f netcoreapp1.1 -o ./bin/release/netcoreapp1.1/publish
+cd ../GoFish.UI.MVC.Inventory
+dotnet razor-precompile -c release -f netcoreapp1.1 -o ./bin/release/netcoreapp1.1/publish

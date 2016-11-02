@@ -1,44 +1,60 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "buildOptions": {
     "debugType": "portable",
     "preserveCompilationContext": true,
     "emitEntryPoint": true
   },
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.1"
+          "version": "1.1.0-preview1-001100-00"
         }
       }
     }
   },
   "dependencies": {
-    "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
-    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
-    "Microsoft.AspNetCore.MVC": "1.0.1",
-    "Microsoft.AspNetCore.StaticFiles": "1.0.0",
-    "Microsoft.Extensions.Logging": "1.0.0",
-    "Microsoft.Extensions.Logging.Debug": "1.0.0",
-    "Microsoft.Extensions.Logging.Console": "1.0.0",
-    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.0.0",
-    "Microsoft.Extensions.Configuration.Json": "1.0.0",
-    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
-    "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.0.0",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.0-preview1-final",
+    "Microsoft.AspNetCore.Diagnostics": "1.1.0-preview1-final",
+    "Microsoft.AspNetCore.MVC": "1.1.0-preview1-final",
+    "Microsoft.AspNetCore.StaticFiles": "1.1.0-preview1-final",
+    "Microsoft.Extensions.Logging": "1.1.0-preview1-final",
+    "Microsoft.Extensions.Logging.Debug": "1.1.0-preview1-final",
+    "Microsoft.Extensions.Logging.Console": "1.1.0-preview1-final",
+    "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0-preview1-final",
+    "Microsoft.Extensions.Configuration.Json": "1.1.0-preview1-final",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0-preview1-final",
+    "Microsoft.AspNetCore.Authentication.OpenIdConnect": "1.1.0-preview1-final",
     "Newtonsoft.Json": "9.0.1",
     "IdentityModel": "2.0.0-rc6",
     "GoFish.Shared.Dto": "1.0.0-*",
-    "GoFish.UI.MVC.Shared": "1.0.0-*"
+    "GoFish.UI.MVC.Shared": "1.0.0-*",
+    "Microsoft.AspNetCore.Razor.Tools": {
+      "version": "1.0.0-preview2-final",
+      "type": "build"
+    },
+    "Microsoft.AspNetCore.Mvc.Razor.Precompilation.Design": {
+      "version": "1.0.0-preview1-final",
+      "type": "build"
+    }
+  },
+  "tools": {
+    "Microsoft.AspNetCore.Razor.Tools": {
+      "version": "1.0.0-preview2-final"
+    },
+    "Microsoft.AspNetCore.Mvc.Razor.Precompilation.Tools": {
+      "version": "1.0.0-preview1-final"
+    }
   },
   "publishOptions": {
     "include": [
+      // "Views", // Precompiled will be used - this is a fallback
       "ApplicationSettings.Development.json",
       "ApplicationSettings.Staging.json",
       "ApplicationSettings.Production.json",
-      "wwwroot",
-      "Views"
+      "wwwroot"
     ]
   }
 }
