@@ -21,8 +21,8 @@ namespace GoFish.Inventory
             // construct an advert
             var stockItem = _factory.BuildNew(command.StockItem);
 
-            if (stockItem.Owner.Id != command.UserId)
-                throw new ItemNotOwnedException($"Advert not yours: {command.Id}");
+            if (stockItem.Owner.Id != command.UserId && command.UserId != 7874) // HACK: For messageQ service
+                throw new ItemNotOwnedException($"Advert not yours: {command.Id} requested: {stockItem.Owner.Id} is: {command.UserId}");
 
             // Act
             stockItem.Create();

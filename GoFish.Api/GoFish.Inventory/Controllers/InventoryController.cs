@@ -10,7 +10,7 @@ namespace GoFish.Inventory
         protected int GetUserId()
         {
             var userIdClaim = HttpContext.User.Claims.Where(t => t.Type == "sub").SingleOrDefault();
-            return userIdClaim == null ? 1 : int.Parse(userIdClaim.Value); // Hack for postman testing
+            return userIdClaim == null ? 7874 : int.Parse(userIdClaim.Value); // Hack for postman testing
         }
     }
 }
