@@ -24,12 +24,14 @@ namespace GoFish.Inventory
         public void SendMessagesFor(StockItem objectToSend)
         {
             var client = new MessagingClient(_logger, "172.17.0.1");
+            // var client = new MessagingClient(_logger, "localhost");
 
             var dto = _mapper.Map<StockItem, StockItemDto>(objectToSend);
 
             // whitelist of events that have associated MQ messages sent
             var whiteList = new List<string>() {
-                "StockItemCreatedEvent"
+                "StockItemCreatedEvent",
+                "StockItemSoldEvent"
             };
 
             var whiteListed = objectToSend.GetChanges()

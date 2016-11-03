@@ -20,7 +20,7 @@ namespace GoFish.Advert
                 throw new InvalidOperationException("Can only publish adverts in the posted status.");
 
             // Do it!
-            advert.Publish();
+            advert.Publish(command.StockAdded);
 
             SaveEvents(advert);
 

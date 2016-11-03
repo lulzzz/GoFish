@@ -32,6 +32,8 @@ namespace GoFish.Advert.Migrations
 
                     b.Property<int>("Status");
 
+                    b.Property<int>("StockQuantity");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdvertiserId");

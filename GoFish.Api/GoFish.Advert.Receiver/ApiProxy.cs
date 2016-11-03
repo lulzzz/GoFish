@@ -1,6 +1,8 @@
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
+using GoFish.Shared.Dto;
 using IdentityModel.Client;
 using Newtonsoft.Json;
 
@@ -14,6 +16,7 @@ namespace GoFish.Advert.Receiver
         {
             client = new HttpClient();
 
+            // client.BaseAddress = new Uri("http://localhost:8001/api/");    // Advert Api -- Local
             client.BaseAddress = new Uri("http://172.17.0.1:5001/api/");    // Advert Api -- Vagrant
             // client.BaseAddress = new Uri("http://54.171.92.206:5001/api/"); // Advert Api -- Live
 
@@ -21,16 +24,37 @@ namespace GoFish.Advert.Receiver
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public void UpdateAdvert(Guid advertId)
+        public void UpdateAdvert(StockItemDto stockItem)
         {
             SetBearerToken();
 
-            var jsonString = JsonConvert.SerializeObject(advertId);
+            var jsonString = JsonConvert.SerializeObject(stockItem);
+            var payload = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
             HttpResponseMessage result;
             try
             {
-                result = client.PutAsync($"{client.BaseAddress}publishedadverts/{advertId}", new StringContent(string.Empty)).Result;
+                result = client.PutAsync($"{client.BaseAddress}publishedadverts/{stockItem.AdvertId}", payload).Result;
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine("Exception from {0}: {1}",client.BaseAddress, ex.Message);
+                throw;
+            }
+        }
+
+        // TODO: Change this
+        public void UpdateAdvert2(StockItemDto stockItem)
+        {
+            SetBearerToken();
+
+            var jsonString = JsonConvert.SerializeObject(stockItem);
+            var payload = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage result;
+            try
+            {
+                result = client.PutAsync($"{client.BaseAddress}publishedadverts/stockchange/{stockItem.AdvertId}", payload).Result;
             }
             catch (System.Exception ex)
             {

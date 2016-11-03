@@ -3,6 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GoFish.Shared.Dto
 {
+    public class StockChangeDto
+    {
+        private Guid _id;
+        public Guid AdvertId { get; set; }
+        public int Quantity { get; set; }
+    }
+
     public class StockItemDto
     {
         private Guid _id;

@@ -36,6 +36,7 @@ namespace GoFish.Advert
         public string Pitch { get; internal set; }
         public FishingMethod FishingMethod { get; internal set; }
         public AdvertStatus Status { get; internal set; }
+        public int StockQuantity { get; set; }
 
         public void Create()
         {
@@ -80,6 +81,11 @@ namespace GoFish.Advert
             Apply(new AdvertPostedEvent(Id), isNewEvent: true);
         }
 
+        public void StockLevelChanged(int stockLevel)
+        {
+            Apply(new StockLevelChangedEvent(Id, stockLevel), isNewEvent: true);
+        }
+
         public void PostToStock(int stockQuantity)
         {
             if (Status != AdvertStatus.Posted)
@@ -90,9 +96,9 @@ namespace GoFish.Advert
             Apply(new AdvertPostedToStockEvent(Id, stockQuantity), isNewEvent: true);
         }
 
-        public void Publish()
+        public void Publish(int stockQuantity)
         {
-            Apply(new AdvertPublishedEvent(Id), true);
+            Apply(new AdvertPublishedEvent(Id, stockQuantity), true);
         }
 
         public void Withdraw()
@@ -142,16 +148,23 @@ namespace GoFish.Advert
         private void When(AdvertPostedToStockEvent e)
         {
             Status = AdvertStatus.Posted;
+            StockQuantity = e.StockQuantity;
         }
 
         private void When(AdvertPublishedEvent e)
         {
             Status = AdvertStatus.Published;
+            StockQuantity = e.StockQuantity;
         }
 
         private void When(AdvertWithdrawnEvent e)
         {
             Status = AdvertStatus.Withdrawn;
+        }
+
+        private void When(StockLevelChangedEvent e)
+        {
+            StockQuantity = e.StockLevel;
         }
     }
 }

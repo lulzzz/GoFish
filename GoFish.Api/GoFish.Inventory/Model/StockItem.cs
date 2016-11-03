@@ -85,6 +85,7 @@ namespace GoFish.Inventory
         private void When(StockItemSoldEvent e)
         {
             Status = StockItemStatus.Sold;
+            Quantity = 0;
         }
 
         private void When(StockItemDisposedEvent e)

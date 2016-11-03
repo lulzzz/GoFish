@@ -44,7 +44,8 @@ namespace GoFish.Advert.Migrations
                     FishingMethod = table.Column<int>(nullable: false),
                     Pitch = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false),
+                    StockQuantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

@@ -12,7 +12,10 @@ namespace GoFish.Advert.Receiver
         public static void Main(string[] args)
         {
             const string HOST_NAME = "172.17.0.1";
+            // const string HOST_NAME = "localhost";
+
             const string QUEUE_NAME = "GoFish.Inventory.StockItemCreated";
+            // const string QUEUE_NAME = "GoFish.Inventory.StockItemSold";
 
             try
             {
@@ -42,7 +45,8 @@ namespace GoFish.Advert.Receiver
                             var stockItem = JsonConvert.DeserializeObject<StockItemDto>(payload);
 
                             var api = new ApiProxy();
-                            api.UpdateAdvert(stockItem.AdvertId);
+                            api.UpdateAdvert(stockItem);
+                            // api.UpdateAdvert2(stockItem);
                         };
 
                         channel.BasicConsume(queue: QUEUE_NAME, noAck: true, consumer: consumer);
