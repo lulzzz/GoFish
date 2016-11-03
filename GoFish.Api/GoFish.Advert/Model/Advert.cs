@@ -10,11 +10,10 @@ namespace GoFish.Advert
 
         private Advert() { }
 
-        internal Advert(Guid id, CatchType catchType, int quantity, double price, Advertiser advertiser)
+        internal Advert(Guid id, CatchType catchType, double price, Advertiser advertiser)
         {
             Id = id;
             CatchType = catchType;
-            Quantity = quantity;
             Price = price;
             Advertiser = advertiser;
             Status = AdvertStatus.Unknown;
@@ -31,7 +30,6 @@ namespace GoFish.Advert
 
         public Guid Id { get; private set; }
         public CatchType CatchType { get; private set; }
-        public int Quantity { get; private set; }
         public double Price { get; private set; }
         public Advertiser Advertiser { get; private set; }
         public IList<AdvertEvent> History { get; } = new List<AdvertEvent>();
@@ -49,7 +47,6 @@ namespace GoFish.Advert
             Apply(new AdvertCreatedEvent(
                 Id,
                 CatchType,
-                Quantity,
                 Price,
                 Advertiser,
                 Pitch,
@@ -66,7 +63,6 @@ namespace GoFish.Advert
             Apply(new AdvertUpdatedEvent(
                 Id,
                 CatchType,
-                Quantity,
                 Price,
                 Advertiser,
                 Pitch,
@@ -84,14 +80,14 @@ namespace GoFish.Advert
             Apply(new AdvertPostedEvent(Id), isNewEvent: true);
         }
 
-        public void PostToStock()
+        public void PostToStock(int stockQuantity)
         {
             if (Status != AdvertStatus.Posted)
             {
                 throw new InvalidOperationException("Can only add a posted advert to stock.");
             }
 
-            Apply(new AdvertPostedToStockEvent(Id), isNewEvent: true);
+            Apply(new AdvertPostedToStockEvent(Id, stockQuantity), isNewEvent: true);
         }
 
         public void Publish()
@@ -120,7 +116,6 @@ namespace GoFish.Advert
         {
             Id = e.Id;
             CatchType = e.CatchType;
-            Quantity = e.Quantity;
             Price = e.Price;
             Advertiser = e.Advertiser;
             Pitch = e.Pitch;
@@ -132,7 +127,6 @@ namespace GoFish.Advert
         {
             Id = e.Id;
             CatchType = e.CatchType;
-            Quantity = e.Quantity;
             Price = e.Price;
             Advertiser = e.Advertiser;
             Pitch = e.Pitch;

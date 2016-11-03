@@ -24,7 +24,7 @@ namespace GoFish.Advert
 
             if (command.AlsoPostToStock)
             {
-                advert.PostToStock();
+                advert.PostToStock(command.StockQuantity);
             }
             else
             {

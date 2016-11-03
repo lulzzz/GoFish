@@ -39,14 +39,14 @@ namespace GoFish.Inventory.Receiver
                         consumer.Received += (model, ea) =>
                         {
                             var payload = Encoding.UTF8.GetString(ea.Body);
-                            var advert = JsonConvert.DeserializeObject<AdvertDto>(payload);
+                            var advert = JsonConvert.DeserializeObject<AddAdvertToStockDto>(payload);
 
                             var api = new ApiProxy();
                             api.UpdateInventory(new StockItemDto()
                             {
                                 Id = Guid.NewGuid(),
                                 ProductTypeId = (int)advert.CatchTypeId,
-                                Quantity = (int)advert.Quantity,
+                                Quantity = (int)advert.StockQuantity,
                                 Price = (double)advert.Price,
                                 OwnerId = (int)advert.AdvertiserId,
                                 AdvertId = advert.Id
