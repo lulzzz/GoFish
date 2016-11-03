@@ -55,6 +55,7 @@ namespace GoFish.Advert
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Advert, AdvertDto>();
+                cfg.CreateMap<Advert, AddAdvertToStockDto>();
             });
 
             services.AddSingleton<AutoMapper.IMapper>(sp => config.CreateMapper());

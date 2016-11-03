@@ -25,8 +25,6 @@ namespace GoFish.Advert
         {
             var client = new MessagingClient(_logger, "172.17.0.1");
 
-            var dto = _mapper.Map<Advert, AdvertDto>(objectWithEventsToBroadcast);
-
             // whitelist of events that have associated MQ messages sent
             var whiteList = new List<string>() {
                 "AdvertPostedEvent",
@@ -39,7 +37,17 @@ namespace GoFish.Advert
 
             foreach (var message in whiteListed)
             {
-                client.SendMessage(message.GetType().ToString().Replace("Event", string.Empty), Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
+                if (message.GetType().ToString() == "GoFish.Advert.AdvertPostedToStockEvent")
+                {
+                    var dto = _mapper.Map<Advert, AddAdvertToStockDto>(objectWithEventsToBroadcast);
+                    dto.StockQuantity = ((AdvertPostedToStockEvent)message).StockQuantity;
+                    client.SendMessage(message.GetType().ToString().Replace("Event", string.Empty), Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
+                }
+                else
+                {
+                    var dto = _mapper.Map<Advert, AdvertDto>(objectWithEventsToBroadcast);
+                    client.SendMessage(message.GetType().ToString().Replace("Event", string.Empty), Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(dto)));
+                }
             }
         }
     }

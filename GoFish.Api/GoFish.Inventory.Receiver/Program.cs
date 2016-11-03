@@ -40,7 +40,8 @@ namespace GoFish.Inventory.Receiver
                         {
                             var payload = Encoding.UTF8.GetString(ea.Body);
                             var advert = JsonConvert.DeserializeObject<AddAdvertToStockDto>(payload);
-
+System.Console.WriteLine("Wohoo");
+System.Console.WriteLine(advert.StockQuantity.ToString());
                             var api = new ApiProxy();
                             api.UpdateInventory(new StockItemDto()
                             {
