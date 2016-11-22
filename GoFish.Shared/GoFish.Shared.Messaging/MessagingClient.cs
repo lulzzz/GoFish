@@ -27,6 +27,8 @@ namespace GoFish.Shared.Messaging
 
         public void SendMessage(string queueName, byte[] payload)
         {
+            _logger.LogError("Sending the message via the {0} queue", queueName);
+
             try
             {
                 var factory = new ConnectionFactory()
@@ -56,13 +58,12 @@ namespace GoFish.Shared.Messaging
                                              routingKey: queueName,
                                              basicProperties: properties,
                                              body: payload);
-
                     }
                 }
             }
             catch (System.Exception)
             {
-                _logger.LogError("Error sending the Advert message to Inventroy via the {0} queue", queueName);
+                _logger.LogError("Error sending the message via the {0} queue", queueName);
             }
         }
     }

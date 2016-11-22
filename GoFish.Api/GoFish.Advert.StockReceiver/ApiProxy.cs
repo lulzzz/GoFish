@@ -6,7 +6,7 @@ using GoFish.Shared.Dto;
 using IdentityModel.Client;
 using Newtonsoft.Json;
 
-namespace GoFish.Advert.Receiver
+namespace GoFish.Advert.StockReceiver
 {
     public class ApiProxy
     {
@@ -34,7 +34,7 @@ namespace GoFish.Advert.Receiver
             HttpResponseMessage result;
             try
             {
-                result = client.PutAsync($"{client.BaseAddress}publishedadverts/{stockItem.AdvertId}", payload).Result;
+                result = client.PutAsync($"{client.BaseAddress}publishedadverts/stockchange/{stockItem.AdvertId}", payload).Result;
             }
             catch (System.Exception ex)
             {

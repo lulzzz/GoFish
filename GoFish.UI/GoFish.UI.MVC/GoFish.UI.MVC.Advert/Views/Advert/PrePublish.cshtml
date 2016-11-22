@@ -22,7 +22,7 @@
 	</div>
 	<div class="form-group row col-sm-12">
 		<input type="radio" asp-for="PublishType" value="PublishAndAdd">Publish the advert and add items to stock</input>
-		<input class="form-control" type="text" asp-for="StockQuantity"></input><br />
+		Qty:<input class="form-control" type="text" asp-for="StockQuantity"></input><br />
 		<input type="radio" asp-for="PublishType" value="PublishOnly">Just publish the advert</input><br>
 		<span asp-validation-for="PublishType" class="text-danger"></span>
 	</div>

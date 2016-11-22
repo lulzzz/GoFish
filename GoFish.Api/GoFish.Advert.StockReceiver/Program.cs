@@ -5,15 +5,15 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using GoFish.Shared.Dto;
 
-namespace GoFish.Advert.Receiver
+namespace GoFish.Advert.StockReceiver
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            const string HOST_NAME = "172.17.0.1";
-
-            const string QUEUE_NAME1 = "GoFish.Inventory.StockItemCreated";
+            // const string HOST_NAME = "172.17.0.1";
+            const string HOST_NAME = "localhost";
+            const string QUEUE_NAME = "GoFish.Inventory.StockItemSold";
 
             try
             {
@@ -30,7 +30,7 @@ namespace GoFish.Advert.Receiver
                 {
                     using (var channel = connection.CreateModel())
                     {
-                        channel.QueueDeclare(queue: QUEUE_NAME1,
+                        channel.QueueDeclare(queue: QUEUE_NAME,
                                                 durable: true,
                                                 exclusive: false,
                                                 autoDelete: false,
@@ -50,7 +50,7 @@ namespace GoFish.Advert.Receiver
                             channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
                         };
 
-                        channel.BasicConsume(queue: QUEUE_NAME1,
+                        channel.BasicConsume(queue: QUEUE_NAME,
                                              noAck: false,
                                              consumer: consumer);
 

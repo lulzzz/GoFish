@@ -73,6 +73,9 @@ namespace GoFish.Advert
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
+            loggerFactory.AddDebug(LogLevel.Warning);
+            loggerFactory.AddConsole(LogLevel.Warning);
+
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
                 Authority = options.Value.IdentityServerUrl,
