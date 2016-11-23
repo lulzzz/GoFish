@@ -1,20 +1,19 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "buildOptions": {
-    "outputName": "GoFish.Shared.Messaging",
     "debugType": "portable"
   },
   "dependencies": {},
   "frameworks": {
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.1"
+          "version": "1.1.0"
         },
-        "Microsoft.Extensions.Logging.Console": "1.0.0",
-        "Microsoft.Extensions.Logging": "1.0.0",
-        "RabbitMQ.Client": "4.1.0"
+        "Microsoft.Extensions.Logging.Console": "1.1.0",
+        "Microsoft.Extensions.Logging": "1.1.0",
+        "RabbitMQ.Client": "4.1.1"
       }
     }
   }

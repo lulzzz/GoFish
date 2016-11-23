@@ -6,7 +6,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.0\\GoFish.Advert.dll",
+            "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\GoFish.Advert.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "stopAtEntry": false,

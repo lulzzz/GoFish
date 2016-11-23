@@ -11,8 +11,7 @@ namespace GoFish.Advert.StockReceiver
     {
         public static void Main(string[] args)
         {
-            // const string HOST_NAME = "172.17.0.1";
-            const string HOST_NAME = "localhost";
+            const string HOST_NAME = "172.17.0.1";
             const string QUEUE_NAME = "GoFish.Inventory.StockItemSold";
 
             try

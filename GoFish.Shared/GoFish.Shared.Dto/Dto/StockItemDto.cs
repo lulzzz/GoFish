@@ -5,7 +5,6 @@ namespace GoFish.Shared.Dto
 {
     public class StockChangeDto
     {
-        private Guid _id;
         public Guid AdvertId { get; set; }
         public int Quantity { get; set; }
     }
