@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using GoFish.Shared.Interface;
 using System;
 using System.Net;
-using GoFish.Shared.Dto;
 
 namespace GoFish.Inventory
 {

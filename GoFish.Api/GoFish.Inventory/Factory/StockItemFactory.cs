@@ -1,4 +1,3 @@
-using System;
 using GoFish.Shared.Dto;
 
 namespace GoFish.Inventory
@@ -36,8 +35,7 @@ namespace GoFish.Inventory
 
         private static void ValidateInput(StockItemDto fromDto)
         {
-            if (fromDto.ProductTypeId == null)
-                throw new ArgumentNullException("Product Type");
+
         }
     }
 }

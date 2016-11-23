@@ -10,23 +10,21 @@ A web-application giving fishermen and fish merchants easy access to a market of
 - The wholesale market
 - Restaurants
 
-The live version of the API is published on an AWS EC2 Instance.  See the API reference below for API usage scenarios.
+A set of prototype MVC web-based user-interfaces which use the services are published to AWS and the entry point is at [this AWS location](http://54.171.92.206:5003 "Live User Interface").  If you want to try it out, use the test user accounts of "nina" or "fred".  The passwords are the same as the user name
+
+The live version of the API is published on an the same AWS EC2 Instance at the following locations.  See the API reference further down the page for API usage scenarios.
 
 - [Advert Api](http://54.171.92.206:5001/api/ "API URL")
 - [Inventory Api](http://54.171.92.206:5002/api/ "API URL")
 
-A set of prototype MVC web-based user-interfaces which use the services are also published to AWS and the entry point is at [this AWS location](http://54.171.92.206:5003 "Live User Interface")
-
-If you want to try it out, use the test user accounts of "nina" or "fred".  The passwords are the same as the user name
-
 ## Technology stack
 
-- MS .NET Core 1.0.1 or MS .NET Core 1.1.0-preview1 + ASP.NET MVC + WebApi (C#)
-- EF Core 1.0.1 + Migrations
+- MS .NET Core 1.1 + ASP.NET MVC + WebApi (C#)
+- EF Core 1.1 + Migrations
 - Sqlite DB
 - RabbitMQ
-- Docker & Docker-Compose
 - Vagrant & VirtualBox
+- Docker & Docker-Compose
 - Ubuntu
 - IdentityServer4
 - EventStore
@@ -130,7 +128,7 @@ To get up and running, ideally you will need the following prerequisites on your
 Notes:
 
 1. Each service has it's own read-model datastore (currently Sqlite in all of them)
-1. The Advert service's Events are also published to an EventStore instance to allow for event-sourcing
+1. The Advert and Inventory service's Events are also published to an EventStore instance to allow for event-sourcing
 
 ---
 
@@ -180,7 +178,7 @@ The repository allows for all local instance to get up and running in Docker on 
 
 Environment variables are used to load the correct config for each of the environments.
 
-If you want to develop locally, you will need to manually change a the following configuration accordingly.
+If you want to develop locally, you will need to manually change the following configuration code accordingly.
 
 - GoFish.Advert.Receiver/ApiProxy (in 2 places)
 - GoFish.Inventory.Receiver/ApiProxy (in 2 places)
