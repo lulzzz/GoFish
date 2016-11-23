@@ -11,8 +11,8 @@ namespace GoFish.Identity
             services.AddMvc();
 
             services.AddIdentityServer(options => { options.IssuerUri = "WierdnessHere"; })
-                .AddInMemoryStores()
-                .SetTemporarySigningCredential()
+                .AddInMemoryPersistedGrants()
+                .AddTemporarySigningCredential()
                 .AddInMemoryClients(IdentityConfiguration.GetClients())
                 .AddInMemoryScopes(IdentityConfiguration.GetScopes())
                 .AddInMemoryUsers(IdentityConfiguration.GetUsers());
