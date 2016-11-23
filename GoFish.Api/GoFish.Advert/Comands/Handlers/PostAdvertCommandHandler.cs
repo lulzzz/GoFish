@@ -24,14 +24,14 @@ namespace GoFish.Advert
 
             if (command.AlsoPostToStock)
             {
-                advert.PostToStock();
+                advert.PostToStock(command.StockQuantity);
             }
             else
             {
                 // TODO: this will get handled out of process eventually, but
                 // at the moment, there is no receiver for the "just publish" message
                 // so set it to published here for now
-                advert.Publish();
+                advert.Publish(command.StockQuantity);
             }
 
 

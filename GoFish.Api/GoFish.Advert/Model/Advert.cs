@@ -10,11 +10,10 @@ namespace GoFish.Advert
 
         private Advert() { }
 
-        internal Advert(Guid id, CatchType catchType, int quantity, double price, Advertiser advertiser)
+        internal Advert(Guid id, CatchType catchType, double price, Advertiser advertiser)
         {
             Id = id;
             CatchType = catchType;
-            Quantity = quantity;
             Price = price;
             Advertiser = advertiser;
             Status = AdvertStatus.Unknown;
@@ -31,13 +30,13 @@ namespace GoFish.Advert
 
         public Guid Id { get; private set; }
         public CatchType CatchType { get; private set; }
-        public int Quantity { get; private set; }
         public double Price { get; private set; }
         public Advertiser Advertiser { get; private set; }
         public IList<AdvertEvent> History { get; } = new List<AdvertEvent>();
         public string Pitch { get; internal set; }
         public FishingMethod FishingMethod { get; internal set; }
         public AdvertStatus Status { get; internal set; }
+        public int StockQuantity { get; set; }
 
         public void Create()
         {
@@ -49,7 +48,6 @@ namespace GoFish.Advert
             Apply(new AdvertCreatedEvent(
                 Id,
                 CatchType,
-                Quantity,
                 Price,
                 Advertiser,
                 Pitch,
@@ -66,7 +64,6 @@ namespace GoFish.Advert
             Apply(new AdvertUpdatedEvent(
                 Id,
                 CatchType,
-                Quantity,
                 Price,
                 Advertiser,
                 Pitch,
@@ -84,19 +81,24 @@ namespace GoFish.Advert
             Apply(new AdvertPostedEvent(Id), isNewEvent: true);
         }
 
-        public void PostToStock()
+        public void StockLevelChanged(int stockLevel)
+        {
+            Apply(new StockLevelChangedEvent(Id, stockLevel), isNewEvent: true);
+        }
+
+        public void PostToStock(int stockQuantity)
         {
             if (Status != AdvertStatus.Posted)
             {
                 throw new InvalidOperationException("Can only add a posted advert to stock.");
             }
 
-            Apply(new AdvertPostedToStockEvent(Id), isNewEvent: true);
+            Apply(new AdvertPostedToStockEvent(Id, stockQuantity), isNewEvent: true);
         }
 
-        public void Publish()
+        public void Publish(int stockQuantity)
         {
-            Apply(new AdvertPublishedEvent(Id), true);
+            Apply(new AdvertPublishedEvent(Id, stockQuantity), true);
         }
 
         public void Withdraw()
@@ -120,7 +122,6 @@ namespace GoFish.Advert
         {
             Id = e.Id;
             CatchType = e.CatchType;
-            Quantity = e.Quantity;
             Price = e.Price;
             Advertiser = e.Advertiser;
             Pitch = e.Pitch;
@@ -132,7 +133,6 @@ namespace GoFish.Advert
         {
             Id = e.Id;
             CatchType = e.CatchType;
-            Quantity = e.Quantity;
             Price = e.Price;
             Advertiser = e.Advertiser;
             Pitch = e.Pitch;
@@ -148,16 +148,23 @@ namespace GoFish.Advert
         private void When(AdvertPostedToStockEvent e)
         {
             Status = AdvertStatus.Posted;
+            StockQuantity = e.StockQuantity;
         }
 
         private void When(AdvertPublishedEvent e)
         {
             Status = AdvertStatus.Published;
+            StockQuantity = e.StockQuantity;
         }
 
         private void When(AdvertWithdrawnEvent e)
         {
             Status = AdvertStatus.Withdrawn;
+        }
+
+        private void When(StockLevelChangedEvent e)
+        {
+            StockQuantity = e.StockLevel;
         }
     }
 }

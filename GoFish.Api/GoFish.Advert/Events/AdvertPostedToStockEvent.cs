@@ -4,6 +4,10 @@ namespace GoFish.Advert
 {
     public class AdvertPostedToStockEvent : AdvertEvent
     {
-        public AdvertPostedToStockEvent(Guid id) : base(id) { }
+        public readonly int StockQuantity;
+        public AdvertPostedToStockEvent(Guid id, int stockQuantity) : base(id)
+        {
+            StockQuantity = stockQuantity;
+        }
     }
 }

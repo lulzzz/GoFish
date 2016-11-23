@@ -51,10 +51,12 @@ namespace GoFish.Advert
             services.AddTransient<ICommandHandler<PostAdvertCommand, Advert>, PostAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<PublishAdvertCommand, Advert>, PublishAdvertCommandHandler>();
             services.AddTransient<ICommandHandler<WithdrawAdvertCommand, Advert>, WithdrawAdvertCommandHandler>();
+            services.AddTransient<ICommandHandler<StockUpdatedCommand, Advert>, StockUpdatedCommandHandler>();
 
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Advert, AdvertDto>();
+                cfg.CreateMap<Advert, AddAdvertToStockDto>();
             });
 
             services.AddSingleton<AutoMapper.IMapper>(sp => config.CreateMapper());
@@ -70,6 +72,9 @@ namespace GoFish.Advert
             IOptions<ApplicationSettings> options)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            loggerFactory.AddDebug(LogLevel.Warning);
+            loggerFactory.AddConsole(LogLevel.Warning);
 
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {

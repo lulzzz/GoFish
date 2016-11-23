@@ -40,7 +40,7 @@ namespace GoFish.Advert
         {
             try
             {
-                _command.Send(new PostAdvertCommand(id, GetUserId(), data.PublishType=="PublishAndAdd"));
+                _command.Send(new PostAdvertCommand(id, GetUserId(), data.PublishType=="PublishAndAdd", data.StockQuantity));
                 return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (ItemNotFoundException)
@@ -61,5 +61,6 @@ namespace GoFish.Advert
     public class PostAdvertPayload
     {
         public string PublishType { get; set; }
+        public int StockQuantity { get; set; }
     }
 }

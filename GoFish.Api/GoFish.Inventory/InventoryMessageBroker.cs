@@ -29,7 +29,8 @@ namespace GoFish.Inventory
 
             // whitelist of events that have associated MQ messages sent
             var whiteList = new List<string>() {
-                "StockItemCreatedEvent"
+                "StockItemCreatedEvent",
+                "StockItemSoldEvent"
             };
 
             var whiteListed = objectToSend.GetChanges()

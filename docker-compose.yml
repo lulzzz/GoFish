@@ -74,6 +74,15 @@ advert_receiver:
     environment:
       - ASPNETCORE_ENVIRONMENT=Staging
 
+advert_stockreceiver:
+    container_name: gofish_advert_stockreceiver
+    build: ./GoFish.Api/GoFish.Advert.StockReceiver
+    tty: true
+    links:
+      - identity:localhost
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+
 eventstore:
     container_name: eventstore
     image: eventstore/eventstore

@@ -47,7 +47,8 @@ namespace GoFish.Advert
                 {
                     Repository.SaveCreatedAdvert(advert);
                 }
-                if (item.GetType().Name == "AdvertUpdatedEvent")
+                if (item.GetType().Name == "AdvertUpdatedEvent"
+                || item.GetType().Name == "StockLevelChangedEvent")
                 {
                     Repository.UpdateAdvert(advert);
                 }

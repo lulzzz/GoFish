@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.0",
   "buildOptions": {
     "debugType": "portable",
     "emitEntryPoint": false
@@ -9,14 +9,14 @@
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.1.0-preview1-001100-00"
+          "version": "1.1.0"
         }
       }
     }
   },
   "dependencies": {
-    "Microsoft.AspNetCore.Mvc": "1.1.0-preview1-final",
-    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0-preview1-final",
+    "Microsoft.AspNetCore.Mvc": "1.1.0",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.1.0",
     "Newtonsoft.Json": "9.0.1"
   }
 }

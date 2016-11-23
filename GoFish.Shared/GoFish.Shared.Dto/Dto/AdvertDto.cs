@@ -3,6 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GoFish.Shared.Dto
 {
+    public class AddAdvertToStockDto : AdvertDto
+    {
+        public int StockQuantity { get; set; }
+    }
+
     public class AdvertDto
     {
         private Guid _id;
@@ -21,10 +26,6 @@ namespace GoFish.Shared.Dto
                 _id = value;
             }
         }
-
-        [Required]
-        [Range(1, 100000)]
-        public int? Quantity { get; set; }
 
         [Required]
         [DataType(DataType.Currency)]

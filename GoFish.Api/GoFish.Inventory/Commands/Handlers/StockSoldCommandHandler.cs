@@ -1,4 +1,5 @@
 using GoFish.Shared.Command;
+using GoFish.Shared.Interface;
 
 namespace GoFish.Inventory
 {
@@ -8,10 +9,12 @@ namespace GoFish.Inventory
 
         public StockSoldCommandHandler(
             InventoryRepository repository,
-            IStockItemFactory factory
-            ) : base(repository)
+            IStockItemFactory factory,
+            IMessageBroker<StockItem> messageBroker
+            ) : base(repository, messageBroker)
         {
             _factory = factory;
+
         }
 
         public override void Handle(StockSoldCommand command)
@@ -31,6 +34,8 @@ namespace GoFish.Inventory
             // TODO: This can be done out of process by responding to the events/messages
             // For now, the simplest thing is to refresh here but this needs changing.
             RefreshReadModel(stockItem);
+
+            SendEventNotifications(stockItem);
         }
     }
 }

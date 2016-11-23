@@ -5,7 +5,6 @@ namespace GoFish.Advert
     public class AdvertCreatedEvent : AdvertEvent
     {
         public readonly CatchType CatchType;
-        public readonly int Quantity;
         public readonly double Price;
         public readonly Advertiser Advertiser;
         public readonly string Pitch;
@@ -14,7 +13,6 @@ namespace GoFish.Advert
         public AdvertCreatedEvent(
             Guid id,
             CatchType catchType,
-            int quantity,
             double price,
             Advertiser advertiser,
             string pitch,
@@ -22,7 +20,6 @@ namespace GoFish.Advert
             ) : base(id)
         {
             CatchType = catchType;
-            Quantity = quantity;
             Price = price;
             Advertiser = advertiser;
             Pitch = pitch;

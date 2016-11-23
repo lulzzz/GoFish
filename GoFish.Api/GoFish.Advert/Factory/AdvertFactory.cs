@@ -19,7 +19,6 @@ namespace GoFish.Advert
             var resultingAdvert = new Advert(
                 buildData.Id,
                 LookupItem.GetFromCache<CatchType>(_cache, (int)buildData.CatchTypeId),
-                (int)buildData.Quantity,
                 (double)buildData.Price,
                 LookupItem.GetFromCache<Advertiser>(_cache, (int)buildData.AdvertiserId));
 

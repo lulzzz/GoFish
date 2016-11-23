@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using GoFish.Shared.Command;
+using GoFish.Shared.Dto;
 using GoFish.Shared.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,11 +39,11 @@ namespace GoFish.Advert
 
         [HttpPut("{id:Guid}")]
         [Authorize("SystemMessagingPolicy")]
-        public IActionResult PublishAdvert(Guid id)
+        public IActionResult PublishAdvert(Guid id, [FromBody]StockItemDto data)
         {
             try
             {
-                _command.Send(new PublishAdvertCommand(id));
+                _command.Send(new PublishAdvertCommand(id, (int)data.Quantity));
                 return new StatusCodeResult((int)HttpStatusCode.Accepted);
             }
             catch (ItemNotFoundException)
@@ -58,5 +59,29 @@ namespace GoFish.Advert
                 return NotFound(); // Better a 404 than a potential hack vector.
             }
         }
+
+        [HttpPut("[action]/{id:Guid}")]
+        [Authorize("SystemMessagingPolicy")]
+        public IActionResult StockChange(Guid id, [FromBody]StockChangeDto data)
+        {
+            try
+            {
+                _command.Send(new StockUpdatedCommand(data.AdvertId, data.Quantity));
+                return new StatusCodeResult((int)HttpStatusCode.Accepted);
+            }
+            catch (ItemNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return NotFound(); // Better a 404 than a potential hack vector.
+            }
+        }
+
     }
 }

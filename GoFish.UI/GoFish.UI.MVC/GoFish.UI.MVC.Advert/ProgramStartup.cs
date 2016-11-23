@@ -32,16 +32,23 @@ namespace GoFish.UI.MVC.Advert
         }
 
         public void Configure(
+            IHostingEnvironment env,
             IApplicationBuilder app,
             ILoggerFactory loggerFactory,
             IOptions<ApplicationSettings> settings)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
-            loggerFactory.AddConsole();
-            loggerFactory.AddDebug();
+            if (env.IsDevelopment())
+            {
+                loggerFactory.AddDebug(LogLevel.Warning);
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                loggerFactory.AddConsole(LogLevel.Warning);
+            }
 
-            app.UseDeveloperExceptionPage();
             app.UseStaticFiles();
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions

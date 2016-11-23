@@ -10,6 +10,8 @@ namespace GoFish.UI.MVC.Advert
         [Required(ErrorMessage="You need to select an option", AllowEmptyStrings = false)]
         public string PublishType { get; set; }
 
+        public int? StockQuantity { get; set; }
+
         public string SubmitButton { get; set; }
     }
 }

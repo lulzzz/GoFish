@@ -35,7 +35,6 @@ namespace GoFish.Advert.Tests
             return new AdvertDto()
             {
                 CatchTypeId = 1,
-                Quantity = 1,
                 Price = 1,
                 AdvertiserId = 1,
                 FishingMethod = (int)FishingMethod.Unknown

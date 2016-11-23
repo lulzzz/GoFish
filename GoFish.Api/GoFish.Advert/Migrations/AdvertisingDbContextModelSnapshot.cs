@@ -30,9 +30,9 @@ namespace GoFish.Advert.Migrations
 
                     b.Property<double>("Price");
 
-                    b.Property<int>("Quantity");
-
                     b.Property<int>("Status");
+
+                    b.Property<int>("StockQuantity");
 
                     b.HasKey("Id");
 
